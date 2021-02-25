@@ -2,7 +2,6 @@
   <div class="home">
     <IGButton/>
     <FBButton/>
-    <!-- <router-view/> -->
   </div>
 </template>
 

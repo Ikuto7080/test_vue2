@@ -1,9 +1,6 @@
 <template>
     <div>
-      <button @click="open">Login with IGButton</button>
-      <!-- <div v-if="info">{{info.id}}</div>
-      <div v-if="info">{{info.ig_id}}</div>
-      <div v-if="info">{{info.user.first_name}}</div> -->
+      <v-btn class="pink white--text" @click="open">Login with IGButton</v-btn>
     </div>
   </template>
 

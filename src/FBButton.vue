@@ -1,11 +1,6 @@
 <template>
     <div>
-        <button @click="open">Login with Facebook</button>
-        <div v-if="info">id: {{info.id}}</div>
-        <div v-if="info">id: {{info.fb_id}}</div>
-        <div v-if="info">{{info.user.first_name}}</div>
-        <div v-if="info">{{info.user.last_name}}</div>
-        <!-- <h1>{{ this.$route.query.code }} </h1> -->
+        <v-btn depressed class="indigo accent-3 white--text" @click="open">Login with Facebook</v-btn>
     </div>
 </template>
 
@@ -21,6 +16,7 @@ export default {
 }
 
 </script>
+
 <style>
 
 </style>
