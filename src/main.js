@@ -7,7 +7,7 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'https://ikuto1913.herokuapp.com/'
+axios.defaults.baseURL = 'https://obscure-reef-20222.herokuapp.com/'
 let account = localStorage.getItem("account")
 
 if (account) {
