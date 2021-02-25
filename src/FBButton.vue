@@ -1,7 +1,5 @@
-<template>
-    <div>
-        <v-btn depressed class="indigo accent-3 white--text" @click="open">Login with Facebook</v-btn>
-    </div>
+<template lang="pug">
+    v-btn.indigo.accent-3.white--text(depressed @click="open") Login with Facebook
 </template>
 
 <script>
