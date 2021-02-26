@@ -10,7 +10,7 @@
 export default {
     data(){
         return {
-        account: null
+        account: account.id
         }
     },
      mounted (){

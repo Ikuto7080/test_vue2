@@ -9,7 +9,7 @@ export default {
     name: 'IGButton',
     methods: {
         open() {
-            document.location.href = `https://api.instagram.com/oauth/authorize?client_id=909807339845904&redirect_uri=https://obscure-reef-20222.herokuapp.com/insta/&scope=user_profile%2Cuser_media&response_type=code`
+            document.location.href = `https://www.facebook.com/v9.0/dialog/oauth?client_id=420945845838455&redirect_uri=${process.env.VUE_APP_FB_REDIRECT_URL}&scope=user_profile%2Cuser_media&response_type=code`
         }
     }
 }  

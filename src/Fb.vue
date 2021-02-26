@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div v-if="info">{{ info.id }}</div>
-        <div v-if="info">{{ info.user.first_name }}</div>
-        <div v-if="info">{{ info.user.last_name }}</div>
     </div>
 </template>
 
