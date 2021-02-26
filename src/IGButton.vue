@@ -1,7 +1,8 @@
 <template lang="pug">
-      v-btn.pink.white--text(@click="open")
-        i.fa.fa-instagram(aria-hidden='true')
-        | Login with IGButton
+  .btn
+    v-btn.pink.white--text(@click="open")
+      i.fa.fa-instagram(aria-hidden='true')
+      | Login with IGButton
   </template>
 
 <script>
@@ -17,3 +18,8 @@ export default {
 </script>
 
 
+<style>
+.btn {
+  text-align: center;
+}
+</style>
