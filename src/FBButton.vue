@@ -1,5 +1,8 @@
 <template lang="pug">
-    v-btn.indigo.accent-3.white--text(depressed @click="open") Login with Facebook
+  .btn
+    v-btn.indigo.accent-3.white--text(depressed='depressed' @click='open')
+      i.fa.fa-facebook
+      | Login with Facebook
 </template>
 
 <script>
@@ -16,6 +19,9 @@ export default {
 </script>
 
 <style>
+.btn {
+  text-align: center;
+}
 
 </style>
 
