@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-// import IGButton from '../IGButton.vue'
-// import FBButton from '../FBButton.vue'
 import Insta from '../Insta.vue'
 import Fb from '../Fb.vue'
 import Profile from '../Profile.vue'
+import Login from '../Login.vue'
+import test from '../test.vue'
+
 
 Vue.use(VueRouter)
  
@@ -29,6 +30,16 @@ const routes = [
     path: '/profile/',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/login/',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/test/',
+    name: 'test',
+    component: test
   }
 ]
 

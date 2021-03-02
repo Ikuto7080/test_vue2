@@ -12,8 +12,9 @@ export default {
     }
 }, mounted (){
     let code = this.$route.query.code
+    let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
     if(code){
-        let data = {fb_code: code}
+        let data = {fb_code: code, redirect_uri: redirect_uri}
         axios
         .post('/accounts/', data)
         .then(resp => {

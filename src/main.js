@@ -8,13 +8,16 @@ import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
-axios.defaults.baseURL = 'https://ikuto1913.herokuapp.com'
+axios.defaults.baseURL = "https://ikuto1913.herokuapp.com"
+// http://127.0.0.1:8000
 let account = localStorage.getItem("account")
+
 
 if (account) {
   account = JSON.parse(account)
   axios.defaults.headers.common['Authorization'] = account.token
 }
+
 
 new Vue({
   router,

@@ -21,5 +21,7 @@ export default {
 <style>
 .btn {
   text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 </style>

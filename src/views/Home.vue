@@ -1,19 +1,19 @@
 <template>
   <div class="home">
-    <IGButton/>
-    <FBButton/>
-  </div>
+    <h1>Home</h1>
+  </div>  
 </template>
 
 <script>
-import IGButton from '../IGButton.vue'
-import FBButton from '../FBButton.vue'
-
 export default {
-  name: 'Home',
-  components: {
-    IGButton,
-    FBButton
-  }
+  
 }
 </script>
+
+<style>
+.home{
+  text-align: center;
+}
+</style>
+
+
