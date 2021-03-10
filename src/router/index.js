@@ -6,7 +6,8 @@ import Fb from '../Fb.vue'
 import Profile from '../Profile.vue'
 import Login from '../Login.vue'
 import test from '../test.vue'
-
+import About from '../views/About.vue'
+import Gmap from '../Gmap.vue'
 
 Vue.use(VueRouter)
  
@@ -15,6 +16,10 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  }, {
+    path: '/about/',
+    name: 'About',
+    component: About
   },
   {
     path: '/fb_user_info/',
@@ -40,6 +45,11 @@ const routes = [
     path: '/test/',
     name: 'test',
     component: test
+  },
+  {
+    path: '/gmap/',
+    name: Gmap,
+    component: Gmap
   }
 ]
 

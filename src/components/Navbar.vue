@@ -27,17 +27,20 @@ export default {
   name: 'Navbar',
   data(){
     return {
-      account: null
     }
-  },created () {
-    let account = localStorage.getItem("account")
-    this.account = JSON.parse(localStorage.getItem("account"))
-    console.log(account)  
+  },computed: {
+    account() {
+      return this.$store.state.account
+    }
+  },
+  mounted () {
+    console.log(this.account)  
   },
   methods:{
     logout(){
       alert("are you sure?")
       localStorage.removeItem("account")
+      this.$store.commit('setAccount', null) 
       this.$router.push('/')
     },
     login(){
