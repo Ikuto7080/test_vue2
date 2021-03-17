@@ -8,14 +8,13 @@ import axios from 'axios'
 export default {
     data(){
         return {
-        info:null,
-        isLoading: false,
-        fullPage: true
+        info:null
     }
 }, mounted (){
     let code = this.$route.query.code
     let userId = this.$route.query.state
     let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
+    console.log(code)
     if(code){
         let data = {fb_code: code, redirect_uri: redirect_uri, line_user_id:userId}
         axios
@@ -28,7 +27,7 @@ export default {
             this.$router.push('/profile/')
         })
         }
-    }
+    },
 
 }
 

@@ -12,14 +12,11 @@
             a(href="/login/") Login
           li.nav-item(v-if="account")
             a(href="/" @click="logout") Sign Out
-      v-menu(left bottom)
-        template(v-slot:activator="{on, attrs}")
-          v-btn(icon v-bind="attrs" v-on="on")
-            v-icon mdi-dots-vertical
+          li.nav-item(v-if="account")
+            a(href="/edit/") Edit 
 
-        v-list 
-          v-list-item(v-for="n in 5" :key="n" @click="() => {}")
-            v-list-item-title Option {{ n }}
+
+      
 </template>
 
 <script>

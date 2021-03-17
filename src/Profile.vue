@@ -2,12 +2,21 @@
   v-app
     v-container
       v-row
-        v-col(cols="12" sm="6" offset-sm="3")
+        v-col
           h1(style="text-align:center;") Profile
-              v-text-field(label="First Name" v-model="account['user']['first_name']" )
-              v-text-field(label="Last Name" v-model="account['user']['last_name']" )
-              v-btn(@click="updateProfile" depressed) Update
-                v-icon mdi-pencil
+              v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
+              v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
+
+        v-spacer
+
+        v-col
+          h3 SNS apps
+          v-divider
+          div(v-if="fb_presence")
+            v-btn(@click="openFb") Facebook
+          div(v-if="ig_presence")
+            v-btn(@click="openIg") Instagram
+        v-divider
 
       v-divider(class="mt-3")
 
@@ -30,8 +39,10 @@ export default {
     data(){
         return {
         account: null,
-        fb_urls: undefined,
-        ig_urls: undefined,
+        fb_urls: null,
+        ig_urls: null,
+        ig_presence: false,
+        fb_presence: false,
         edit: false
         }
     },
@@ -39,8 +50,9 @@ export default {
         axios
         .get('/accounts/')
         .then(resp => {
-            this.$store.commit('setAccount', resp.data[0])
-            this.account = resp.data[0]
+          this.account = resp.data[0]
+            this.$store.commit('setAccount', this.account)
+            console.log(this.$store.state.account.id)
             let igposts = this.account['ig_id']
             // console.log(this.account)
             let fbposts = this.account['fb_id']
@@ -49,10 +61,7 @@ export default {
                 axios
                 .get('/igposts/')
                 .then((resp) => {
-                    console.log(resp.data)
                 this.ig_urls = resp.data
-                console.log(resp.data)
-                // console.log(this.ig_urls[0])
             })
             }
             if(fbposts){
@@ -63,6 +72,12 @@ export default {
                     
                     // console.log(this.fb_urls[0])
             })
+            }
+            if(!igposts){
+              this.ig_presence = true
+            }
+            if(!fbposts){
+              this.fb_presence = true
             }
             })
      },
@@ -80,8 +95,16 @@ export default {
                  this.account.user = resp.data
                  this.$store.commit('setAccount', this.account)
              })
-         }
-     }
+         },
+         openFb(){
+           const lineUserId = this.$store.state.account.line_user_id  
+             document.location.href = `https://www.facebook.com/v9.0/dialog/oauth?client_id=420945845838455&redirect_uri=${process.env.VUE_APP_FB_REDIRECT_URL}&state=${lineUserId}`
+        },
+        openIg(){
+            const lineUserId = this.$store.state.account.line_user_id
+            document.location.href = `https://api.instagram.com/oauth/authorize?client_id=909807339845904&redirect_uri=${process.env.VUE_APP_IG_REDIRECT_URL}&scope=user_profile%2Cuser_media&response_type=code&state=${lineUserId}`
+        }
+      }
 }
 </script>
 <style>

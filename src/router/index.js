@@ -8,6 +8,7 @@ import Login from '../Login.vue'
 import test from '../test.vue'
 import About from '../views/About.vue'
 import Gmap from '../Gmap.vue'
+import Edit from '../Edit.vue'
 
 Vue.use(VueRouter)
  
@@ -50,7 +51,13 @@ const routes = [
     path: '/gmap/',
     name: Gmap,
     component: Gmap
+  }, {
+    path: '/edit/',
+    name: Edit,
+    component: Edit
   }
+
+
 ]
 
 const router = new VueRouter({

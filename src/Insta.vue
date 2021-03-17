@@ -13,7 +13,6 @@
     mounted () {
       let code = this.$route.query.code
       let userId = this.$route.query.state
-      console.log(userId)
       let redirect_uri = process.env.VUE_APP_IG_REDIRECT_URL
       if(code){
         let data = {ig_code: code, redirect_uri: redirect_uri, line_user_id: userId}
@@ -36,3 +35,4 @@
 <style>
 
 </style>
+
