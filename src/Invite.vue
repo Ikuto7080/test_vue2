@@ -19,7 +19,7 @@ export default {
     },
     methods:{
         LineUrl(){
-            document.location.href= 'https://line.me/R/oaMessage/@552lklqg/?hi%2C+i+want+to+join+Quouze.+friend_id%3D12345' + this.$route.params.line_user_id
+            document.location.href= 'https://line.me/R/oaMessage/@552lklqg/?hi%2C+i+want+to+join+Quouze.+friend_id%3D' + this.$route.params.line_user_id
         }
     }
 
