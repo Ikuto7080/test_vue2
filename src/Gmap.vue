@@ -1,161 +1,75 @@
-<template>
-    <div>
-    <h1 style="text-align:">Google Map</h1>
-    <GmapMap
-    :center="{lat:36, lng:138}"
-    :zoom="6"
-    map-type-id="roadmap"
-    style="width: 100%; height: 750px;"
-    >
-        <gmap-custom-marker 
-        v-for="ig_post in ig_posts" :key="ig_post.id"
-        :marker="{ lat: ig_post.latitude, lng: ig_post.longitude}">
-            <v-img 
-            @click="ig_display(ig_post)"
-            :src="ig_post.media_url"
-            class="img"
-            >
-            </v-img>
-        </gmap-custom-marker>
-
-        <gmap-custom-marker
-        v-for="fb_post in fb_posts" :key="fb_post.id"
-        :marker="{ lat: fb_post.latitude, lng: fb_post.longitude}">
-            <v-img
-            :src="fb_post.post_url" 
-            @click="fb_display(fb_post)"
-            class="img"
-            >
-            </v-img>
-        </gmap-custom-marker>
-    </GmapMap>
-        <v-dialog v-model="isActive" max-width="80%" @click:outside="ig_display(null)">
-            <v-row class="card">
-                <v-card
-                class="mx-auto mb-3"
-                style="z-index:3; position:absolute;"
-                max-width="80%"
-                @click="goIgUrl"
-                v-if="ig_activePost"
-                >
-                    <v-list-item-title style="text-align:center;" @click="ig_display(null)">✖️ close</v-list-item-title>
-                    <v-divider></v-divider>
-                    <v-card-title>
-                        {{ ig_activePost['location_name'] }}
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Phone
-                                </v-list-item-title>
-                                <v-list-item-subtitle>
-                                    + {{ ig_activePost.google_info['formatted_phone_number'] }} 
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Address
-                                </v-list-item-title>
-                                <v-list-item-subtitle><br>
-                                    {{ ig_activePost.google_info['formatted_address'] }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Opening Hours
-                                </v-list-item-title>
-                                <v-list-item-subtitle><br>
-                                    <ul v-for="opening in openings" :key="opening.id">
-                                        <li>{{ opening }}</li> 
-                                    </ul>
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-divider></v-divider>
-                    <v-card-title>
-                        <h1 style="text-align:center;">Instagram Posts</h1> 
-                    </v-card-title>
-                    <v-img
-                    height="250"
-                    :src="ig_activePost.media_url">
-                    </v-img>
-                </v-card>
-            </v-row>
-        </v-dialog>
-        <v-dialog v-model="isActive" scrollable max-width="80%" @click:outside="fb_display(null)">
-            <v-row class="card">
-                <v-card
-                class="mx-auto mb-3"
-                style="z-index:3; position:absolute;"
-                max-width="80%"
-                @click="goFbUrl"
-                v-if="fb_activePost"
-                >
-                    <v-list-item-title style="text-align:center;" @click="fb_display(null)">✖️ close</v-list-item-title>
-                    <v-divider></v-divider>
-                    <v-card-title>
-                        {{ fb_activePost.google_info['name'] }}
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-list>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Phone
-                                </v-list-item-title>
-                                <v-list-item-subtitle><br>
-                                    + {{ fb_activePost.google_info['formatted_phone_number'] }} 
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Address
-                                </v-list-item-title>
-                                <v-list-item-subtitle><br>
-                                    {{fb_activePost.google_info['formatted_address'] }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                        <v-divider></v-divider>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    Opening Hours
-                                </v-list-item-title>
-                                <v-list-item-subtitle>
-                                    <ul v-for="opening in fb_activePost.google_info['opening_hours']['weekday_text']" :key="opening.id">
-                                        <li>{{opening}}</li>
-                                    </ul>
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                    <v-divider></v-divider>
-                    <v-card-title>
-                        <h1 style="text-align:center;">Facebook Posts</h1> 
-                    </v-card-title>
-                    <v-img
-                    height="250"
-                    :src="fb_activePost.post_url">
-                    </v-img>
-                </v-card>
-            </v-row>
-        </v-dialog>
-    <div>
-    </div>
-    </div>
+<template lang="pug">
+div 
+  h1(style="text-align") Google Map 
+  GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
+    gmap-custom-marker(v-for='post in posts' :key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
+      v-img.img(@click='display(post)' :src="post['images'][0]['url']" )
+      h1(v-for='post in posts' :key='post.id')
+        
+    
+    v-dialog(v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
+      v-row.card(justify="center")
+        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='500px' v-if='activePost')
+          v-card-title
+              | {{ activePost.google_place.info.name }}
+          div(@click='goUrl')
+            v-img(height='250px' :src='activePost.images[0].url')
+          v-list.v-list
+            v-list-item-group
+              v-list-item
+                v-list-item-content
+                  v-list-item-title
+                    h1 message
+              v-divider
+              v-list-item
+                v-list-item-content
+                  v-list-item-title
+                    | rating
+                  v-list-item-subtitle 
+                    v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
+              v-divider
+              v-list-item
+                  v-list-item-content
+                    v-list-item-title
+                        | price
+                    v-list-item-subtitle 
+                        
+              v-divider
+              v-list-item
+                v-list-item-content
+                  v-list-item-title
+                    | Opening Hours
+                  v-list-item-subtitle
+                    ul(v-for='opening in openings' :key='opening')
+                      li {{ opening }}
+              v-list-item
+                v-list-item-content
+                  v-list-item-title
+                    | Regular holiday
+                  v-list-item-subtitle 
+                    |None 
+              v-list-item
+                v-list-item-content 
+                  v-list-item-title
+                    | Phone
+                  v-list-item-subtitle 
+                    | + {{ activePost.google_place.info['formatted_phone_number'] }}
+              v-divider
+              v-list-item
+                v-list-item-content
+                  v-list-item-title
+                    | HP URL
+                  v-list-item-subtitle
+                    a(:href="activePost.google_place.info['website']")
+                        | {{ activePost.google_place.info['website'] }}
+              v-list-item
+                v-list-item-content 
+                  v-list-item-title
+                    | Instagram URL
+                  v-list-item-subtitle
+                    a(:href="activePost.permalink")
+                        | {{ activePost.permalink }}
+       
 </template>
 
 <script>
@@ -164,58 +78,46 @@ import GmapCustomMarker from 'vue2-gmap-custom-marker'
 export default {
     data(){
         return {
-            account:null,
             isActive: false,
-            ig_posts:null,
-            ig_activePost:null,
-            fb_posts:null,
-            fb_activePost:null,
-            openings:null
+            posts:null,
+            activePost:null,
+            place_id:null,
+            restaurant:null,
+            openings:null,
+            ig_presence:'instagram',
+            fb_presene:'facebook'
+    
         }
     },
     components: {
         'gmap-custom-marker':GmapCustomMarker
     },mounted(){
         axios
-        .get('/accounts/')
-        .then(resp => {
-            this.account = resp.data[0]
-            this.$store.commit('setAccount', this.account)
-            let igposts = this.account['ig_id']
-            let fbposts = this.account['fb_id']
-            if(igposts){
-                axios
-                .get('/igposts/')
-                .then(resp => {
-                    this.ig_posts = resp.data
-                    console.log(this.ig_posts)
-                })
-            }
-            if(fbposts){
-                axios
-                .get('/fbposts/')
-                .then(resp => {
-                    console.log(resp.data[0])
-                    this.fb_posts = resp.data
-                })
-            }
+        .get('/posts/')
+        .then((resp) => {
+            this.posts = resp.data
+            console.log(this.posts)
+        //     for (let i = 0; i < this.posts.length; i++){
+        //     axios
+        //     .get('/restaurants/?id=' + String(this.posts[i]['google_place']))
+        //     .then((resp) => {
+        //       this.restaurant = resp.data
+        //     console.log(this.restaurant[0]['latitude'])
+        // })
+        //     }
+
         })
     },methods:{
-        ig_display(post){
-            this.ig_activePost = post
-            console.log(this.ig_activePost)
+        display(post){
+            this.activePost = post
+            console.log(this.activePost)
+            this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+            console.log(this.openings)
             this.isActive = !this.isActive
+           
         },
-        fb_display(post){
-            this.fb_activePost = post
-            console.log(this.fb_activePost)
-            this.isActive = !this.isActive
-        },
-        goIgUrl(){
-            document.location.href = this.ig_activePost['permalink']
-        },
-        goFbUrl(){
-            document.location.href = this.fb_activePost['permalink_url']
+        goUrl(){
+            document.location.href=this.activePost['permalink']
         }
     }
 
@@ -241,6 +143,12 @@ export default {
     justify-content: center;
 }
 
+v-card-title{
+  font-size: 100px;
+}
+
+
+
 .overlay{
 
   z-index:1;
@@ -261,5 +169,15 @@ export default {
     text-align: center;
     outline:none
 }
-
+a{
+    text-decoration:none;
+    background-color: white;
+}
+a:hover{
+    color:red
+}
+.v-list{
+  height: 300px;
+  overflow-y: auto;
+}
 </style>

@@ -9,6 +9,7 @@ import test from '../test.vue'
 import About from '../views/About.vue'
 import Gmap from '../Gmap.vue'
 import Edit from '../Edit.vue'
+import Invite from '../Invite.vue'
 
 Vue.use(VueRouter)
  
@@ -55,6 +56,11 @@ const routes = [
     path: '/edit/',
     name: Edit,
     component: Edit
+  },
+  {
+    path: '/invite/:line_user_id',
+    name: Invite,
+    component: Invite
   }
 
 

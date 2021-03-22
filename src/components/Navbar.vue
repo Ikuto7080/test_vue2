@@ -1,19 +1,55 @@
-<template lang="pug">
-  div
-    v-app-bar(color="pink darken-1" )
-      v-app-bar-nav-icon
-      v-toolbar-title Quouze
-      
-      v-spacer 
-    
-      .navbar-collapse
-        ul.navbar-nav 
-          li.nav-item(v-if="!account")
-            a(href="/login/") Login
-          li.nav-item(v-if="account")
-            a(href="/" @click="logout") Sign Out
-          li.nav-item(v-if="account")
-            a(href="/edit/") Edit 
+<template>
+  <div>
+    <v-app>
+      <v-navigation-drawer 
+      app 
+      v-model="drawer" 
+      class="pink">
+        <v-list-item>
+          <v-list-item-title class="title">
+            Quouze
+          </v-list-item-title>
+          <v-btn icon>
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-list-item>
+        <div class="navbar-collapse">
+          <ul class="navbar-nav">
+            <li class="nav-item" v-if="!account"><a href="/login/">Login</a></li>
+            <li class="nav-item" v-if="account"><a href="/" @click="logout">Sign Out</a></li>
+            <li class="nav-item" v-if="account"><a href="/edit/">Edit</a></li>
+          </ul>
+        </div>
+        <v-divider />
+
+        <v-list nav>
+          <v-list-item v-for="menu in menus" :key="menu.title" :to="menu.url">
+            <v-list-item-icon>
+              <v-icon>{{ menu.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ menu.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
+      <v-app-bar app>
+        <!-- アプリケーションバー -->
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      </v-app-bar>
+
+      <v-content>
+        <router-view />
+      </v-content>
+
+      <v-footer app>
+        <!-- フッター -->
+      </v-footer>
+    </v-app>
+  </div>
+
+
 
 
       
@@ -24,6 +60,12 @@ export default {
   name: 'Navbar',
   data(){
     return {
+      drawer:false,
+      menus:[
+        {title: 'Home', icon:'mdi-home', url:'/'},
+        {title: 'Gmap', icon:'mdi-web', url:'/gmap/'},
+        {title: 'profile', icon:'mdi-account', url:'/profile/'},
+      ]
     }
   },computed: {
     account() {
@@ -52,14 +94,16 @@ ul {
   list-style: none;
 }
 a{
-  background-color: #336699 !important;
-  color: #000000 !important;
+  background-color: #000000;
+  color: #000000;
   display: block;
-  width: 100px;
   padding: 5px 5px;
   text-decoration: none;
 }
 a:hover{
-  background-color: #113366 !important;
+  background-color: #113366;
+} 
+nav-item{
+  padding-right: 5px;
 }
 </style>
