@@ -1,13 +1,101 @@
 <template lang="pug">
-div 
-  h1(style="text-align") Google Map 
+div
+  h1(style="text-align") Google Map
+
+    v-col(cols="12" sm="10", md="8")
+      v-sheet(elevation="10" class="py-4 px-1")
+        v-autocomplete(
+          :items="followingsItems"
+          item-text="text"
+          v-model="pickedUsers"
+          attach
+          chips
+          label="Chips"
+          multiple
+          filled
+        )
+          template(v-slot:selection="user")
+            v-chip(:class="{red: isActiveUser(user.item)}"
+            @click="toggleActiveUser(user.item)"
+            @click:close="remove(user.item)"
+            close
+            ) {{user.item.text }}
+
+        v-autocomplete(
+          :items="followingsItems"
+          item-text="text"
+          v-model="selectedUserIndexes"
+          attach
+          chips
+          label="Chips"
+          multiple
+          filled
+        )
+          template(v-slot:selection="data")
+            v-chip(
+              close
+              active-class="primary--text"
+              v-bind="data.attrs"
+              :input-value="data.selected"
+              @click="userSelected(selectedUserIndexes)"
+              @click:close="remove(data.item)"
+            )
+              | {{data.item.text}}
+              //- @click:close="remove(data.item)"
+
+
+        //- v-chip-group(
+        //-   multiple
+        //-   show-arrows
+        //-   active-class="primary--text"
+        //-   v-model="selectedUserIndexes"
+        //- )
+        //-   h2.title.mt-1.mr-2
+        //-     | Followings
+        //-   div(
+        //-     v-for="followingItem in followingsItems"
+        //-     :key="followingItem.id"
+        //-   )
+        //-     v-chip(
+        //-       @change="userSelected(followingItem.value)"
+        //-       :disabled="loading"
+        //-     )
+        //-       | {{ followingItem.text }}
+
+        v-chip-group(
+          multiple
+          show-arrows
+          active-class="primary--text"
+          v-model="selectedRestaurantIndexes"
+        )
+          h2.title.mt-1.mr-2
+            | Categories
+          div(
+            v-for="categoryItem in categoryItems"
+            :key="categoryItem.id"
+          )
+            v-chip(
+              :items="categoryItems"
+            )
+              | {{ categoryItem }}
+
+      //- v-select-version
+    //- v-select(
+    //-   multiple
+    //-   :items="followingsItems"
+    //-   outlined
+    //-   dense
+    //-   label="FollowingsName",
+    //-   @change="userSelected($event)"
+    //- )
   GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
-    gmap-custom-marker(v-for='post in posts' :key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
-      v-img.img(@click='display(post)' :src="post['images'][0]['url']" )
-      h1(v-for='post in posts' :key='post.id')
-        
-    
-    v-dialog(v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
+    div(v-for="post in posts")
+      gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
+        v-img.img(@click='display(post)' :src="post['images'][0]['url']" )
+        h1(v-for='post in posts' :key='post.id')
+        //- img(:src="post['images'][0]['url']")
+
+    v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
       v-row.card(justify="center")
         v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='500px' v-if='activePost')
           v-card-title
@@ -25,15 +113,15 @@ div
                 v-list-item-content
                   v-list-item-title
                     | rating
-                  v-list-item-subtitle 
+                  v-list-item-subtitle
                     v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
               v-divider
               v-list-item
                   v-list-item-content
                     v-list-item-title
                         | price
-                    v-list-item-subtitle 
-                        
+                    v-list-item-subtitle
+
               v-divider
               v-list-item
                 v-list-item-content
@@ -46,13 +134,13 @@ div
                 v-list-item-content
                   v-list-item-title
                     | Regular holiday
-                  v-list-item-subtitle 
-                    |None 
+                  v-list-item-subtitle
+                    |None
               v-list-item
-                v-list-item-content 
+                v-list-item-content
                   v-list-item-title
                     | Phone
-                  v-list-item-subtitle 
+                  v-list-item-subtitle
                     | + {{ activePost.google_place.info['formatted_phone_number'] }}
               v-divider
               v-list-item
@@ -63,61 +151,204 @@ div
                     a(:href="activePost.google_place.info['website']")
                         | {{ activePost.google_place.info['website'] }}
               v-list-item
-                v-list-item-content 
+                v-list-item-content
                   v-list-item-title
                     | Instagram URL
                   v-list-item-subtitle
                     a(:href="activePost.permalink")
                         | {{ activePost.permalink }}
-       
+
 </template>
 
 <script>
 import axios from 'axios'
 import GmapCustomMarker from 'vue2-gmap-custom-marker'
+// import { use } from 'vue/types/umd'
 export default {
     data(){
         return {
+            account:null,
             isActive: false,
-            posts:null,
+            posts:[],
             activePost:null,
             place_id:null,
-            restaurant:null,
             openings:null,
             ig_presence:'instagram',
-            fb_presene:'facebook'
-    
+            fb_presene:'facebook',
+            followings:[],
+            selectedUserId:null,
+            selectedUserIndexes:[],
+            selectedChips:[],
+            selectedActive:[],
+            selectedRestaurantIndexes:[],
+            loading:false,
+            categories:[],
+            userItems: [],
+            pickedUsers: [],
+            activeUsers: []
         }
+    },
+    computed:{
+      followingsItems(){
+        if(!this.account){
+          return []
+        }
+        let ownItem = {text : this.account.user.first_name, value: this.account.user.id}
+        let followings = this.followings.map(profile=>{
+          return {text: profile.user.first_name, value: profile.user.id}
+        })
+        console.log([ownItem, ...followings])
+        return [ownItem, ...followings]
+      },
+      selectedUsers(){
+        let userIds = []
+        this.selectedUserIndexes.forEach(index => {
+          userIds.push(this.followingsItems[index])
+        })
+        return userIds
+      },
+      // from categories api
+      categoryItems(){
+        if(!this.categories){
+          return []
+        }
+        let categoryType = this.categories.map(restaurant => {
+          return restaurant['categories']
+        })
+        return categoryType
+      },
+      //  from posts api
+      // categoryItems(){
+      //     if(!this.posts){
+      //       return []
+      //     }
+      //   let categoryType = this.posts.map(restaurant => {
+      //     return {text:restaurant.categories, value: restaurant.categories}
+      //   })
+      //   return categoryType
+      // },
+
+      selectedRestaurants(){
+        let restaurants = []
+        console.log(this.selectedRestaurantIndexes)
+        this.selectedRestaurantIndexes.forEach(index => {
+          restaurants.push(this.categoryItems[index])
+        })
+        return restaurants
+      }
+    },
+    watch:{
+      activeUsers(val){
+          let userIds = val.map(
+            user=>user.value
+          )
+          userIds = userIds.join(',')
+          this.$router.push({
+            path: this.$route.path,
+            query: { user_ids: userIds}
+          })
+          this.getFeed(userIds)
+      },
+      selectedRestaurants(val){
+        console.log(val)
+        let restaurants = val.join(',')
+        console.log(restaurants)
+        this.$router.push({
+          query:{ categories: restaurants}
+        })
+        this.getCategory(restaurants)
+      }
     },
     components: {
         'gmap-custom-marker':GmapCustomMarker
     },mounted(){
+      axios
+      .get('/accounts/')
+      .then((resp)=> {
+        this.account = resp.data[0]
+        this.$store.commit('setAccount', this.account)
+        let user_ids=this.$route.query.user_ids
+        this.getFeed(user_ids)
+      })
         axios
-        .get('/posts/')
+        .get('/followings/')
         .then((resp) => {
-            this.posts = resp.data
-            console.log(this.posts)
-        //     for (let i = 0; i < this.posts.length; i++){
-        //     axios
-        //     .get('/restaurants/?id=' + String(this.posts[i]['google_place']))
-        //     .then((resp) => {
-        //       this.restaurant = resp.data
-        //     console.log(this.restaurant[0]['latitude'])
-        // })
-        //     }
-
+          this.followings = resp.data.results
+        })
+        axios
+        .get('/categories/')
+        .then((resp) => {
+          console.log(resp.data)
+          this.categories = resp.data
         })
     },methods:{
-        display(post){
+        userSelected(userId){
+          let userIds = userId.join(',')
+          this.$router.push({
+            path: this.$route.path,
+            query: { user_ids: userIds}
+          })
+          this.getFeed(userId)
+        },
+        getFeed(userId=null){
+          if(userId){
+            this.loading = true
+            axios
+            .get('/feeds/?user_ids=' + userId)
+            .then((resp) => {
+            console.log(resp.data)
+              this.posts = resp.data
+              this.loading = false
+            })
+          }else{
+            axios
+            .get('/feeds/')
+            .then((resp) => {
+              this.posts=resp.data
+            })
+          }
+        },
+        getCategory(categoriesName=null){
+          if(categoriesName){
+            axios
+            .get('/feeds/?categories=' + categoriesName)
+            .then((resp) => {
+              this.posts = resp.data
+            })
+          }
+          else{
+            axios
+            .get('/feeds/')
+            .then((resp) => {
+              this.posts = resp.data
+            })
+          }
+        },
+            display(post){
+
             this.activePost = post
-            console.log(this.activePost)
             this.openings = this.activePost.google_place.info.opening_hours.weekday_text
-            console.log(this.openings)
             this.isActive = !this.isActive
-           
         },
         goUrl(){
             document.location.href=this.activePost['permalink']
+        },
+        remove(item) {
+          console.log(item)
+          const index = this.pickedUsers.indexOf(item.value)
+          if (index >= 0)this.pickedUsers.splice(index, 1)
+        },
+        isActiveUser(item){
+          return this.activeUsers.filter(user => user.value === item.value).length >= 1
+        },
+        toggleActiveUser(item){
+          let isActive = this.isActiveUser(item)
+          if(isActive){
+            const index = this.activeUsers.indexOf(item)
+            if (index >= 0)this.activeUsers.splice(index, 1)
+          }else{
+            this.activeUsers.push(item)
+          }
         }
     }
 
@@ -131,9 +362,9 @@ export default {
 }
 
 .img{
-    width: 75px; 
-    height: 70px; 
-    border: 4px solid #FFFFFF; 
+    width: 75px;
+    height: 70px;
+    border: 4px solid #FFFFFF;
     border-radius: 50%;
     display: fixed;
 }

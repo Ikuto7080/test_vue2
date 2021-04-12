@@ -31,14 +31,11 @@ axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 
 //"https://ikuto1913.herokuapp.com"
 let account = localStorage.getItem("account")
-console.log(account)
-
 
 if (account) {
   account = JSON.parse(account)
   axios.defaults.headers.common['Authorization'] = 'Token ' + account.token
 }
-
 
 new Vue({
   router,

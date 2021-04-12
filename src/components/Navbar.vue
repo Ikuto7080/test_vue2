@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app>
+    
       <v-navigation-drawer 
       app 
       v-model="drawer" 
@@ -9,7 +9,7 @@
           <v-list-item-title class="title">
             Quouze
           </v-list-item-title>
-          <v-btn icon>
+          <v-btn icon @click.stop="drawer = !drawer">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
         </v-list-item>
@@ -33,20 +33,11 @@
           </v-list-item>
         </v-list>
       </v-navigation-drawer>
-
       <v-app-bar app>
-        <!-- アプリケーションバー -->
+    
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       </v-app-bar>
 
-      <v-content>
-        <router-view />
-      </v-content>
-
-      <v-footer app>
-        <!-- フッター -->
-      </v-footer>
-    </v-app>
   </div>
 
 
@@ -71,9 +62,6 @@ export default {
     account() {
       return this.$store.state.account
     }
-  },
-  mounted () {
-    console.log(this.account)  
   },
   methods:{
     logout(){

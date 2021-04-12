@@ -29,17 +29,12 @@ export default {
             this.$store.commit('setAccount', resp.data[0])
             this.account = resp.data[0]
             let igposts = this.account['ig_id']
-            // console.log(this.account)
             let fbposts = this.account['fb_id']
-            // console.log(fbposts)
             if(igposts){
                 axios
                 .get('/igposts/')
                 .then((resp) => {
-                    console.log(resp.data)
                 this.ig_urls = resp.data
-                console.log(resp.data)
-                // console.log(this.ig_urls[0])
             })
             }
             if(fbposts){
@@ -47,8 +42,6 @@ export default {
                 .get('/fbposts/')
                 .then((resp) => {
                     this.fb_urls = resp.data
-                    
-                    // console.log(this.fb_urls[0])
             })
             }
             })
@@ -63,7 +56,6 @@ export default {
 
              )
              .then(resp => {
-                 console.log(resp.data)
                  this.account.user = resp.data
                  this.$store.commit('setAccount', this.account)
              })
