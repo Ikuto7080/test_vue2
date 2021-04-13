@@ -197,6 +197,7 @@ export default {
         let followings = this.followings.map(profile=>{
           return {text: profile.user.first_name, value: profile.user.id}
         })
+        console.log(this.followings)
         console.log([ownItem, ...followings])
         return [ownItem, ...followings]
       },
