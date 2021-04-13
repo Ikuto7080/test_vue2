@@ -21,29 +21,6 @@ div
             close
             ) {{user.item.text }}
 
-        v-autocomplete(
-          :items="followingsItems"
-          item-text="text"
-          v-model="selectedUserIndexes"
-          attach
-          chips
-          label="Chips"
-          multiple
-          filled
-        )
-          template(v-slot:selection="data")
-            v-chip(
-              close
-              active-class="primary--text"
-              v-bind="data.attrs"
-              :input-value="data.selected"
-              @click="userSelected(selectedUserIndexes)"
-              @click:close="remove(data.item)"
-            )
-              | {{data.item.text}}
-              //- @click:close="remove(data.item)"
-
-
         //- v-chip-group(
         //-   multiple
         //-   show-arrows
@@ -340,6 +317,7 @@ export default {
           if (index >= 0)this.pickedUsers.splice(index, 1)
         },
         isActiveUser(item){
+          // もし結果が１つ以上あればisActiveに想定する
           return this.activeUsers.filter(user => user.value === item.value).length >= 1
         },
         toggleActiveUser(item){
