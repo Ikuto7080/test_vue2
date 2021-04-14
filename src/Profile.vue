@@ -19,6 +19,11 @@
             v-btn(@click="openIg") Instagram
         v-divider
 
+        a(href=`=${process.env.VUE_APP_LINE_URL} + `)
+          | Share by Line
+          
+
+
       v-divider(class="mt-3")
 
       //- Following

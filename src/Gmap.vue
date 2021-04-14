@@ -274,7 +274,6 @@ export default {
             axios
             .get('/feeds/?user_ids=' + userId)
             .then((resp) => {
-            console.log(resp.data)
               this.posts = resp.data
               this.loading = false
             })
@@ -318,11 +317,13 @@ export default {
         },
         isActiveUser(item){
           // もし結果が１つ以上あればisActiveに想定する
+          //  条件に合う要素だけを取り出す(filter)
           return this.activeUsers.filter(user => user.value === item.value).length >= 1
         },
         toggleActiveUser(item){
           let isActive = this.isActiveUser(item)
           if(isActive){
+            // 指定した文字が存在するかを検索(indexOf)
             const index = this.activeUsers.indexOf(item)
             if (index >= 0)this.activeUsers.splice(index, 1)
           }else{

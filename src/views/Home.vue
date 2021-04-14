@@ -1,7 +1,11 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-  </div>  
+    <v-btn href="https://line.me/R/oaMessage/@552lklqg/">
+      Sign Up
+    </v-btn>
+  
+  </div>
 </template>
 
 <script>
