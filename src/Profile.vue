@@ -77,6 +77,7 @@
         v-row 
           v-col(md="4" sm="4" v-for="post in posts" v-bind:key="post.id")
             v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
+            
 </template>
 
 <script>
