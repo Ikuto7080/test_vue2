@@ -1,7 +1,6 @@
 <template lang="pug">
 div
-  h1(style="text-align") Google Map
-
+  h1(style="text-align")
     v-col(cols="12" sm="10", md="8")
       v-sheet(elevation="10" class="py-4 px-1")
         v-autocomplete(
@@ -68,30 +67,38 @@ div
   GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
     div(v-for="post in posts")
       gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
-        v-img.img(@click='display(post)' :src="post['images'][0]['url']" )
+        v-img.img(@click='display(post)' :src="post['images'][0]['url']")
         h1(v-for='post in posts' :key='post.id')
         //- img(:src="post['images'][0]['url']")
 
     v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
       v-row.card(justify="center")
-        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='500px' v-if='activePost')
+        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='800px' v-if='activePost')
           v-card-title
               | {{ activePost.google_place.info.name }}
           div(@click='goUrl')
-            v-img(height='250px' :src='activePost.images[0].url')
+            v-img(height='400' :src='activePost.images[0].url')
           v-list.v-list
             v-list-item-group
               v-list-item
                 v-list-item-content
                   v-list-item-title
-                    h1 message
+                    | SNS commets
+                  v-list-item-subtitle
+                    div(if="activePost.message")
+                      | {{activePost.message}}
               v-divider
               v-list-item
                 v-list-item-content
-                  v-list-item-title
-                    | rating
-                  v-list-item-subtitle
-                    v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
+                  div.rating-content
+                    div.rating-item
+                      v-list-item-title
+                        | rating
+                      v-list-item-subtitle
+                        v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
+                    div.review(v-for="review in reviews")
+                      v-img.img(:src="review.profile_photo_url")
+                      p {{review.text}}
               v-divider
               v-list-item
                   v-list-item-content
@@ -150,6 +157,7 @@ export default {
             activePost:null,
             place_id:null,
             openings:null,
+            reviews:null,
             ig_presence:'instagram',
             fb_presene:'facebook',
             followings:[],
@@ -282,6 +290,7 @@ export default {
             .get('/feeds/')
             .then((resp) => {
               this.posts=resp.data
+              console.log('test')
             })
           }
         },
@@ -302,9 +311,13 @@ export default {
           }
         },
             display(post){
-
             this.activePost = post
-            this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+            if(this.activePost.google_place.info.opening_hours){
+              this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+            }
+            if(this.activePost.google_place.info.reviews){
+              this.reviews = this.activePost.google_place.info.reviews
+            }
             this.isActive = !this.isActive
         },
         goUrl(){
@@ -348,6 +361,7 @@ export default {
     border-radius: 50%;
     display: fixed;
 }
+
 .card{
     align-items: center;
     display: flex;
@@ -391,4 +405,22 @@ a:hover{
   height: 300px;
   overflow-y: auto;
 }
+
+/* reviews */
+.review {
+  display: flex;
+}
+
+.review .img{
+  height: 40px;
+  width: 40px;
+}
+
+.review p {
+  font-family: arial, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding-left: 10px;
+}
+
 </style>

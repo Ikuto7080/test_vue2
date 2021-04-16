@@ -21,28 +21,26 @@
 
         a(href=`=${process.env.VUE_APP_LINE_URL} + `)
           | Share by Line
-          
-
 
       v-divider(class="mt-3")
 
       //- Following
       v-row(justify="center" align-content="center")
         v-col
-          h2(@click="display" style="padding-top:30px;")
+          h2(@click="display" style="padding-top:30px;" v-if="")
             | Following:
             v-list-item-subtitle
               | {{followings.count}}
-              
+
 
       //-Followers
       v-row(justify="center" align-content="center")
         v-col
-          h2(@click="display" style="padding-top:30px;")
+          h2(@click="display" style="padding-top:30px;" v-if="!loading")
             | Followers:
             v-list-item-subtitle
               | {{followers.count}}
-                  
+
 
       //- v-dialog for Following
       v-dialog(v-model="isActive" scrollable max-width="80%")
@@ -75,7 +73,7 @@
       v-container 
         v-row 
           v-col(md="4" sm="4" v-for="post in posts" v-bind:key="post.id")
-            v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
+            //- v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
 </template>
 
 <script>
@@ -83,16 +81,17 @@ import axios from 'axios'
 export default {
     data(){
         return {
-        account: null,
-        posts: null,
-        isActive:null,
-        followings:null,
-        followers:null,
-        ig_presence: false,
-        fb_presence: false,
-        followerngs:null,
-        edit: false,
-        value:null,
+          loading:false,
+          account: null,
+          posts: null,
+          isActive:null,
+          followings:null,
+          followers:null,
+          ig_presence: false,
+          fb_presence: false,
+          followerngs:null,
+          edit: false,
+          value:null,
         }
     },
      mounted (){
