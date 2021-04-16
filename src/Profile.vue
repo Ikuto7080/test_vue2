@@ -22,6 +22,9 @@
         a(href=`=${process.env.VUE_APP_LINE_URL} + `)
           | Share by Line
 
+        v-btn(@click="shareFb")
+          | Share with Facebook
+
       v-divider(class="mt-3")
 
       //- Following
@@ -135,10 +138,13 @@ export default {
         openIg(){
             const lineUserId = this.$store.state.account.line_user_id
             document.location.href = `https://api.instagram.com/oauth/authorize?client_id=909807339845904&redirect_uri=${process.env.VUE_APP_IG_REDIRECT_URL}&scope=user_profile%2Cuser_media&response_type=code&state=${lineUserId}`
-                                                                                      
+
         },
         display(){
           this.isActive =!this.isActive
+        },
+        shareFb(){
+          document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://line.me/R/oaMessage/@552lklqg/?hi%2C%20i%20want%20to%20join%20Quouze.%20friend_id%3D" + String(this.$store.state.account.line_user_id)
         }
       }
 }
