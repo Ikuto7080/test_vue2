@@ -77,7 +77,7 @@ div
           v-card-title
               | {{ activePost.google_place.info.name }}
           div(@click='goUrl')
-            v-img(height='400' :src='activePost.images[0].url')
+            v-img(height='500' :src='activePost.images[0].url')
           v-list.v-list
             v-list-item-group
               v-list-item

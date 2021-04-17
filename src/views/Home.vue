@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <v-btn href="https://line.me/R/oaMessage/@552lklqg/?I%20want%20to%20sign%20up">
+    <v-btn href="https://line.me/R/oaMessage/@552lklqg/?I%20want%20to%20sign%20up" color="green">
       Sign Up
     </v-btn>
   
