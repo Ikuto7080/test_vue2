@@ -3,16 +3,18 @@ div
   h1(style="text-align")
     v-row(align='center')
       v-col(cols="12" sm="10", md="6", xs="4")
-        v-sheet(elevation="10" class="py-4 px-1")
+        v-sheet(elevation="10")
           v-autocomplete(
             :items="followingsItems"
             item-text="text"
             v-model="pickedUsers"
             attach
             chips
-            label="Followings"
+            placeholder="Filter by friends"
+            dense
+            outlined
             multiple
-            filled
+            hide-details
           )
             template(v-slot:selection="user")
               v-chip(:class="{red: isActiveUser(user.item)}"
@@ -21,127 +23,97 @@ div
               close
               ) {{user.item.text }}
 
-          //- v-chip-group(
-          //-   multiple
-          //-   show-arrows
-          //-   active-class="primary--text"
-          //-   v-model="selectedUserIndexes"
-          //- )
-          //-   h2.title.mt-1.mr-2
-          //-     | Followings
-          //-   div(
-          //-     v-for="followingItem in followingsItems"
-          //-     :key="followingItem.id"
-          //-   )
-          //-     v-chip(
-          //-       @change="userSelected(followingItem.value)"
-          //-       :disabled="loading"
-          //-     )
-          //-       | {{ followingItem.text }}
-
           v-chip-group(
             multiple
             show-arrows
             active-class="primary--text"
             v-model="selectedRestaurantIndexes"
           )
-            h2.title.mt-1.mr-2
-              | Categories
             div(
               v-for="categoryItem in categoryItems"
               :key="categoryItem.id"
             )
               v-chip(
                 :items="categoryItems"
+                small
               )
                 | {{ categoryItem }}
 
-        //- v-select-version
-      //- v-select(
-      //-   multiple
-      //-   :items="followingsItems"
-      //-   outlined
-      //-   dense
-      //-   label="FollowingsName",
-      //-   @change="userSelected($event)"
-      //- )
   GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
     div(v-for="post in posts")
       gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
         v-img.img(@click='display(post)' :src="post['images'][0]['url']")
-        h1(v-for='post in posts' :key='post.id')
-        //- img(:src="post['images'][0]['url']")
 
-    v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
-      v-row.card(justify="center")
-        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='600px' v-if='activePost')
-          v-card-title
-              | {{ activePost.google_place.info.name }}
-          div(@click='goUrl')
-            v-img(height='300' :src='activePost.images[0].url')
-          v-list.v-list
-            v-list-item-group
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | SNS commets
-                  v-list-item-subtitle
-                    div(if="activePost.message")
-                      | {{activePost.message}}
-              v-divider
-              v-list-item
-                v-list-item-content
-                  div.rating-content
-                    div.rating-item
-                      v-list-item-title
-                        | rating
-                      v-list-item-subtitle
-                        v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
-                    div.review(v-for="review in reviews")
-                      v-img.img(:src="review.profile_photo_url")
-                      p {{review.text}}
-              v-divider
-              v-list-item
-                  v-list-item-content
+  v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
+    v-row.card(justify="center")
+      v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='600px' v-if='activePost')
+        v-card-title
+            | {{ activePost.google_place.info.name }}
+        div(@click='goUrl')
+          v-img(height='300' :src='activePost.images[0].url')
+        v-list.v-list
+          v-list-item-group
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | SNS commets
+                v-list-item-subtitle
+                  div(if="activePost.message")
+                    | {{activePost.message}}
+            v-divider
+            v-list-item
+              v-list-item-content
+                div.rating-content
+                  div.rating-item
                     v-list-item-title
-                        | price
+                      | rating
                     v-list-item-subtitle
+                      v-rating(color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments length="5" :value="activePost.google_place.info.rating")
+                  div.review(v-for="review in reviews")
+                    v-img.img(:src="review.profile_photo_url")
+                    p {{review.text}}
+            v-divider
+            v-list-item
+                v-list-item-content
+                  v-list-item-title
+                      | price
+                  v-list-item-subtitle
 
-              v-divider
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | Opening Hours
-                  v-list-item-subtitle
-                    ul(v-for='opening in openings' :key='opening')
-                      li {{ opening }}
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | Regular holiday
-                  v-list-item-subtitle
-                    |None
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | Phone
-                  v-list-item-subtitle
-                    | + {{ activePost.google_place.info['formatted_phone_number'] }}
-              v-divider
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | HP URL
-                  v-list-item-subtitle
-                    a(:href="activePost.google_place.info['website']")
-                        | {{ activePost.google_place.info['website'] }}
-              v-list-item
-                v-list-item-content
-                  v-list-item-title
-                    | Instagram URL
-                  v-list-item-subtitle
-                    a(:href="activePost.permalink")
-                        | {{ activePost.permalink }}
+            v-divider
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | Opening Hours
+                v-list-item-subtitle
+                  ul(v-for='opening in openings' :key='opening')
+                    li {{ opening }}
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | Regular holiday
+                v-list-item-subtitle
+                  |None
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | Phone
+                v-list-item-subtitle
+                  | + {{ activePost.google_place.info['formatted_phone_number'] }}
+            v-divider
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | HP URL
+                v-list-item-subtitle
+                  a(:href="activePost.google_place.info['website']")
+                      | {{ activePost.google_place.info['website'] }}
+            v-list-item
+              v-list-item-content
+                v-list-item-title
+                  | Instagram URL
+                v-list-item-subtitle
+                  a(:href="activePost.permalink")
+                      | {{ activePost.permalink }}
 
 </template>
 

@@ -1,8 +1,8 @@
 <template lang="pug">
   .btn
-    v-btn.pink.white--text(@click="open")
-      i.fa.fa-instagram(aria-hidden='true')
-      | Login with IGButton
+    v-btn.white--text(@click="open" color="#b125ea" large block)
+      i.fa.fa-instagram.pr-2(aria-hidden='true')
+      | Sign In  with instagram
   </template>
 
 <script>
@@ -22,7 +22,5 @@ export default {
 <style>
 .btn {
   text-align: center;
-  padding-top: 30px;
-  padding-bottom: 30px;
 }
 </style>

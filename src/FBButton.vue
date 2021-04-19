@@ -1,8 +1,8 @@
 <template lang="pug">
   .btn
-    v-btn.indigo.accent-3.white--text(depressed='depressed' @click='open')
-      i.fa.fa-facebook
-      | Login with Facebook
+    v-btn.white--text(depressed='depressed' @click='open' color="#495ead" large block)
+      i.fa.fa-facebook.pr-2
+      | Sign in with Facebook
 </template>
 
 <script>
