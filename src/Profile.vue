@@ -145,7 +145,7 @@ export default {
           this.isActive =!this.isActive
         },
         shareFb(){
-          document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://line.me/R/oaMessage/@552lklqg/?hi%2C%20i%20want%20to%20join%20Quouze.%20friend_id%3D" + String(this.$store.state.account.line_user_id)
+          document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + String(this.account.line_user_id) + '?user_ids=' 
         }
       }
 }

@@ -20,23 +20,6 @@ div
             close
             ) {{user.item.text }}
 
-        //- v-chip-group(
-        //-   multiple
-        //-   show-arrows
-        //-   active-class="primary--text"
-        //-   v-model="selectedUserIndexes"
-        //- )
-        //-   h2.title.mt-1.mr-2
-        //-     | Followings
-        //-   div(
-        //-     v-for="followingItem in followingsItems"
-        //-     :key="followingItem.id"
-        //-   )
-        //-     v-chip(
-        //-       @change="userSelected(followingItem.value)"
-        //-       :disabled="loading"
-        //-     )
-        //-       | {{ followingItem.text }}
 
         v-chip-group(
           multiple
