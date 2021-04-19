@@ -8,15 +8,15 @@
             </gmap-custom-marker>
         </div>
     </GmapMap>
-    <h1 style="text-align:center; color:red;">Who can view my posts?</h1>
+    <h1 style="text-align:center; color:pink;">Who can view my posts?</h1>
     <p> Posts in Quouze follow the same permission as posts in Facebook. Generally, only your Facebook friends can your posts in Quouze.</p>
     <v-btn @click="LineUrl">Invite</v-btn>
     <div class="main-content">
         <div class="name"> {{account['user']['first_name']}}{{account['user']['last_name']}}
-            <div v-for="post in posts" :key="post.id">
+            <div>
                 <v-row>
-                  <v-col cols="2">
-                    <v-img class="picture" :src="post['images'][0]['url']"></v-img>
+                  <v-col cols="5">
+                    <v-img class="picture" :src="posts[0]['images'][0]['url']"></v-img>
                   </v-col>
                 </v-row>
             </div>
@@ -62,18 +62,22 @@ export default {
 </script>
 
 <style>
-.main-content {
-    border: 1px solid #000000;
-    margin: 30px;
+body, html {
     text-align: center;
 }
 
+.main-content {
+    border: 1px solid #000000;
+    margin: 0 auto;
+    height: 300px;
+    width: 500px;
+}
+
 .img{
-    width: 75px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     border: 4px solid #FFFFFF;
     border-radius: 50%;
-    display: fixed;
 }
 
 .picture{
