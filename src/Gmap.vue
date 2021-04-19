@@ -1,69 +1,70 @@
 <template lang="pug">
 div
   h1(style="text-align")
-    v-col(cols="12" sm="10", md="8")
-      v-sheet(elevation="10" class="py-4 px-1")
-        v-autocomplete(
-          :items="followingsItems"
-          item-text="text"
-          v-model="pickedUsers"
-          attach
-          chips
-          label="Chips"
-          multiple
-          filled
-        )
-          template(v-slot:selection="user")
-            v-chip(:class="{red: isActiveUser(user.item)}"
-            @click="toggleActiveUser(user.item)"
-            @click:close="remove(user.item)"
-            close
-            ) {{user.item.text }}
-
-        //- v-chip-group(
-        //-   multiple
-        //-   show-arrows
-        //-   active-class="primary--text"
-        //-   v-model="selectedUserIndexes"
-        //- )
-        //-   h2.title.mt-1.mr-2
-        //-     | Followings
-        //-   div(
-        //-     v-for="followingItem in followingsItems"
-        //-     :key="followingItem.id"
-        //-   )
-        //-     v-chip(
-        //-       @change="userSelected(followingItem.value)"
-        //-       :disabled="loading"
-        //-     )
-        //-       | {{ followingItem.text }}
-
-        v-chip-group(
-          multiple
-          show-arrows
-          active-class="primary--text"
-          v-model="selectedRestaurantIndexes"
-        )
-          h2.title.mt-1.mr-2
-            | Categories
-          div(
-            v-for="categoryItem in categoryItems"
-            :key="categoryItem.id"
+    v-row(align='center')
+      v-col(cols="12" sm="10", md="6", xs="4")
+        v-sheet(elevation="10" class="py-4 px-1")
+          v-autocomplete(
+            :items="followingsItems"
+            item-text="text"
+            v-model="pickedUsers"
+            attach
+            chips
+            label="Followings"
+            multiple
+            filled
           )
-            v-chip(
-              :items="categoryItems"
-            )
-              | {{ categoryItem }}
+            template(v-slot:selection="user")
+              v-chip(:class="{red: isActiveUser(user.item)}"
+              @click="toggleActiveUser(user.item)"
+              @click:close="remove(user.item)"
+              close
+              ) {{user.item.text }}
 
-      //- v-select-version
-    //- v-select(
-    //-   multiple
-    //-   :items="followingsItems"
-    //-   outlined
-    //-   dense
-    //-   label="FollowingsName",
-    //-   @change="userSelected($event)"
-    //- )
+          //- v-chip-group(
+          //-   multiple
+          //-   show-arrows
+          //-   active-class="primary--text"
+          //-   v-model="selectedUserIndexes"
+          //- )
+          //-   h2.title.mt-1.mr-2
+          //-     | Followings
+          //-   div(
+          //-     v-for="followingItem in followingsItems"
+          //-     :key="followingItem.id"
+          //-   )
+          //-     v-chip(
+          //-       @change="userSelected(followingItem.value)"
+          //-       :disabled="loading"
+          //-     )
+          //-       | {{ followingItem.text }}
+
+          v-chip-group(
+            multiple
+            show-arrows
+            active-class="primary--text"
+            v-model="selectedRestaurantIndexes"
+          )
+            h2.title.mt-1.mr-2
+              | Categories
+            div(
+              v-for="categoryItem in categoryItems"
+              :key="categoryItem.id"
+            )
+              v-chip(
+                :items="categoryItems"
+              )
+                | {{ categoryItem }}
+
+        //- v-select-version
+      //- v-select(
+      //-   multiple
+      //-   :items="followingsItems"
+      //-   outlined
+      //-   dense
+      //-   label="FollowingsName",
+      //-   @change="userSelected($event)"
+      //- )
   GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
     div(v-for="post in posts")
       gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
@@ -73,11 +74,11 @@ div
 
     v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
       v-row.card(justify="center")
-        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='800px' v-if='activePost')
+        v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='600px' v-if='activePost')
           v-card-title
               | {{ activePost.google_place.info.name }}
           div(@click='goUrl')
-            v-img(height='500' :src='activePost.images[0].url')
+            v-img(height='300' :src='activePost.images[0].url')
           v-list.v-list
             v-list-item-group
               v-list-item
