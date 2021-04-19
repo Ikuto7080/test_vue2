@@ -1,30 +1,28 @@
-<template lang="pug">
-    div
-        GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 500px; :position: absolute; z-indent:1;')
-            div(v-for="post in posts")
-                gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
-                    //- v-image.img(:src="post['images'][0]['url']")
-                    v-image.img(src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.6435-9/s720x720/153107782_855455748630232_7852732023464527727_n.jpg?_nc_cat=103&ccb=1-3&_nc_sid=110474&_nc_ohc=8nQ4ikNRWQAAX8ec15y&_nc_ht=scontent-nrt1-1.xx&tp=7&oh=eeeba2128474880c067b4a9f07d34026&oe=609D6E5D")
-
-        h1(style="text-align:center; color:red;")
-            | Who can view my posts?
-        p 
-            | Posts in Quouze follow the same permission as posts in Facebook. Generally, only your Facebook friends can your posts in Quouze.
-        v-btn(@click="LineUrl")
-            | Invite
-
-        div.main-content
-            div.name 
-                | Ikuto Hongu
-                div(style="text-align:center;")
-                    v-img(src="https://scontent-nrt1-1.xx.fbcdn.net/v/t1.6435-9/s720x720/173422718_886287262213747_206621379949858876_n.jpg?_nc_cat=107&ccb=1-3&_nc_sid=8024bb&_nc_ohc=nk2Ru52NxzQAX-EBUWW&_nc_ht=scontent-nrt1-1.xx&tp=7&oh=517020af9a607c801ff30ac005c38e89&oe=609E768E" style="width:20%; height:auto;")
-
-        //- div.main-content
-        //-     div.name 
-        //-         | {{this.account}}
-        //-         div(style="text-align:left;")
-        //-             v-img(:src="posts[0]['images'][0]['url']" style="width:20%; height:auto;")
-
+<template>
+    
+<div>
+    <GmapMap :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="width: 100%; height: 500px; :position: absolute; z-indent:1;">
+        <div v-for="post in posts" :key="post.id">
+            <gmap-custom-marker  :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
+                <v-img class="img" :src="post['images'][0]['url']"></v-img>
+            </gmap-custom-marker>
+        </div>
+    </GmapMap>
+    <h1 style="text-align:center; color:red;">Who can view my posts?</h1>
+    <p> Posts in Quouze follow the same permission as posts in Facebook. Generally, only your Facebook friends can your posts in Quouze.</p>
+    <v-btn @click="LineUrl">Invite</v-btn>
+    <div class="main-content">
+        <div class="name"> {{account['user']['first_name']}}{{account['user']['last_name']}}
+            <div v-for="post in posts" :key="post.id">
+                <v-row>
+                  <v-col cols="2">
+                    <v-img class="picture" :src="post['images'][0]['url']"></v-img>
+                  </v-col>
+                </v-row>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </template>
@@ -49,7 +47,7 @@ export default {
          })
          axios
         //  .get('/feeds/?user_id=' + String(this.account['user']['id']))
-         .get('/feeds/?user_id=54')
+         .get('/feeds/')
          .then(resp => {
              this.posts = resp.data
          })
@@ -76,6 +74,11 @@ export default {
     border: 4px solid #FFFFFF;
     border-radius: 50%;
     display: fixed;
+}
+
+.picture{
+   width: 200px;
+   height: 200px; 
 }
 
 </style>
