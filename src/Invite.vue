@@ -10,17 +10,15 @@
     </GmapMap>
     <h1 style="text-align:center; color:red;">Who can view my posts?</h1>
     <p> Posts in Quouze follow the same permission as posts in Facebook. Generally, only your Facebook friends can your posts in Quouze.</p>
-    <v-btn @click="LineUrl">Invite</v-btn>
+    <v-btn @click="LineUrl" style="margin-bottom:20px;">Invite</v-btn>
     <div class="main-content">
-        <div class="name"> {{account['user']['first_name']}}{{account['user']['last_name']}}
-            <div v-for="post in posts" :key="post.id">
-                <v-row>
-                  <v-col cols="2">
-                    <v-img class="picture" :src="post['images'][0]['url']"></v-img>
-                  </v-col>
-                </v-row>
-            </div>
-        </div>
+        <h2 class="name"> {{account['user']['first_name']}}{{account['user']['last_name']}}</h2>
+        <v-row>
+            <v-col cls="5">
+                <v-img class="picture" :src="posts[0]['images'][0]['url']"></v-img>
+                <p>{{posts[0]['message']}}</p>
+            </v-col>
+        </v-row>
     </div>
 </div>
 
@@ -62,9 +60,16 @@ export default {
 </script>
 
 <style>
+body, html {
+    text-align: center;
+    color: #222222;
+}
+
 .main-content {
     border: 1px solid #000000;
-    margin: 30px;
+    width: 500px;
+    height: 300px;
+    margin: 0 auto;
     text-align: center;
 }
 
