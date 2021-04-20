@@ -16,5 +16,8 @@ export default new Vuetify({
             error: colors.red,
           },
         },
-      },
+  },
+  icons: {
+    iconfont: 'mdiSvg'
+  }
 });

@@ -1,49 +1,74 @@
 <template>
   <div>
-    <v-autocomplete
-    :items="followingsItems"
-    item-text="text"
-    v-model="pickedUsers"
-    label="Chips"
-    multiple
-    >
-      <template v-slot:selection="user">
-        <v-chip
-        :class="{red: isActiveUser(user.item)}"
-        @click="toggleActiveUser(user.item)"
-        >{{user.item.text}}</v-chip> 
-      </template>
-    </v-autocomplete>
+    <div class="ma-12 pa-12">
+      <v-card>
+        <v-nagigation-drawer
+        permanent
+        expand-on-hover>
+          <v-list>
+            <v-list-item class="px-2">
+              <v-list-item-avatar></v-list-item-avatar>
+            </v-list-item>
+
+            <v-list-item link>
+              <v-list-item-content>
+                <v-list-item-title class="title">
+                account
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+
+          <v-divider></v-divider>
+
+          <v-list
+          nav
+          dense
+          >
+            <v-list-item link>
+              <v-list-item-icon>
+                <v-icon>menu.icon</v-icon>
+                <v-list-item-title>mecu.title</v-list-item-title>
+              </v-list-item-icon>
+            </v-list-item>
+          </v-list>
+        </v-nagigation-drawer>
+      </v-card>
+    </div>
   </div>
+
+      
 </template>
 
 <script>
-export default {
-  data(){
-    return {
-      followingsItems:[{"text":"gram6855","value":34},{"text":"test1","value":35},{"text":"test2","value":36},{"text":"test3","value":37}],
-      pickedUsers:[],
-      activectiveUser:[]
-    }
-  },
-  methods:{
-    isActiveUser(item){
-      console.log(this.activeUsers)
-      console.log(item.value)
-      return this.activeUsers.filter(user => user.value === item.value).length >= 1
-    },
-    toggleActiveUser(item){
-      // console.log(item) text:?? value:??
-      let isActive = this.isActiveUser(item)
-      if(isActive){
-        const index = this.activeUsers.indexOf(item)
-        if (index >= 0)this.activeUsers.splice(index, 1)
-      }else{
-        this.activeUsers.push(item)
-      }
-    }
-  }
-}
+// export default {
+//   name: 'Navbar',
+//   data(){
+//     return {
+//       drawer:false,
+//       menus:[
+//         {title: 'Home', icon:'mdi-home', url:'/'},
+//         {title: 'Gmap', icon:'mdi-web', url:'/gmap/'},
+//         {title: 'profile', icon:'mdi-account', url:'/profile/'},
+//       ]
+//     }
+//   },computed: {
+//     account() {
+//       return this.$store.state.account
+//     }
+//   },
+//   methods:{
+//     logout(){
+//       alert("are you sure?")
+//       localStorage.removeItem("account")
+//       this.$store.commit('setAccount', null) 
+//       this.$router.push('/')
+//     },
+//     login(){
+//       this.$router.push('/login/')
+//     }
+//   }
+// }
 </script>
 
 <style>

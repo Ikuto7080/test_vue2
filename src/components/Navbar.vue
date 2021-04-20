@@ -1,19 +1,7 @@
 <template>
   <div>
-    <div class="ma-12 pa-12">
-      <v-card>
-        <v-nagigation-drawer
-        permanent
-        expand-on-hover>
-          <v-list>
-            <v-list-item></v-list-item>
-          </v-list>
-        </v-nagigation-drawer>
-      </v-card>
-    </div>
-
     
-      <!-- <v-navigation-drawer 
+      <v-navigation-drawer 
       app 
       v-model="drawer" 
       class="pink">
@@ -48,7 +36,7 @@
       <v-app-bar app>
     
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      </v-app-bar> -->
+      </v-app-bar>
 
   </div>
 
