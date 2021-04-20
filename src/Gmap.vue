@@ -10,7 +10,7 @@ div
             v-model="pickedUsers"
             attach
             chips
-            placeholder="Filter by friends"
+            label="Filter by friends"
             dense
             outlined
             multiple
