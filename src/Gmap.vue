@@ -1,8 +1,8 @@
 <template lang="pug">
 div
-  h1(style="text-align")
+  div(style="text-align" class="filter-box")
     v-row(align='center')
-      v-col(cols="12" sm="10", md="6", xs="4")
+      v-col
         v-sheet(elevation="10")
           v-autocomplete(
             :items="followingsItems"
@@ -39,10 +39,17 @@ div
               )
                 | {{ categoryItem }}
 
-  GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='width: 100%; height: 750px; :position: absolute; z-indent:1;')
-    div(v-for="post in posts")
-      gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
-        v-img.img(@click='display(post)' :src="post['images'][0]['url']")
+  GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='top:0; left:0; right:0; bottom:0; position:absolute;')
+    cluster
+      div(v-for="post in posts")
+        gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
+          v-img.img(@click='display(post)' :src="post['images'][0]['url']")
+
+      //- div(v-for="post in posts")
+    //-   gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
+    //-     v-img.img(@click='display(post)' :src="post['images'][0]['url']")
+
+
 
   v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
     v-row.card(justify="center")
@@ -120,6 +127,7 @@ div
 <script>
 import axios from 'axios'
 import GmapCustomMarker from 'vue2-gmap-custom-marker'
+
 // import { use } from 'vue/types/umd'
 export default {
     data(){
@@ -219,7 +227,7 @@ export default {
       }
     },
     components: {
-        'gmap-custom-marker':GmapCustomMarker
+        'gmap-custom-marker':GmapCustomMarker,
     },mounted(){
       axios
       .get('/accounts/')
@@ -394,6 +402,14 @@ a:hover{
   font-weight: 400;
   font-size: 14px;
   padding-left: 10px;
+}
+
+.filter-box {
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+  padding: 8px;
+  max-width: 600px;
 }
 
 </style>

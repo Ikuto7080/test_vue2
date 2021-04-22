@@ -855,6 +855,11 @@
   resolved "https://registry.yarnpkg.com/@google/markerclustererplus/-/markerclustererplus-5.1.3.tgz#dd7ddbb2a17c977e0b0252c3d8e61fcf502b1bf2"
   integrity sha512-2wQGO6GGbKPC2tNmTz8ei1zBa64zV3QBBvgLHiPvYqUA63230qNqfQpN+nzsrl1RM40NJtty4Y1CEQKxq6MBGg==
 
+"@googlemaps/markerclustererplus@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@googlemaps/markerclustererplus/-/markerclustererplus-1.1.0.tgz#7f48a2fafca14b68f300b0b34d437b57cf2188f5"
+  integrity sha512-Y5jiaoMzhUQ8tCyJzvV5/+6VYF154eeczPZKqQ6kdINoL6Jui4DzVPNPitWFjXmPL9UDkBoxu0PLxOQQGvNWug==
+
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

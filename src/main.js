@@ -6,6 +6,9 @@ import axios from 'axios'
 import vuetify from './plugins/vuetify';
 import store from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import GmapCluster from "gmap-vue/dist/components/cluster";
+
+
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -20,6 +23,7 @@ Vue.use(VueGoogleMaps, {
   },
 })
 
+Vue.component("cluster", GmapCluster);
 
 
 
