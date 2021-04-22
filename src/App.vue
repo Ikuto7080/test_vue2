@@ -14,7 +14,7 @@
           <v-list>
             <v-list-item class="px-2">
               <v-list-item-avatar>
-                <v-img></v-img>
+                <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
               </v-list-item-avatar>
             </v-list-item>
 
@@ -130,7 +130,7 @@ a{
   text-decoration: none;
 }
 a:hover{
-  background-color: #113366;
+  background-color: #C0C0C0;
 } 
 nav-item{
   padding-right: 5px;
