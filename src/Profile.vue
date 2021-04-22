@@ -2,16 +2,14 @@
   div
     v-row
       v-col
-        //- .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
-        //-   v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Facebook
-
-        //- v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Line
+        .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+          v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Facebook
+        v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Line
 
         div(v-if="account")
             v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
             v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
 
-      v-col
         h3 SNS apps
         v-divider
         div(v-if="fb_presence")
