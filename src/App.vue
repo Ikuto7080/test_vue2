@@ -7,6 +7,7 @@
         expand-on-hover
         app
         permanent
+<<<<<<< HEAD
         class="pink"
         >
 
@@ -18,6 +19,19 @@
             </v-list-item-avatar>
           </v-list-item>
 
+=======
+        expand-on-hover
+        class="pink">
+
+        <!-- yourself -->
+        <div v-if="account">
+          <v-list>
+            <v-list-item class="px-2">
+              <v-list-item-avatar>
+                <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+>>>>>>> 60071261f95d9a7de825a00bb8e426bfc8a9991d
 
             <v-list-item>
               <v-list-item-content>
@@ -130,7 +144,7 @@ a{
   text-decoration: none;
 }
 a:hover{
-  background-color: #113366;
+  background-color: #C0C0C0;
 } 
 nav-item{
   padding-right: 5px;
