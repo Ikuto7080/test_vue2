@@ -14,7 +14,7 @@
           <v-list>
             <v-list-item class="px-2">
               <v-list-item-avatar>
-                <v-img :src="account.profile_picture"></v-img>
+                <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
               </v-list-item-avatar>
             </v-list-item>
 
@@ -92,7 +92,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name: 'Navbar',
   data(){
@@ -102,20 +101,9 @@ export default {
         {title: 'Home', icon:'fas fa-home', url:'/'},
         {title: 'Gmap', icon:'fas fa-globe', url:'/gmap/'},
         {title: 'profile', icon:'fas fa-user', url:'/profile/'},
-      ],
-      account: null
+      ]
     }
-  },
-  mounted(){
-    axios
-    .get('/account/')
-    .then(resp =>{
-      this.account = resp.data[0]
-      console.log(this.account)
-      thsi.$store.commit('setAccount', this.account)
-    })
-  }
-  ,computed: {
+  },computed: {
     account() {
       return this.$store.state.account
     }
