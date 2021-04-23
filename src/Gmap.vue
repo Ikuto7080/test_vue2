@@ -2,13 +2,12 @@
 div
   div(style="text-align" class="filter-box")
     v-row(align='center')
-      v-col
+      v-col(cols="12")
         v-sheet(elevation="10")
           v-autocomplete(
             :items="followingsItems"
             item-text="text"
             v-model="pickedUsers"
-            attach
             chips
             label="Filter by friends"
             dense
@@ -22,24 +21,21 @@ div
               @click:close="remove(user.item)"
               close
               ) {{user.item.text }}
-
+              
           v-chip-group(
             multiple
             show-arrows
             active-class="primary--text"
             v-model="selectedRestaurantIndexes"
           )
-            div(
+            v-chip(
               v-for="categoryItem in categoryItems"
               :key="categoryItem.id"
+              :items="categoryItems"
             )
-              v-chip(
-                :items="categoryItems"
-                small
-              )
-                | {{ categoryItem }}
+              | {{ categoryItem }}
 
-  GmapMap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='top:0; left:0; right:0; bottom:0; position:absolute;')
+  GmapMap.gmap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='top:0; left:0; right:0; bottom:0; position:absolute;')
     cluster
       div(v-for="post in posts")
         gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
@@ -184,17 +180,6 @@ export default {
         })
         return categoryType
       },
-      //  from posts api
-      // categoryItems(){
-      //     if(!this.posts){
-      //       return []
-      //     }
-      //   let categoryType = this.posts.map(restaurant => {
-      //     return {text:restaurant.categories, value: restaurant.categories}
-      //   })
-      //   return categoryType
-      // },
-
       selectedRestaurants(){
         let restaurants = []
         console.log(this.selectedRestaurantIndexes)
@@ -330,6 +315,12 @@ export default {
 </script>
 
 <style>
+.gmap{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .map-container{
     width: 500;
     height: 300px;
