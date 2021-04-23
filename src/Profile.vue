@@ -1,42 +1,56 @@
 <template lang="pug">
   div
-    v-row
-      v-col
-        .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
-          v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Facebook
-        v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Line
-
+    v-row.ma-4(no-gutters justify="center" align-content="center")
+      v-col(cols="6" sm="6")
+        div.pa-5
+          .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+            v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Facebook
+          v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Line
+      v-col(cols="6" sm="6")
         div(v-if="account")
             v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
             v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
+      v-col(cols="12" sm="12")
+        div.pa-0
+          h3 SNS apps
+          div(v-if="fb_presence")
+            v-btn(@click="openFb") Facebook
+          div(v-if="ig_presence")
+            v-btn(@click="openIg") Instagram
 
-        h3 SNS apps
-        v-divider
-        div(v-if="fb_presence")
-          v-btn(@click="openFb") Facebook
-        div(v-if="ig_presence")
-          v-btn(@click="openIg") Instagram
-      v-divider
+    v-divider
 
-     
+    v-row.py-3(justify="center" align-content="center")
+      //-  Posts
+      v-col 
+        div.font-weight-thin
+          | Posts 
+        div(v-if="posts")
+          |{{posts.length}}
+        div(v-else)
+          | NaN
 
-
-    //- Following
-    v-row(justify="center" align-content="center")
+      //- Following
       v-col
-        h2(@click="display" style="padding-top:30px;" v-if="")
+        div.font-weight-thin(@click="display")
           | Following:
-          v-list-item-subtitle
-            | {{followings.count}}
+        div(v-if="followings.count")
+          | {{followings.length}}
+        div(v-else)
+          | NaN
 
-
-    //-Followers
-    v-row(justify="center" align-content="center")
+        //-Followers
       v-col
-        h2(@click="display" style="padding-top:30px;" v-if="!loading")
+        div.font-weight-thin(@click="display" v-if="!loading")
           | Followers:
-          v-list-item-subtitle
-            | {{followers.count}}
+        div(v-if="followers.count")
+          | {{followers.length}}
+        div(v-else)
+          | NaN
+
+    v-divider.mb-4(
+      :inset="inset"
+    )
 
 
     //- v-dialog for Following
@@ -67,11 +81,9 @@
                       li 
                         | {{result.user.first_name}}
 
-    v-container 
-      v-row 
-        v-col(md="4" sm="4" v-for="post in posts" v-bind:key="post.id")
-          v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
-            
+    v-row
+      v-col.pa-0(cols="4" sm="4" md="2" lg="2" v-for="post in posts" v-bind:key="post.id")
+        img(class="image" :src="post['images'][0]['url']" height="123px" width="123px")
 </template>
 
 <script>
