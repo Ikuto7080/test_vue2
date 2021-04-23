@@ -1,74 +1,18 @@
-<template>
-  <div>
-    <div class="ma-12 pa-12">
-      <v-card>
-        <v-nagigation-drawer
-        permanent
-        expand-on-hover>
-          <v-list>
-            <v-list-item class="px-2">
-              <v-list-item-avatar></v-list-item-avatar>
-            </v-list-item>
+<template lang="pug">
 
-            <v-list-item link>
-              <v-list-item-content>
-                <v-list-item-title class="title">
-                account
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+  div
 
-          <v-divider></v-divider>
+    h1 
+    | hello
+    br
 
-          <v-list
-          nav
-          dense
-          >
-            <v-list-item link>
-              <v-list-item-icon>
-                <v-icon>menu.icon</v-icon>
-                <v-list-item-title>mecu.title</v-list-item-title>
-              </v-list-item-icon>
-            </v-list-item>
-          </v-list>
-        </v-nagigation-drawer>
-      </v-card>
-    </div>
-  </div>
-
-      
+    .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+      a.fb-xfbml-parse-ignore(target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse') Share
+        
 </template>
 
 <script>
-// export default {
-//   name: 'Navbar',
-//   data(){
-//     return {
-//       drawer:false,
-//       menus:[
-//         {title: 'Home', icon:'mdi-home', url:'/'},
-//         {title: 'Gmap', icon:'mdi-web', url:'/gmap/'},
-//         {title: 'profile', icon:'mdi-account', url:'/profile/'},
-//       ]
-//     }
-//   },computed: {
-//     account() {
-//       return this.$store.state.account
-//     }
-//   },
-//   methods:{
-//     logout(){
-//       alert("are you sure?")
-//       localStorage.removeItem("account")
-//       this.$store.commit('setAccount', null) 
-//       this.$router.push('/')
-//     },
-//     login(){
-//       this.$router.push('/login/')
-//     }
-//   }
-// }
+
 </script>
 
 <style>

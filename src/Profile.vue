@@ -1,82 +1,76 @@
 <template lang="pug">
-  v-app
-    v-container
-      v-row
-        v-col
-          h1(style="text-align:center;") Profile
-          div(v-if="account")
-              v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
-              v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
+  div
+    v-row
+      v-col
+        .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+          v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Facebook
+        v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id") Share by Line
 
-        v-spacer
+        div(v-if="account")
+            v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
+            v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
 
-        v-col
-          h3 SNS apps
-          v-divider
-          div(v-if="fb_presence")
-            v-btn(@click="openFb") Facebook
-          div(v-if="ig_presence")
-            v-btn(@click="openIg") Instagram
+        h3 SNS apps
         v-divider
+        div(v-if="fb_presence")
+          v-btn(@click="openFb") Facebook
+        div(v-if="ig_presence")
+          v-btn(@click="openIg") Instagram
+      v-divider
 
-        a(href=`=${process.env.VUE_APP_LINE_URL} + `)
-          | Share by Line
-
-        v-btn(@click="shareFb")
-          | Share with Facebook
-
-      v-divider(class="mt-3")
-
-      //- Following
-      v-row(justify="center" align-content="center")
-        v-col
-          h2(@click="display" style="padding-top:30px;" v-if="")
-            | Following:
-            v-list-item-subtitle
-              | {{followings.count}}
+     
 
 
-      //-Followers
-      v-row(justify="center" align-content="center")
-        v-col
-          h2(@click="display" style="padding-top:30px;" v-if="!loading")
-            | Followers:
-            v-list-item-subtitle
-              | {{followers.count}}
+    //- Following
+    v-row(justify="center" align-content="center")
+      v-col
+        h2(@click="display" style="padding-top:30px;" v-if="")
+          | Following:
+          v-list-item-subtitle
+            | {{followings.count}}
 
 
-      //- v-dialog for Following
-      v-dialog(v-model="isActive" scrollable max-width="80%")
-        v-row.row
-          v-card.mx-auto.mb-3(style="z-index:3; position:absolute" width="500px" height="500px")
-            v-card-title.d-flex.fustify-center.headline.mb-2 
-              | Followings 
-            v-divider 
-            v-list.v-list 
-              v-list-item-group(v-for="result in followings.results" v-bind:key="result.id")
-                    v-list-item-subtitle
-                      ul
-                        li 
-                          | {{result.user.first_name}}
+    //-Followers
+    v-row(justify="center" align-content="center")
+      v-col
+        h2(@click="display" style="padding-top:30px;" v-if="!loading")
+          | Followers:
+          v-list-item-subtitle
+            | {{followers.count}}
 
-      //- v-dialog for Followers
-      v-dialog(v-model="isActive" scrollable max-width="80%")
-        v-row.row
-          v-card.mx-auto.mb-3(style="z-index:3; position:absolute" width="500px" height="500px")
-            v-card-title.d-flex.fustify-center.headline.mb-2 
-              | Followers 
-            v-divider 
-            v-list.v-list 
-              v-list-item-group(v-for="result in followers.results" v-bind:key="result.id")
-                    v-list-item-subtitle
-                      ul
-                        li 
-                          | {{result.user.first_name}}
 
-      v-container 
-        v-row 
-          v-col(md="4" sm="4" v-for="post in posts" v-bind:key="post.id")
-            v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
+    //- v-dialog for Following
+    v-dialog(v-model="isActive" scrollable max-width="80%")
+      v-row.row
+        v-card.mx-auto.mb-3(style="z-index:3; position:absolute" width="500px" height="500px")
+          v-card-title.d-flex.fustify-center.headline.mb-2 
+            | Followings 
+          v-divider 
+          v-list.v-list 
+            v-list-item-group(v-for="result in followings.results" v-bind:key="result.id")
+                  v-list-item-subtitle
+                    ul
+                      li 
+                        | {{result.user.first_name}}
+
+    //- v-dialog for Followers
+    v-dialog(v-model="isActive" scrollable max-width="80%")
+      v-row.row
+        v-card.mx-auto.mb-3(style="z-index:3; position:absolute" width="500px" height="500px")
+          v-card-title.d-flex.fustify-center.headline.mb-2 
+            | Followers 
+          v-divider 
+          v-list.v-list 
+            v-list-item-group(v-for="result in followers.results" v-bind:key="result.id")
+                  v-list-item-subtitle
+                    ul
+                      li 
+                        | {{result.user.first_name}}
+
+    v-container 
+      v-row 
+        v-col(md="4" sm="4" v-for="post in posts" v-bind:key="post.id")
+          v-img(class="mt-0" :src="post['images'][0]['url']" style="width:150px; height:150px;")
             
 </template>
 

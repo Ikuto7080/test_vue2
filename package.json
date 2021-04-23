@@ -9,10 +9,12 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@googlemaps/markerclustererplus": "^1.1.0",
     "@mdi/font": "^5.9.55",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.5",
     "express": "^4.17.1",
+    "marker-clusterer-plus": "^2.1.4",
     "pug": "^3.0.0",
     "puppeteer": "^8.0.0",
     "puppeteer-core": "^8.0.0",
