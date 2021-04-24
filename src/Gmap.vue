@@ -35,7 +35,8 @@ div
             )
               | {{ categoryItem }}
 
-  GmapMap.gmap(:center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='top:0; left:0; right:0; bottom:0; position:absolute;')
+  GmapMap.gmap(:options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" 
+  :center='{lat:36, lng:138}' :zoom='6' map-type-id='roadmap' style='top:0; left:0; right:0; bottom:0; position:absolute;')
     cluster
       div(v-for="post in posts")
         gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
@@ -44,9 +45,6 @@ div
       //- div(v-for="post in posts")
     //-   gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
     //-     v-img.img(@click='display(post)' :src="post['images'][0]['url']")
-
-
-
   v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
     v-row.card(justify="center")
       v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='600px' v-if='activePost')
@@ -119,6 +117,7 @@ div
                       | {{ activePost.permalink }}
 
 </template>
+
 
 <script>
 import axios from 'axios'
@@ -314,18 +313,14 @@ export default {
 }
 </script>
 
-<style>
-.gmap{
-  position: relative;
+<style scoped>
+.gmap {
   width: 100%;
   height: 100%;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
-
-.map-container{
-    width: 500;
-    height: 300px;
-}
-
 .img{
     width: 75px;
     height: 70px;
@@ -346,21 +341,6 @@ v-card-title{
 
 
 
-.overlay{
-
-  z-index:1;
-
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background-color:rgba(0,0,0,0.5);
-
-  display: fixed;
-  align-items: center;
-  justify-content: center;
-}
 
 .close{
     text-align: center;
@@ -396,11 +376,14 @@ a:hover{
 }
 
 .filter-box {
-  position: absolute;
-  top: 0px;
   z-index: 1;
   padding: 8px;
-  max-width: 600px;
+  top: 0;
+  margin-top: 30px;
+  left: 0;
+  right: 0;
+  position: absolute;
+  /* max-width: 300px; */
 }
 
 </style>

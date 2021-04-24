@@ -68,10 +68,7 @@ export default {
 }
 </script>
 
-<style>
-body, html {
-    text-align: center;
-}
+<style scoped>
 
 .main-content {
     border: 1px solid #000000;
@@ -84,7 +81,7 @@ body, html {
     width: 60px;
     height: 60px;
     border: 4px solid #FFFFFF;
-    border-radius: 50%;
+    /* border-radius: 50%; */
 }
 
 .picture{

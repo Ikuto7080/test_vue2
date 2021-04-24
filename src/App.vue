@@ -56,20 +56,22 @@
     app
     dense
     color="pink"
-    class="px-4"
+    class="rounded-0"
     >
-        <v-toolbar-title>Quouze</v-toolbar-title>
+        <v-toolbar-title>
+          <v-img src="./assets/quouze_logo.png" height="35px" width="120px"></v-img>
+        </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn class="ml-4" small v-for="menu in menus" :key="menu.title" :to="menu.url" link icon>
+        <v-btn class="ml-4 pink" color="white" light small v-for="menu in menus" :key="menu.title" :to="menu.url" icon>
           <v-icon>{{ menu.icon }}</v-icon>
         </v-btn>
-        <v-btn class="ml-4" small v-if="!account" href="/login/" link icon>
+        <v-btn class="ml-4 pink" color="white" light small v-if="!account" href="/login/" link icon>
           <v-icon>fas fa-sign-in-alt</v-icon>
         </v-btn>
-        <v-btn class="ml-4" small v-if="account" href="/edit/" link icon>
+        <v-btn class="ml-4 pink" color="white" light small v-if="account" href="/edit/" link icon>
           <v-icon>fas fa-user-edit</v-icon>
         </v-btn>
-        <v-btn class="ml-4" small v-if="account" href="/" @click="logout" link icon>
+        <v-btn class="ml-4 pr-2 pink" color="white" light small v-if="account" href="/" @click="logout" link icon>
           <v-icon>fas fa-sign-out-alt</v-icon>
         </v-btn>
     </v-app-bar>
@@ -79,7 +81,7 @@
 
     <!-- start of v-main -->
     <v-main class="pt-0 pb-0">
-      <v-container fluid class="px20- mt-n4" fill-height >
+      <v-container class="px20" fill-height >
         <router-view />
       </v-container>
     </v-main>

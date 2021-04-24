@@ -1,34 +1,48 @@
 <template lang="pug">
   div
-    v-row.ma-4(no-gutters justify="center" align-content="center")
-      v-col(cols="6" sm="6")
-        div.pa-5
-          .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
-            v-btn.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Facebook
-          v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Line
+    v-row(no-gutters)
+      v-spacer
+      v-col()
+        span.pb-2
+          .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+            a.fb-xfbml-parse-ignore(target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse') Share
+        span
+          .line-it-button.pt-2(data-lang='en' data-type='share-a' data-ver='3' data-url='https://social-plugins.line.me/en/how_to_install' data-color='default' data-size='large' data-count='false' style='display: none;')
+
+    //- .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+    //-   a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) 
+    v-row.ma-4(no-gutters)
+      v-col(cols="6" sm="6" v-if="account")
+        v-avatar
+          img(:src="'https://ui-avatars.com/api/?name=' + account.user.last_name + ' ' + account.user.first_name")
       v-col(cols="6" sm="6")
         div(v-if="account")
-            v-text-field(readonly label="First Name" v-model="account['user']['first_name']" )
-            v-text-field(readonly label="Last Name" v-model="account['user']['last_name']" )
+          v-row(no-gutters)
+            v-col.subtitle-2.grey--text.lighten-4(cols="12") Name
+            v-col(cols="12") {{account['user']['last_name']}} {{account['user']['first_name']}}
+        div.pa-5
+        //-       .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+        //-         a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Facebook
+        //-       v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Line
       v-col(cols="12" sm="12")
         div.pa-0
           h3 SNS apps
           div(v-if="fb_presence")
-            v-btn(@click="openFb") Facebook
+            v-btn(x-small @click="openFb") Facebook
           div(v-if="ig_presence")
-            v-btn(@click="openIg") Instagram
+            v-btn(x-small @click="openIg") Instagram
 
     v-divider
 
-    v-row.py-3(justify="center" align-content="center")
+    v-row.py-3
       //-  Posts
-      v-col 
+      v-col
         div.font-weight-thin
-          | Posts 
+          | Posts
         div(v-if="posts")
           |{{posts.length}}
         div(v-else)
-          | NaN
+          | -
 
       //- Following
       v-col
@@ -37,7 +51,7 @@
         div(v-if="followings.count")
           | {{followings.length}}
         div(v-else)
-          | NaN
+          | -
 
         //-Followers
       v-col
@@ -46,7 +60,7 @@
         div(v-if="followers.count")
           | {{followers.length}}
         div(v-else)
-          | NaN
+          | -
 
     v-divider.mb-4(
       :inset="inset"
@@ -95,8 +109,8 @@ export default {
           account: null,
           posts: null,
           isActive:null,
-          followings:null,
-          followers:null,
+          followings:{},
+          followers:{},
           ig_presence: false,
           fb_presence: false,
           followerngs:null,
@@ -158,15 +172,6 @@ export default {
 </script>
 <style>
 
-
-v-btn{
-  text-align: center;
-}
-.row{
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
 .v-list{
   height: 300px;
   overflow-y: auto;
