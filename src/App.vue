@@ -65,7 +65,44 @@
         <v-btn class="ml-4 pink" color="white" light small v-for="menu in menus" :key="menu.title" :to="menu.url" icon>
           <v-icon>{{ menu.icon }}</v-icon>
         </v-btn>
-        <v-btn class="ml-4 pink" color="white" light small v-if="!account" href="/login/" link icon>
+        <v-menu
+        left
+        bottom
+        dense
+
+        >
+          <template v-slot:activator="{on, attrs}">
+            <v-btn
+            icon
+            class="ml-4 pink" 
+            color="white" 
+            light
+            v-bind="attrs"
+            v-on="on"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+
+          <v-list class="mt-9">
+            <v-list-item v-if="!account">
+              <v-list-title>
+                <a href="/login/">Sign In</a> 
+              </v-list-title>
+            </v-list-item>
+            <v-list-item v-if="account">
+              <v-list-title>
+                <a  href="/edit/">Edit</a>
+              </v-list-title>
+            </v-list-item>
+            <v-list-item v-if="account">
+              <v-list-title>
+                <a href="/" @click="logout">LogOut</a>
+              </v-list-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <!-- <v-btn class="ml-4 pink" color="white" light small v-if="!account" href="/login/" link icon>
           <v-icon>fas fa-sign-in-alt</v-icon>
         </v-btn>
         <v-btn class="ml-4 pink" color="white" light small v-if="account" href="/edit/" link icon>
@@ -73,7 +110,7 @@
         </v-btn>
         <v-btn class="ml-4 pr-2 pink" color="white" light small v-if="account" href="/" @click="logout" link icon>
           <v-icon>fas fa-sign-out-alt</v-icon>
-        </v-btn>
+        </v-btn> -->
     </v-app-bar>
     <!-- end of v-app-bar -->
       </v-card>
@@ -120,12 +157,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 html {
     width: 100%;
     height: 100%;
 }
 
+a {
+  color: #000; 
+  text-decoration: none;
+}
 </style>
 
 
