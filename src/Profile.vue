@@ -4,10 +4,10 @@
       v-spacer
       v-col()
         span.pb-2
-          .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+          .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large' data-width='300px' style="left:100px;")
             a.fb-xfbml-parse-ignore(target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse') Share
-        span
-          .line-it-button.pt-2(data-lang='en' data-type='share-a' data-ver='3' data-url='https://social-plugins.line.me/en/how_to_install' data-color='default' data-size='large' data-count='false' style='display: none;')
+        span.pb-2
+          .line-it-button.pt-2(data-lang='en' data-type='share-a' data-ver='3' data-url='https://social-plugins.line.me/en/how_to_install' data-color='default' data-size='large' data-count='false' style='display: none; left:100px;')
 
     //- .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
     //-   a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) 
