@@ -21,7 +21,7 @@ div
               @click:close="remove(user.item)"
               close
               ) {{user.item.text }}
-              
+
           v-chip-group(
             multiple
             show-arrows
@@ -45,9 +45,9 @@ div
       //- div(v-for="post in posts")
     //-   gmap-custom-marker(:key='post.id' :marker='{ lat:post.google_place.latitude, lng: post.google_place.longitude}')
     //-     v-img.img(@click='display(post)' :src="post['images'][0]['url']")
-  v-dialog(v-if="activePost" v-model='isActive' scrollable max-width='80%' @click:outside='display(null)')
+  v-dialog(v-if="activePost" v-model='isActive' scrollable @click:outside='display(null)' width="500px")
     v-row.card(justify="center")
-      v-card.mx-auto.mb-3(style='z-index:3; position:absolute;' width='500px' height='600px' v-if='activePost')
+      v-card.mx-auto.mb-3(style='z-index:100; ' v-if='activePost')
         v-card-title
             | {{ activePost.google_place.info.name }}
         div(@click='goUrl')

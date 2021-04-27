@@ -3,7 +3,7 @@
     v-btn.insta.white--text(@click="open" color="#b125ea" large block)
       i.fa.fa-instagram.pr-2(aria-hidden='true')
       | Sign In  with instagram
-  </template>
+</template>
 
 <script>
 export default {

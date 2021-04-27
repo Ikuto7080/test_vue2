@@ -59,7 +59,7 @@
     class="rounded-0"
     >
         <v-toolbar-title>
-          <v-img src="./assets/quouze_logo.png" height="35px" width="120px"></v-img>
+          <v-img src="./assets/quouze_logo.png" height="35px" width="120px" @click="$router.push('/')" class="logo"></v-img>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn class="ml-4 pink" color="white" light small v-for="menu in menus" :key="menu.title" :to="menu.url" icon>
@@ -69,13 +69,12 @@
         left
         bottom
         dense
-
         >
           <template v-slot:activator="{on, attrs}">
             <v-btn
             icon
-            class="ml-4 pink" 
-            color="white" 
+            class="ml-4 pink"
+            color="white"
             light
             v-bind="attrs"
             v-on="on"
@@ -84,7 +83,7 @@
             </v-btn>
           </template>
 
-          <v-list class="mt-9">
+          <v-list>
             <v-list-item v-if="!account">
               <v-list-title>
                 <a href="/login/">Sign In</a> 
@@ -102,15 +101,6 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <!-- <v-btn class="ml-4 pink" color="white" light small v-if="!account" href="/login/" link icon>
-          <v-icon>fas fa-sign-in-alt</v-icon>
-        </v-btn>
-        <v-btn class="ml-4 pink" color="white" light small v-if="account" href="/edit/" link icon>
-          <v-icon>fas fa-user-edit</v-icon>
-        </v-btn>
-        <v-btn class="ml-4 pr-2 pink" color="white" light small v-if="account" href="/" @click="logout" link icon>
-          <v-icon>fas fa-sign-out-alt</v-icon>
-        </v-btn> -->
     </v-app-bar>
     <!-- end of v-app-bar -->
       </v-card>
@@ -118,7 +108,7 @@
 
     <!-- start of v-main -->
     <v-main class="pt-0 pb-0">
-      <v-container class="px20" fill-height >
+      <v-container fill-height >
         <router-view />
       </v-container>
     </v-main>
@@ -131,17 +121,21 @@ export default {
   name: 'Navbar',
   data(){
     return {
-      drawer:false,
-      menus:[
-        {title: 'Home', icon:'fas fa-home', url:'/'},
-        {title: 'Gmap', icon:'fas fa-globe', url:'/gmap/'},
-        {title: 'profile', icon:'fas fa-user', url:'/profile/'},
-      ]
+      drawer:false
     }
   },computed: {
     account() {
       return this.$store.state.account
-    }
+    },
+      menus(){
+        if(!this.account){
+          return []
+        }
+        return [
+        {title: 'Gmap', icon:'fas fa-globe', url:'/gmap/'},
+        {title: 'profile', icon:'fas fa-user', url:'/profile/'},
+        ]
+      }
   },
   methods:{
     logout(){
@@ -158,14 +152,13 @@ export default {
 </script>
 
 <style scoped>
-html {
-    width: 100%;
-    height: 100%;
+a {
+  color: #000;
+  text-decoration: none;
 }
 
-a {
-  color: #000; 
-  text-decoration: none;
+.logo{
+  cursor: pointer;
 }
 </style>
 

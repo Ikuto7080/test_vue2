@@ -1,17 +1,23 @@
 <template lang="pug">
-  div
+v-row
+  v-col(v-if="loading")
+    div.text-center()
+      v-progress-circular(indeterminate color="primary")
+  div(v-else)
     v-row(no-gutters)
-      v-spacer
-      v-col()
-        span.pb-2
-          .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
-            a.fb-xfbml-parse-ignore(target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse') Share
-        span
-          .line-it-button.pt-2(data-lang='en' data-type='share-a' data-ver='3' data-url='https://social-plugins.line.me/en/how_to_install' data-color='default' data-size='large' data-count='false' style='display: none;')
+      v-col
+        v-spacer
+        v-col()
+          span.pb-2
+            v-btn(@click="shareFb")
+            .fb-share-button(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+              a.fb-xfbml-parse-ignore(target='_blank' href='https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&src=sdkpreparse') Share
+          span
+            .line-it-button.pt-2(data-lang='en' data-type='share-a' data-ver='3' data-url='https://social-plugins.line.me/en/how_to_install' data-color='default' data-size='large' data-count='false' style='display: none;')
 
     //- .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
     //-   a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) 
-    v-row.ma-4(no-gutters)
+    v-row.ma-4()
       v-col(cols="6" sm="6" v-if="account")
         v-avatar
           img(:src="'https://ui-avatars.com/api/?name=' + account.user.last_name + ' ' + account.user.first_name")
@@ -21,9 +27,9 @@
             v-col.subtitle-2.grey--text.lighten-4(cols="12") Name
             v-col(cols="12") {{account['user']['last_name']}} {{account['user']['first_name']}}
         div.pa-5
-        //-       .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
-        //-         a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Facebook
-        //-       v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Line
+              .fb-share-button.mb-6(data-href='https://developers.facebook.com/docs/plugins/' data-layout='button' data-size='large')
+                a.fb-xfbml-parse-ignore(target='_blank' v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Facebook
+              v-btn(v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small) Share by Line
       v-col(cols="12" sm="12")
         div.pa-0
           h3 SNS apps
@@ -46,14 +52,14 @@
 
       //- Following
       v-col
-        div.font-weight-thin(@click="display")
-          | Following:
-        div(v-if="followings.count")
-          | {{followings.length}}
-        div(v-else)
+       div.font-weight-thin(@click="display")
+         | Following:
+       div(v-if="followings.count")
+         | {{followings.length}}
+       div(v-else)
           | -
 
-        //-Followers
+      //-Followers
       v-col
         div.font-weight-thin(@click="display" v-if="!loading")
           | Followers:
@@ -62,9 +68,6 @@
         div(v-else)
           | -
 
-    v-divider.mb-4(
-      :inset="inset"
-    )
 
 
     //- v-dialog for Following
@@ -105,7 +108,7 @@ import axios from 'axios'
 export default {
     data(){
         return {
-          loading:false,
+          loading:true,
           account: null,
           posts: null,
           isActive:null,
@@ -124,6 +127,7 @@ export default {
         .then(resp => {
           this.account = resp.data[0]
             this.$store.commit('setAccount', this.account)
+            this.loading = false
             console.log(this.$store.state.account)
             let igposts = this.account['ig_id']
             let fbposts = this.account['fb_id']
@@ -170,12 +174,12 @@ export default {
       }
 }
 </script>
-<style>
+<style scoped>
 
-.v-list{
+/* .v-list{
   height: 300px;
   overflow-y: auto;
-}
+} */
 </style>
 
 

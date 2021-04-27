@@ -1,5 +1,4 @@
 <template>
-  <v-container >
     <v-row>
       <v-col>
         <v-card max-width="400px" class="mx-auto elevation-8">
@@ -14,7 +13,6 @@
         </v-card>
       </v-col>
     </v-row>
-  </v-container>
 </template>
 
 <script>
