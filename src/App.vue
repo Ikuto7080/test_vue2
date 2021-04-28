@@ -2,55 +2,6 @@
   <v-app>
     <div class="ma-1 pa-3">
       <v-card>
-        <!-- navigation-drawer start -->
-        <v-navigation-drawer
-        expand-on-hover
-        app
-        permanent
-        class="pink">
-
-        <!-- yourself -->
-        <div v-if="account">
-          <v-list>
-            <v-list-item class="px-2">
-              <v-list-item-avatar>
-                <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
-              </v-list-item-avatar>
-            </v-list-item>
-
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="title">
-                  {{account.user.first_name}} {{account.user.last_name}}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </div>
-          <v-divider></v-divider>
-      
-
-          <!-- menu  -->
-          <v-list nav dense>
-
-            <v-list-item v-for="menu in menus" :key="menu.title" :to="menu.url" link>
-                <v-icon>{{ menu.icon }}</v-icon>
-              <v-list-item-title>{{ menu.title }}</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item v-if="account" href="/edit/">
-                <v-icon>fas fa-user-edit</v-icon>
-              <v-list-item-title>Edit</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item v-if="account" href="/" @click="logout">
-                <v-icon>fas fa-sign-out-alt</v-icon>
-              <v-list-item-title>Sign Out</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-navigation-drawer>
-        <!-- end of navigation-drawer -->
-
     <!-- start of v-app-bar -->
     <v-app-bar
     app
@@ -109,6 +60,29 @@
     <!-- start of v-main -->
     <v-main class="pt-0 pb-0">
       <v-container fill-height >
+        <!-- dial Share -->
+        <v-speed-dial
+          v-model="dialShare"
+          absolute
+          dense
+          right
+          bottom
+          direction="left"
+          open-on-hover
+        >
+          <template v-slot:activator>
+            <v-btn fab bottom small color="pink">
+              <v-icon v-if="dialShare">mdi-close</v-icon>
+              <v-icon v-else>mdi-share-variant</v-icon>
+            </v-btn>
+          </template>
+          <div class="sharebtn">
+            <ul class="sharebtn_list">
+              <li class="sharebtn_item line pr-3"><a href="http://line.me/R/msg/text/?{Title}-{URLEncodedPermalink}" title="LINEに送る" target="_blank" rel="nofollow noopener noreferrer" class="btn_li bd"><i class="fab fa-line"></i></a></li>
+              <li class="sharebtn_item facebook"><a href="http://www.facebook.com/sharer.php?u={URLEncodedPermalink}" title="Facebookでシェア" target="_blank" rel="nofollow noopener noreferrer" class="btn_fb bd"><i class="fab fa-facebook"></i></a></li>
+            </ul>
+          </div>
+        </v-speed-dial>
         <router-view />
       </v-container>
     </v-main>
@@ -121,7 +95,9 @@ export default {
   name: 'Navbar',
   data(){
     return {
-      drawer:false
+      drawer:false,
+      dialShare:false,
+      shareUrl: "https://app.quouze.com/invite/"
     }
   },computed: {
     account() {
@@ -160,6 +136,14 @@ a {
 .logo{
   cursor: pointer;
 }
+
+.sharebtn_list {
+  display: flex;
+}
+
+
+
+
 </style>
 
 
