@@ -1,3 +1,4 @@
+
 <template>
   <div>
       <div class="filter-box" style="text-align">
@@ -26,7 +27,6 @@
       </v-dialog>
   </div>
 </template>
-
 
 <script>
 import axios from 'axios'
@@ -254,7 +254,6 @@ v-card-title{
 
 
 
-
 .close{
     text-align: center;
     outline:none
@@ -300,3 +299,4 @@ a:hover{
 }
 
 </style>
+

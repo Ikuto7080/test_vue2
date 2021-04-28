@@ -8,7 +8,7 @@
       <div v-else="v-else">
           <v-row class="ma-4">
               <v-col cols="6" sm="6" v-if="account">
-                  <v-avatar><img :src="'https://ui-avatars.com/api/?name=' + account.user.last_name + ' ' + account.user.first_name" /></v-avatar>
+                  <v-avatar size="100"><img :src="account.profile_picture"></v-avatar>
               </v-col>
               <v-col cols="6" sm="6">
                   <div v-if="account">
@@ -122,6 +122,7 @@ export default {
         .get('/accounts/')
         .then(resp => {
           this.account = resp.data[0]
+          console.log(this.account)
             this.$store.commit('setAccount', this.account)
             this.loading = false
             console.log(this.$store.state.account)
