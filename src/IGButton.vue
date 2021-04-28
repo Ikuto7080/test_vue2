@@ -1,8 +1,7 @@
-<template lang="pug">
-  .btn
-    v-btn.insta.white--text(@click="open" color="#b125ea" large block)
-      i.fa.fa-instagram.pr-2(aria-hidden='true')
-      | Sign In  with instagram
+<template>
+  <div class="btn">
+    <v-btn class="insta white--text" @click="open" color="#b125ea" large="large" block="block"><i class="fa fa-instagram pr-2" aria-hidden="true"></i>Sign In with instagram</v-btn>
+  </div>
 </template>
 
 <script>

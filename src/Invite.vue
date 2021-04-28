@@ -1,5 +1,4 @@
 <template>
-    
 <div>
     <GmapMap :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="width: 100%; height: 500px; :position: absolute; z-indent:1;">
         <div v-for="post in posts" :key="post.id">
@@ -23,8 +22,6 @@
         </div>
     </div>
 </div>
-
-
 </template>
 
 <script>
