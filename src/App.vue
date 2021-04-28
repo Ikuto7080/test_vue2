@@ -3,14 +3,14 @@
     <div class="ma-1 pa-3">
       <v-card>
         <!-- navigation-drawer start -->
-        <!-- <v-navigation-drawer
+        <v-navigation-drawer
         expand-on-hover
         app
         permanent
-        class="pink"> -->
+        class="pink">
 
         <!-- yourself -->
-        <!-- <div v-if="account">
+        <div v-if="account">
           <v-list>
             <v-list-item class="px-2">
               <v-list-item-avatar>
@@ -28,10 +28,10 @@
           </v-list>
         </div>
           <v-divider></v-divider>
-       -->
+      
 
           <!-- menu  -->
-          <!-- <v-list nav dense>
+          <v-list nav dense>
 
             <v-list-item v-for="menu in menus" :key="menu.title" :to="menu.url" link>
                 <v-icon>{{ menu.icon }}</v-icon>
@@ -48,7 +48,7 @@
               <v-list-item-title>Sign Out</v-list-item-title>
             </v-list-item>
           </v-list>
-        </v-navigation-drawer> -->
+        </v-navigation-drawer>
         <!-- end of navigation-drawer -->
 
     <!-- start of v-app-bar -->
