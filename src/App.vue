@@ -92,7 +92,7 @@
             </v-list-item>
             <v-list-item v-if="account">
               <v-list-title>
-                <a  href="/edit/">Edit</a>
+                <a  href="/edit/">Edit Profile</a>
               </v-list-title>
             </v-list-item>
             <v-list-item v-if="account">
