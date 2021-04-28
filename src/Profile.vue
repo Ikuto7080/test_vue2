@@ -17,17 +17,26 @@
                           <v-col cols="12">{{account['user']['last_name']}} {{account['user']['first_name']}}</v-col>
                       </v-row>
                   </div>
-                  //- <div class="pa-5">
-                  //-     <div class="fb-share-button mb-6" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button" data-size="large"><a class="fb-xfbml-parse-ignore" target="_blank" v-bind:href="'https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small="x-small">Share by Facebook</a></div>
-                  //-     <v-btn v-bind:href="'https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Fwww.facebook.com%2Fsharer%2Fsharer.php%3Fu%3Dhttps%3A%2F%2Fapp.quouze.com%2Finvite%2F' + account.line_user_id" x-small="x-small">Share by Line</v-btn>
-                  //- </div>
+
               </v-col>
               <v-col cols="12" sm="12">
                   <div class="pa-0">
-                      <h3>SNS apps</h3>
-                      <ul>
-                      
-                      </ul>
+                      <v-row>
+                        <v-col>
+                            //-connect to facebook / v-if="fb_presence"
+                            <div class="cmn-sns" @click="openFb">
+                                <i class="fab fa-facebook-f pt-1"></i>
+                                <p class="subtitle-2">connect Fcebook</p>
+                            </div>
+                        </v-col>
+                        <v-col>
+                            //-connect to instagram / v-if="ig_presence"
+                            <div class="cmn-sns" @click="openIg">
+                                <i class="fab fa-instagram pt-1"></i>
+                                <p class="subtitle-2">connect Instagram</p>
+                            </div>
+                        </v-col>
+                      </v-row>
                       <div v-if="fb_presence">
                           <v-btn x-small="x-small" @click="openFb">Facebook</v-btn>
                       </div>
@@ -168,11 +177,19 @@ export default {
 }
 </script>
 <style scoped>
+li {
+    list-style: none;
+}
 
-/* .v-list{
-  height: 300px;
-  overflow-y: auto;
-} */
+.cmn-sns {
+    display: flex;
+    cursor: pointer;
+}
+
+.cmn-sns i{
+    padding-right: 10px;
+}
 </style>
+
 
 
