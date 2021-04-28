@@ -31,8 +31,11 @@
                   <v-list class="v-list">
                       <v-list-item-group>
                           <v-list-item>
+                            <v-img height="400" :src="activePost.images[0].url"></v-img>
+                          </v-list-item>
+                          <v-divider></v-divider>
+                          <v-list-item>
                               <v-list-item-content>
-                                  <v-img height="400" :src="activePost.images[0].url"></v-img>
                                   <v-list-item-title>SNS commets</v-list-item-title>
                                   <v-list-item-subtitle>
                                       <div if="activePost.message">{{activePost.message}}</div>
