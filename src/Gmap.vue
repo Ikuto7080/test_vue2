@@ -25,13 +25,14 @@
           <v-row class="card" justify="center">
               <v-card class="mx-auto mb-3" style="z-index:100; " v-if="activePost">
                   <v-card-title>{{ activePost.google_place.info.name }}</v-card-title>
-                  <div @click="goUrl">
+                  <!-- <div @click="goUrl">
                       <v-img height="300" :src="activePost.images[0].url"></v-img>
-                  </div>
+                  </div> -->
                   <v-list class="v-list">
                       <v-list-item-group>
                           <v-list-item>
                               <v-list-item-content>
+                                  <v-img height="400" :src="activePost.images[0].url"></v-img>
                                   <v-list-item-title>SNS commets</v-list-item-title>
                                   <v-list-item-subtitle>
                                       <div if="activePost.message">{{activePost.message}}</div>
@@ -340,10 +341,6 @@ a{
 }
 a:hover{
     color:red
-}
-.v-list{
-  height: 300px;
-  overflow-y: auto;
 }
 
 /* reviews */
