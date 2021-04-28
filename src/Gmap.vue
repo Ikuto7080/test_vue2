@@ -374,4 +374,8 @@ a:hover{
   /* max-width: 300px; */
 }
 
+/* .v-list {
+  height: 600px;
+  overflow-y: auto;
+  } */
 </style>
