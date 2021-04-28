@@ -37,12 +37,6 @@
                             </div>
                         </v-col>
                       </v-row>
-                      <div v-if="fb_presence">
-                          <v-btn x-small="x-small" @click="openFb">Facebook</v-btn>
-                      </div>
-                      <div v-if="ig_presence">
-                          <v-btn x-small="x-small" @click="openIg">Instagram</v-btn>
-                      </div>
                   </div>
               </v-col>
           </v-row>
