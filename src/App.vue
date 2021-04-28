@@ -141,9 +141,7 @@ a {
   display: flex;
 }
 
-.sharebtn_list .line {
 
-}
 
 
 </style>
