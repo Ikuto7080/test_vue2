@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    account: null
+    account: null,
+    categories:[]
   },
   mutations: {
     setAccount(state, account) {
       state.account = account
+    },
+    setCategories(state, categories) {
+      state.categories = categories
     }
   },
   actions: {

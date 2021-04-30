@@ -21,6 +21,11 @@ export default {
     isMobile(){
       return this.$vuetify.breakpoint.xs
     }
+  },
+  created(){
+    if(this.$store.state.account){
+      this.$router.push('/gmap/')
+    }
   }
 }
 </script>
