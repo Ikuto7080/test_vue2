@@ -1,34 +1,97 @@
-
 <template>
-  <div>
-      <div class="filter-box" style="text-align">
-          <v-row align="center">
-              <v-col cols="12">
-                  <v-sheet elevation="10">
-                      <v-autocomplete :items="followingsItems" item-text="text" v-model="pickedUsers" chips="chips" label="Filter by friends" dense="dense" outlined="outlined" multiple="multiple" hide-details="hide-details"><template v-slot:selection="user">
-                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="remove(user.item)" close="close">{{user.item.text }}</v-chip>
-                          </template></v-autocomplete>
-                      <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
-                          <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
-                      </v-chip-group>
-                  </v-sheet>
-              </v-col>
-          </v-row>
-      </div>
-      <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;">
-          <Shop/>
-      </GmapMap>
-      
-        
-        
-      
+<div>
+    <div v-for="post in posts" :key="post.id" >
+      <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
+        <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
+      </gmap-custom-marker>
+    </div>
+   <v-dialog v-if="activePost" v-model="isActive" scrollable="scrollable" @click:outside="display(null)" width="500px">
+      <v-row class="card" justify="center">
+          <v-card class="mx-auto mb-3" style="z-index:100; " v-if="activePost">
+              <v-card-title class="mx-2 mt-2">{{ activePost.google_place.info.name }}</v-card-title>
+              <!-- <div @click="goUrl">
+                  <v-img height="300" :src="activePost.images[0].url"></v-img>
+              </div> -->
+              <v-list class="v-list px-2">
+                  <v-list-item-group>
+                    <v-img height="500" :src="activePost.images[0].url"></v-img>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>SNS commets</v-list-item-title>
+                                  <div if="activePost.message" class="subtitle-2">{{activePost.message}}</div>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <div class="rating-content">
+                                  <div class="rating-item">
+                                      <v-list-item-title>rating</v-list-item-title>
+                                      <v-list-item-subtitle>
+                                          <v-rating color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments="half-increments" length="5" :value="activePost.google_place.info.rating"></v-rating>
+                                      </v-list-item-subtitle>
+                                  </div>
+                                  <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
+                                      <v-img class="img" :src="review.profile_photo_url"></v-img>
+                                      <p>{{review.text}}</p>
+                                  </div>
+                              </div>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>price</v-list-item-title>
+                              <v-list-item-subtitle></v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>Opening Hours</v-list-item-title>
+                              <v-list-item-subtitle>
+                                  <ul v-for="opening in openings" :key="opening">
+                                      <li>{{ opening }}</li>
+                                  </ul>
+                              </v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>Regular holiday</v-list-item-title>
+                              <v-list-item-subtitle>None</v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>Phone</v-list-item-title>
+                              <v-list-item-subtitle>+ {{ activePost.google_place.info['formatted_phone_number'] }}</v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>HP URL</v-list-item-title>
+                              <v-list-item-subtitle><a :href="activePost.google_place.info['website']">{{ activePost.google_place.info['website'] }}</a></v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                          <v-list-item-content>
+                              <v-list-item-title>Instagram URL</v-list-item-title>
+                              <v-list-item-subtitle><a :href="activePost.permalink">{{ activePost.permalink }}</a></v-list-item-subtitle>
+                          </v-list-item-content>
+                      </v-list-item>
+                  </v-list-item-group>
+              </v-list>
+          </v-card>
+      </v-row>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Shop from "./components/Shop";
-// import GmapCustomMarker from 'vue2-gmap-custom-marker'
+import GmapCustomMarker from 'vue2-gmap-custom-marker'
 
 // import { use } from 'vue/types/umd'
 export default {
@@ -118,13 +181,12 @@ export default {
       }
     },
     components: {
-        // 'gmap-custom-marker':GmapCustomMarker,
-        Shop
+        'gmap-custom-marker':GmapCustomMarker,
     },mounted(){
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
       })
-      // this.selectedRestaurantIndexes = this.$store.state.categories
+      this.selectedRestaurantIndexes = this.$store.state.categories
       axios
       .get('/accounts/')
       .then((resp)=> {
@@ -167,6 +229,7 @@ export default {
             .get('/feeds/')
             .then((resp) => {
               this.posts=resp.data
+              console.log('test')
             })
           }
         },
@@ -264,7 +327,7 @@ a:hover{
     color:red
 }
 .v-list{
-  height: 300px;
+  height: 600px;
   overflow-y: auto;
 }
 
@@ -297,4 +360,3 @@ a:hover{
 }
 
 </style>
-
