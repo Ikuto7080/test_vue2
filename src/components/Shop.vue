@@ -81,7 +81,7 @@
 
 <script>
 import axios from 'axios'
-import GmapCustomMarker from 'vue2-gmap-custom-marker'
+
 
 // import { use } from 'vue/types/umd'
 export default {
@@ -169,9 +169,6 @@ export default {
       selectedRestaurantIndexes(value){
         this.$store.commit('setCategories', value)
       }
-    },
-    components: {
-        'gmap-custom-marker':GmapCustomMarker,
     },mounted(){
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)

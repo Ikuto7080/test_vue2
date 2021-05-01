@@ -23,14 +23,14 @@
           </div>
       </GmapMap>
       <v-dialog v-if="activePost" v-model="isActive" scrollable="scrollable" @click:outside="display(null)" width="500px">
-        <!-- <Shop/> -->
+        <Shop/>
       </v-dialog>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-// import Shop from "./components/Shop";
+import Shop from "./components/Shop";
 import GmapCustomMarker from 'vue2-gmap-custom-marker'
 
 // import { use } from 'vue/types/umd'
@@ -122,7 +122,7 @@ export default {
     },
     components: {
         'gmap-custom-marker':GmapCustomMarker,
-        // Shop
+        Shop
     },mounted(){
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
@@ -189,16 +189,16 @@ export default {
             })
           }
         },
-            display(post){
-            this.activePost = post
-            if(this.activePost.google_place.info.opening_hours){
-              this.openings = this.activePost.google_place.info.opening_hours.weekday_text
-            }
-            if(this.activePost.google_place.info.reviews){
-              this.reviews = this.activePost.google_place.info.reviews
-            }
-            this.isActive = !this.isActive
-        },
+        //     display(post){
+        //     this.activePost = post
+        //     if(this.activePost.google_place.info.opening_hours){
+        //       this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+        //     }
+        //     if(this.activePost.google_place.info.reviews){
+        //       this.reviews = this.activePost.google_place.info.reviews
+        //     }
+        //     this.isActive = !this.isActive
+        // },
         goUrl(){
             document.location.href=this.activePost['permalink']
         },

@@ -37,9 +37,10 @@
           <v-list>
             <v-list-item v-if="!account">
               <v-list-title>
-                <a href="/login/">Sign In</a> 
+                <a href="/login/">Sign In</a>
               </v-list-title>
             </v-list-item>
+
             <v-list-item v-if="account">
               <v-list-title>
                 <a  href="/edit/">Edit Profile</a>
@@ -49,6 +50,45 @@
               <v-list-title>
                 <a href="/" @click="logout">LogOut</a>
               </v-list-title>
+            </v-list-item>
+            <v-list-item v-if="account">
+              <v-list-titlle>
+                <v-bottom-sheet
+                v-model="sheel"
+                inset>
+                  <template v-slot:activator="{on, attrs}">
+                    <a v-bind="attrs" v-on="on">
+                      Share
+                    </a>
+                  </template>
+                  <v-sheet
+                  class="text-center"
+                  height="200px"
+                  >
+                  <v-btn
+                  class="mt-6"
+                  text
+                  color="error"
+                  @click="sheet=!sheet"
+                  >
+                  close
+                  </v-btn>
+                  <div class="my-3">
+                    Please share this app to your friends!<br>
+                    You can enjoy to see your friends posts
+                    <v-row class="sosyal">
+                      <v-col>
+                        <!-- <v-btn small depressed="depressed" class="facebook white--text">Share with Facebook</v-btn> -->
+                        <v-btn class="white--text facebook mt-4" depressed="depressed" color="#495ead" small @click="shareFb"><i class="fab fa-facebook-square mr-2 fa-2x" style="size:100x;"></i>Share button</v-btn>
+                      </v-col>
+                      <v-col>
+                        <v-btn class="white--text line mt-4" depressed="depressed" color="#00C814" small @click="shareLine"><i class="fab fa-line mr-2 fa-2x"></i>Share button</v-btn>
+                      </v-col>
+                    </v-row>
+                  </div>
+                  </v-sheet>
+                </v-bottom-sheet>
+              </v-list-titlle>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -122,12 +162,34 @@ export default {
     },
     login(){
       this.$router.push('/login/')
+    },
+    shareFb(){
+      document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + String(this.account.line_user_id)
+    },
+    shareLine(){
+      document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/" + String(this.account.line_user_id)
     }
   }
 }
 </script>
 
 <style scoped>
+.line{
+  /* background-color: ; */
+}
+.line:hover{
+
+}
+.line:active{
+  top: 2px;
+	box-shadow: 0 2px 0 #007700;
+}
+
+.facebook:active {
+  top: 2px;
+	box-shadow: 0 2px 0 #1B3D82;
+}
+
 a {
   color: #000;
   text-decoration: none;
