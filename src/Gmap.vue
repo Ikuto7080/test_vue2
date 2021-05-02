@@ -16,14 +16,23 @@
           </v-row>
       </div>
       <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;">
-          <Shop/>
+        <div v-for="post in posts" :key="post.id" >
+          <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
+            <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
+          </gmap-custom-marker>
+        </div>
       </GmapMap>
+        <v-dialog v-if="activePost" v-model="isActive" scrollable="scrollable" @click:outside="display(null)" width="500px">
+          <Shop :post="activePost"/>
+        </v-dialog>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import GmapCustomMarker from 'vue2-gmap-custom-marker';
 import Shop from "./components/Shop";
+
 export default {
     data(){
         return {
@@ -111,7 +120,7 @@ export default {
       }
     },
     components: {
-        // 'gmap-custom-marker':GmapCustomMarker,
+        'gmap-custom-marker':GmapCustomMarker,
         Shop
     },mounted(){
       this.$store.state.categories.forEach(category => {
@@ -179,16 +188,16 @@ export default {
             })
           }
         },
-        //     display(post){
-        //     this.activePost = post
-        //     if(this.activePost.google_place.info.opening_hours){
-        //       this.openings = this.activePost.google_place.info.opening_hours.weekday_text
-        //     }
-        //     if(this.activePost.google_place.info.reviews){
-        //       this.reviews = this.activePost.google_place.info.reviews
-        //     }
-        //     this.isActive = !this.isActive
-        // },
+            display(post){
+            this.activePost = post
+            // if(this.activePost.google_place.info.opening_hours){
+            //   this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+            // }
+            // if(this.activePost.google_place.info.reviews){
+            //   this.reviews = this.activePost.google_place.info.reviews
+            // }
+            this.isActive = !this.isActive
+        },
         goUrl(){
             document.location.href=this.activePost['permalink']
         },

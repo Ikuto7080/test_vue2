@@ -1,7 +1,8 @@
 <template>
     <v-row>
         <v-col cols="12" sm="6" offset-sm="3">
-            <h1 style="text-align:center;">Profile<v-text-field label="First Name" v-model="account['user']['first_name']"></v-text-field>
+            <h1 style="text-align:center;">Profile
+                <v-text-field label="First Name" v-model="account['user']['first_name']"></v-text-field>
                 <v-text-field label="Last Name" v-model="account['user']['last_name']"></v-text-field>
                 <v-btn @click="updateProfile" depressed="depressed">Update<v-icon>mdi-pencil</v-icon>
                 </v-btn>

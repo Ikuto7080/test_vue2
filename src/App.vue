@@ -54,7 +54,7 @@
             <v-list-item v-if="account">
               <v-list-titlle>
                 <v-bottom-sheet
-                v-model="sheel"
+                v-model="sheet"
                 inset>
                   <template v-slot:activator="{on, attrs}">
                     <a v-bind="attrs" v-on="on">
@@ -137,6 +137,7 @@ export default {
     return {
       drawer:false,
       dialShare:false,
+      sheet:false,
       shareUrl: "https://app.quouze.com/invite/"
     }
   },computed: {

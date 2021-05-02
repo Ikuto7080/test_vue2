@@ -14,7 +14,12 @@
                   <div v-if="account">
                       <v-row no-gutters="no-gutters">
                           <v-col class="subtitle-2 grey--text lighten-4" cols="12">Name</v-col>
-                          <v-col cols="12">{{account['user']['last_name']}} {{account['user']['first_name']}}</v-col>
+                          <v-col cols="12">
+                            <v-text-field label="First Name" v-model="account['user']['first_name']"></v-text-field>  
+                            <v-text-field label="Last Name" v-model="account['user']['last_name']"></v-text-field>
+                            <v-btn @click="updateProfile" depressed="depressed" small >Update<v-icon>mdi-pencil
+                          </v-icon>
+                            </v-btn></v-col>
                       </v-row>
                   </div>
 
@@ -167,7 +172,19 @@ export default {
         },
         shareFb(){
           document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + String(this.account.line_user_id) + '?user_ids=' 
-        }
+        },
+         updateProfile(){
+             axios
+             .patch('/users/' + this.account.user.id + '/',{
+                 first_name: this.account['user']['first_name'],
+                 last_name: this.account['user']['last_name']
+             }
+             )
+             .then(resp => {
+                 this.account.user = resp.data
+                 this.$store.commit('setAccount', this.account)
+             })
+         }
       }
 }
 </script>
