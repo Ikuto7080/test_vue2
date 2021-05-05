@@ -11,12 +11,13 @@
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
+
                   </v-sheet>
               </v-col>
           </v-row>
       </div>
       <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;">
-        <div v-for="post in posts" :key="post.id" >
+        <div v-for="post in shops" :key="post.id" >
           <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
             <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
           </gmap-custom-marker>
@@ -55,7 +56,8 @@ export default {
             categories:[],
             userItems: [],
             pickedUsers: [],
-            activeUsers: []
+            activeUsers: [],
+            openOnly:true,
         }
     },
     computed:{
@@ -94,7 +96,16 @@ export default {
           restaurants.push(this.categoryItems[index])
         })
         return restaurants
-      }
+      },
+      shops(){
+        if(!this.openOnly){
+          return this.posts
+        }
+        return this.posts.filter(() => {
+          let isopen = true
+          return isopen
+        })
+      },
     },
     watch:{
       activeUsers(val){
