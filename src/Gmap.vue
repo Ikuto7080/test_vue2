@@ -108,8 +108,10 @@ export default {
         var now = new Date()
         var hours = now.getHours()
         var minutes = now.getMinutes()
-
-        var openingTimes = this.posts[0]
+        if(this.posts.length == 0) {
+          return []
+        }
+        
         console.log(openingTimes)
         // console.log(openingTime)
 
@@ -121,9 +123,20 @@ export default {
         if(!this.openOnly){
           return this.posts
         }
-        return this.posts.filter(() => {
-          let isopen = true
-          return isopen
+        return this.posts.filter(post => {
+          var openingTimes = post.google_place.info.opening_hours.periods
+          for(openingTime in  openingTimes) {
+            let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            return isopen
+          }
+          for(openingTime in  openingTimes) {
+            let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            return isopen
+          }
+          // closedもやる
+
+          
+          
         })
       },
     },
