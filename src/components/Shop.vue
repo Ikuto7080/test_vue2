@@ -1,6 +1,6 @@
 <template>
   <v-row class="card" justify="center">
-      <v-card class="mx-auto mb-3" style="z-index:100; " v-if="post">
+      <v-card class="mx-auto mb-3 px-3" style="z-index:100; " v-if="post">
           <v-card-title class="mx-2 mt-2">{{ post.google_place.info.name }}</v-card-title>
           <v-list class="v-list px-2">
               <v-list-item-group>
@@ -85,12 +85,6 @@ export default {
     },
     computed:{
       reviews(){
-            // if(!this.post){
-            //   return []
-            // }
-            // if(!this.post.google_place.info){
-            //   return []
-            // }
             try {
               return this.post.google_place.info.reviews
             }
@@ -106,7 +100,6 @@ export default {
               return []
             }
       }
-    
     },
     methods:{
         goUrl(){
@@ -127,10 +120,9 @@ export default {
 }
 .img{
     width: 75px;
-    height: 70px;
+    height: 75px;
     border: 4px solid #FFFFFF;
     border-radius: 50%;
-    display: fixed;
 }
 
 .card{

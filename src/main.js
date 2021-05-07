@@ -7,9 +7,9 @@ import vuetify from './plugins/vuetify';
 import store from './store'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import GmapCluster from "gmap-vue/dist/components/cluster";
+import ReadMore from 'vue-read-more';
 
-
-
+Vue.use(ReadMore)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCh-n6Zenl66RuVS6c9N4xEKKG9-boLa7I',

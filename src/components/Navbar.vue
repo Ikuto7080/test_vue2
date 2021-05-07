@@ -1,8 +1,8 @@
 <template>
   <div>
-      <v-navigation-drawer 
-      app 
-      v-model="drawer" 
+      <v-navigation-drawer
+      app
+      v-model="drawer"
       class="pink">
         <v-list-item>
           <v-list-item-title class="title">
