@@ -109,7 +109,7 @@ export default {
         var hours = now.getHours()
         var minutes = now.getMinutes()
 
-        var openingTimes = this.posts[0].google_place.info.opening_hours.weekday_text
+        var openingTimes = this.posts[0]
         console.log(openingTimes)
         // console.log(openingTime)
 
