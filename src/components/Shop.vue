@@ -4,7 +4,7 @@
           <v-card-title class="mx-2 mt-2">{{ post.google_place.info.name }}</v-card-title>
           <v-list class="v-list px-2">
               <v-list-item-group>
-                <v-img height="500" :src="post.images[0].url"></v-img>
+                <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
                   <v-list-item>
                       <v-list-item-content>
                           <v-list-item-title>SNS commets</v-list-item-title>
