@@ -11,7 +11,14 @@
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
-
+                      <!-- <v-chip-group
+                      multiple
+                      active-class="red">
+                          <v-chip
+                          @click="isOpen">
+                            
+                          </v-chip>
+                      </v-chip-group> -->
                   </v-sheet>
               </v-col>
           </v-row>
@@ -98,6 +105,19 @@ export default {
         return restaurants
       },
       shops(){
+        var now = new Date()
+        var hours = now.getHours()
+        var minutes = now.getMinutes()
+
+        var openingTimes = this.posts[0].google_place.info.opening_hours.weekday_text
+        console.log(openingTimes)
+        // console.log(openingTime)
+
+        console.log(hours)
+        console.log(minutes)
+        // console.log(this.posts[0].google_place)
+        // var moment = require('moment')
+        // this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
         if(!this.openOnly){
           return this.posts
         }
@@ -231,6 +251,8 @@ export default {
           }else{
             this.activeUsers.push(item)
           }
+        },isopen(){
+          
         }
     }
 

@@ -116,10 +116,7 @@ export default {
             catch {
               return []
             }
-      },
-    //   isopen(){
-
-    //   }
+      }
     },
     methods:{
         goUrl(){

@@ -15,6 +15,7 @@
     "core-js": "^3.6.5",
     "express": "^4.17.1",
     "marker-clusterer-plus": "^2.1.4",
+    "moment": "^2.29.1",
     "pug": "^3.0.0",
     "puppeteer": "^8.0.0",
     "puppeteer-core": "^8.0.0",
