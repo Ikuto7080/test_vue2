@@ -184,6 +184,9 @@ export default {
                  this.account.user = resp.data
                  this.$store.commit('setAccount', this.account)
              })
+             .catch(e => {
+                 alert(e.response.data)
+             })
          }
       }
 }

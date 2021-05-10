@@ -1,6 +1,21 @@
 <template>
   <v-row class="card" justify="center">
       <v-card class="mx-auto mb-3 px-3" style="z-index:100; " v-if="post">
+          <v-card-title>
+              <div class="ml-3">
+                <v-btn
+                icon
+                dark
+                color="#808080"
+                class=""
+                @click="isActive=false">
+                    <v-icon>mdi-close</v-icon>
+                    <div>
+                        close
+                    </div>
+                </v-btn>
+              </div>
+          </v-card-title>
           <v-card-title class="mx-2 mt-2">{{ post.google_place.info.name }}</v-card-title>
           <v-list class="v-list px-2">
               <v-list-item-group>
@@ -81,7 +96,7 @@
 export default {
     props:['post'],
     data(){
-      return {}
+      return {dialog:false}
     },
     computed:{
       reviews(){
