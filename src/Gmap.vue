@@ -30,7 +30,6 @@
                           <!-- @click="isOpen" -->
                             {{cityStateItem}}
                           </v-chip>
-                          {{selectedCityIndexes}}
                       </v-chip-group>
                   </v-sheet>
               </v-col>
