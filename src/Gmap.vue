@@ -5,20 +5,33 @@
           <v-row align="center">
               <v-col cols="12">
                   <v-sheet elevation="10">
-                      <v-autocomplete :items="followingsItems" item-text="text" v-model="pickedUsers" chips="chips" label="Filter by friends" dense="dense" outlined="outlined" multiple="multiple" hide-details="hide-details"><template v-slot:selection="user">
-                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="remove(user.item)" close="close">{{user.item.text }}</v-chip>
+                      <v-autocomplete :items="followingsItems" item-text="text" v-model="pickedUsers" chips label="Filter by friends" dense outlined multiple hide-details>
+                        <template v-slot:selection="user">
+                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="remove(user.item)" close="close">
+                                <v-avatar left>
+                                  <!-- <v-img :src="account.profile_picture"></v-img> -->
+                                </v-avatar>
+                                {{ user.item }}
+                              </v-chip>
                           </template></v-autocomplete>
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
-                      <!-- <v-chip-group
+                      <v-chip-group
                       multiple
-                      active-class="red">
+                      active-class="red"
+                      v-model="selectedCityIndexes"
+                      >
                           <v-chip
-                          @click="isOpen">
-                            
+                          v-for='cityStateItem in cityStateItems'
+                          :key="cityStateItem"
+                          :items='cityStateItems'
+                          >
+                          <!-- @click="isOpen" -->
+                            {{cityStateItem}}
                           </v-chip>
-                      </v-chip-group> -->
+                          {{selectedCityIndexes}}
+                      </v-chip-group>
                   </v-sheet>
               </v-col>
           </v-row>
@@ -61,6 +74,8 @@ export default {
             selectedRestaurantIndexes:[],
             loading:false,
             categories:[],
+            cityStates:[],
+            selectedCityIndexes:[],
             userItems: [],
             pickedUsers: [],
             activeUsers: [],
@@ -76,8 +91,6 @@ export default {
         let followings = this.followings.map(profile=>{
           return {text: profile.user.first_name, value: profile.user.id}
         })
-        console.log(this.followings)
-        console.log([ownItem, ...followings])
         return [ownItem, ...followings]
       },
       selectedUsers(){
@@ -92,6 +105,7 @@ export default {
         if(!this.categories){
           return []
         }
+        console.log(this.categories)
         let categoryType = this.categories.map(restaurant => {
           return restaurant['categories']
         })
@@ -104,22 +118,38 @@ export default {
         })
         return restaurants
       },
+      cityStateItems(){
+        if(!this.posts){
+          return []
+        }
+        let cityType = this.citystates.map(cityName => {
+          return cityName['city_state']
+        })
+        return cityType
+      },
+      selectedCityStates(){
+        let states = []
+        this.selectedCityIndexes.forEach(index => {
+          states.push(this.cityStateItems[index])
+        })
+        return states
+      },
       shops(){
-        var now = new Date()
-        var hours = now.getHours()
-        var minutes = now.getMinutes()
+        // var now = new Date()
+        // var hours = now.getHours()
+        // var minutes = now.getMinutes()
 
-        var openingTimes = this.posts[0].google_place.info.opening_hours.weekday_text
-        console.log(openingTimes)
+        // var openingTimes = this.posts[0].google_place.info.opening_hours.weekday_text
+        // console.log(openingTimes)
         // console.log(openingTime)
 
-        console.log(hours)
-        console.log(minutes)
+        // console.log(hours)
+        // console.log(minutes)
         // console.log(this.posts[0].google_place)
         // var moment = require('moment')
         // this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
         if(!this.openOnly){
-          return this.posts
+          // return this.posts
         }
         return this.posts.filter(() => {
           let isopen = true
@@ -148,6 +178,13 @@ export default {
       },
       selectedRestaurantIndexes(value){
         this.$store.commit('setCategories', value)
+      },
+      selectedCityStates(val){
+        let states = val.join(',')
+        this.$router.push({
+          query:{ city_state: states}
+        })
+        this.getCityState(states)
       }
     },
     components: {
@@ -174,8 +211,12 @@ export default {
         axios
         .get('/categories/')
         .then((resp) => {
-          console.log(resp.data)
           this.categories = resp.data
+        })
+        axios
+        .get('/citystates/')
+        .then((resp) => {
+          this.citystates = resp.data
         })
     },methods:{
         userSelected(userId){
@@ -219,21 +260,36 @@ export default {
             })
           }
         },
-            display(post){
-            this.activePost = post
-            // if(this.activePost.google_place.info.opening_hours){
-            //   this.openings = this.activePost.google_place.info.opening_hours.weekday_text
-            // }
-            // if(this.activePost.google_place.info.reviews){
-            //   this.reviews = this.activePost.google_place.info.reviews
-            // }
-            this.isActive = !this.isActive
+        getCityState(cityStatesName=null){
+          if(cityStatesName){
+            axios
+            .get('/feeds/?city_state=' + cityStatesName)
+            .then((resp) => {
+              this.posts = resp.data
+            })
+          }
+          else{
+            axios
+            .get('/feeds/')
+            .then((resp) => {
+              this.posts = resp.data
+            })
+          }
+        },
+          display(post){
+          this.activePost = post
+          // if(this.activePost.google_place.info.opening_hours){
+          //   this.openings = this.activePost.google_place.info.opening_hours.weekday_text
+          // }
+          // if(this.activePost.google_place.info.reviews){
+          //   this.reviews = this.activePost.google_place.info.reviews
+          // }
+          this.isActive = !this.isActive
         },
         goUrl(){
             document.location.href=this.activePost['permalink']
         },
         remove(item) {
-          console.log(item)
           const index = this.pickedUsers.indexOf(item.value)
           if (index >= 0)this.pickedUsers.splice(index, 1)
         },

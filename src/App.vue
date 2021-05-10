@@ -36,23 +36,23 @@
 
           <v-list>
             <v-list-item v-if="!account">
-              <v-list-title>
+              <v-list-item-title>
                 <a href="/login/">Sign In</a>
-              </v-list-title>
+              </v-list-item-title>
             </v-list-item>
 
             <v-list-item v-if="account">
-              <v-list-title>
+              <v-list-item-title>
                 <a  href="/edit/">Edit Profile</a>
-              </v-list-title>
+              </v-list-item-title>
             </v-list-item>
             <v-list-item v-if="account">
-              <v-list-title>
+              <v-list-item-title>
                 <a href="/" @click="logout">LogOut</a>
-              </v-list-title>
+              </v-list-item-title>
             </v-list-item>
             <v-list-item v-if="account">
-              <v-list-titlle>
+              <v-list-item-title>
                 <v-bottom-sheet
                 v-model="sheet"
                 inset>
@@ -88,7 +88,7 @@
                   </div>
                   </v-sheet>
                 </v-bottom-sheet>
-              </v-list-titlle>
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
