@@ -17,94 +17,77 @@
               </div>
           </v-card-title>
           <v-card-title class="mx-2 mt-2">{{ post.google_place.info.name }}</v-card-title>
-          <v-card-content>
-            <v-list flat="false">
-                <v-img height="500" :src="post.images[0].url"></v-img>
-                <v-list-item :ripple="false" :link="false">
-                    <v-list-item-content>
-                        <v-list-item-title>SNS commets</v-list-item-title>
-                            <div if="post.message" class="subtitle-2">
-                                <read-more more-str="read more" :text="post.message" less-str="read less" :max-chars="50" class="mb-3"></read-more>
-                            </div>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item :ripple="false">
-                    <v-list-item-content>
-
-                        <div class="rating-content">
-                            <div class="rating-item">
-                                <v-list-item-title>rating</v-list-item-title>
-                                <v-list-item-subtitle>
-                                    <v-rating color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments="half-increments" length="5" :value="post.google_place.info.rating" readonly></v-rating>
-                                </v-list-item-subtitle>
-                            </div>
-                            <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
-                               <v-list-item-avatar>
-                                 <v-img class="img" :src="review.profile_photo_url"></v-img>
-                               </v-list-item-avatar>
-                                <v-list-item-content>
-                                  <read-more more-str="read more" :text="review.text" less-str="read less" :max-chars="100" class="mb-3"></read-more>
-                                </v-list-item-content>
-                            </div>
-                        </div>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item :ripple="false" v-if="post.google_place.info.price_level">
-                    <v-list-item-content>
-                        <v-list-item-title>price</v-list-item-title>
-                        <v-list-item-subtitle>
-                            <v-rating :value="post.google_place.info.price_level" readonly>
-                                <template v-slot:item="props">
-                                    <v-icon
-                                    :color="props.isFilled? 'yellow darken-3' : 'grey darken-1'"
-                                    >
-                                        {{ props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd' }}
-                                    </v-icon>
-                                </template>
-                            </v-rating>
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item v-if="openings.length > 0" :ripple="false">
-                    <v-list-item-content>
-                        <v-list-item-title class="pb-2">Opening Hours</v-list-item-title>
-                        <v-list-item-subtitle>
-                            <ul v-for="opening in openings" :key="opening">
-                                <li>{{ opening }}</li>
-                            </ul>
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item :ripple="false">
-                    <v-list-item-content>
-                        <v-list-item-title>Regular holiday</v-list-item-title>
-                        <v-list-item-subtitle>None</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item :ripple="false">
-                    <v-list-item-content>
-                        <v-list-item-title>Phone</v-list-item-title>
-                        <v-list-item-subtitle>+ {{ post.google_place.info['formatted_phone_number'] }}</v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-divider></v-divider>
-                <v-list-item :ripple="false">
-                    <v-list-item-content>
-                        <v-list-item-title>HP URL</v-list-item-title>
-                        <v-list-item-subtitle><a :href="post.google_place.info['website']">{{ post.google_place.info['website'] }}</a></v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item :ripple="false">
-                    <v-list-item-content>
-                        <v-list-item-title>Instagram URL</v-list-item-title>
-                        <v-list-item-subtitle><a :href="post.permalink">{{ post.permalink }}</a></v-list-item-subtitle>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list>
-          </v-card-content>
+          <v-list class="v-list px-2">
+              <v-list-item-group>
+                <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>SNS commets</v-list-item-title>
+                              <div if="post.message" class="subtitle-2">{{post.message}}</div>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <div class="rating-content">
+                              <div class="rating-item">
+                                  <v-list-item-title>rating</v-list-item-title>
+                                  <v-list-item-subtitle>
+                                      <v-rating color="yellow darken-3" background-color="grey darken-1" empty-icon="$ratingFull" half-increments="half-increments" length="5" :value="post.google_place.info.rating"></v-rating>
+                                  </v-list-item-subtitle>
+                              </div>
+                              <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
+                                  <v-img class="img" :src="review.profile_photo_url"></v-img>
+                                  <p>{{review.text}}</p>
+                              </div>
+                          </div>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>price</v-list-item-title>
+                          <v-list-item-subtitle></v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item v-if="openings.length > 0">
+                      <v-list-item-content>
+                          <v-list-item-title>Opening Hours</v-list-item-title>
+                          <v-list-item-subtitle>
+                              <ul v-for="opening in openings" :key="opening">
+                                  <li>{{ opening }}</li>
+                              </ul>
+                          </v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>Regular holiday</v-list-item-title>
+                          <v-list-item-subtitle>None</v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>Phone</v-list-item-title>
+                          <v-list-item-subtitle>+ {{ post.google_place.info['formatted_phone_number'] }}</v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-divider></v-divider>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>HP URL</v-list-item-title>
+                          <v-list-item-subtitle><a :href="post.google_place.info['website']">{{ post.google_place.info['website'] }}</a></v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                      <v-list-item-content>
+                          <v-list-item-title>Instagram URL</v-list-item-title>
+                          <v-list-item-subtitle><a :href="post.permalink">{{ post.permalink }}</a></v-list-item-subtitle>
+                      </v-list-item-content>
+                  </v-list-item>
+              </v-list-item-group>
+          </v-list>
       </v-card>
   </v-row>
 </template>

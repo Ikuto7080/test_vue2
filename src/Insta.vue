@@ -24,7 +24,7 @@
             this.$store.commit('setAccount', resp.data)
             axios.defaults.headers.common['Authorization'] = 'Token ' + resp.data.token
             localStorage.setItem("account", JSON.stringify(resp.data))
-            this.$router.push('/profile/')
+            this.$router.push('/gmap/')
           })
       }
     }

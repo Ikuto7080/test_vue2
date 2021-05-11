@@ -11,7 +11,7 @@
                                 <v-avatar left>
                                   <!-- <v-img :src="account.profile_picture"></v-img> -->
                                 </v-avatar>
-                                {{ user.item }}
+                                {{ user.item.text }}
                               </v-chip>
                           </template></v-autocomplete>
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
@@ -118,15 +118,17 @@ export default {
         return restaurants
       },
       cityStateItems(){
-        if(!this.posts){
+        console.log('cityStateItems')
+        if(!this.cityStates){
           return []
         }
-        let cityType = this.citystates.map(cityName => {
+        let cityType = this.cityStates.map(cityName => {
           return cityName['city_state']
         })
         return cityType
       },
       selectedCityStates(){
+        console.log('selectedCityStates(computed)')
         let states = []
         this.selectedCityIndexes.forEach(index => {
           states.push(this.cityStateItems[index])
@@ -137,22 +139,34 @@ export default {
         // var now = new Date()
         // var hours = now.getHours()
         // var minutes = now.getMinutes()
-
-        // var openingTimes = this.posts[0].google_place.info.opening_hours.weekday_text
-        // console.log(openingTimes)
-        // console.log(openingTime)
-
+        if(this.posts.length == 0) {
+          return []
+        }
         // console.log(hours)
         // console.log(minutes)
-        // console.log(this.posts[0].google_place)
         // var moment = require('moment')
         // this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
         if(!this.openOnly){
           // return this.posts
         }
         return this.posts.filter(() => {
-          let isopen = true
-          return isopen
+          return true
+          // if (!post.google_place.info.opening_hours){
+          //   return []
+          // }
+          // var openingTimes = post.google_place.info.opening_hours.periods
+          // for(openingTime in  openingTimes) {
+          //   console.log(openingTime)
+          //   console.log(moment)
+            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            // return isopen
+          // }
+          // for(var openingTime in  openingTimes) {
+          //   console.log(openingTime)
+            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            // return isopen
+          // }
+          // closedもやる
         })
       },
     },
@@ -179,6 +193,7 @@ export default {
         this.$store.commit('setCategories', value)
       },
       selectedCityStates(val){
+        console.log('selectedCityStates(watcher)')
         let states = val.join(',')
         this.$router.push({
           query:{ city_state: states}
@@ -215,7 +230,7 @@ export default {
         axios
         .get('/citystates/')
         .then((resp) => {
-          this.citystates = resp.data
+          this.cityStates = resp.data
         })
     },methods:{
         userSelected(userId){
