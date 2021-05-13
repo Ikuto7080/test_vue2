@@ -22,13 +22,15 @@
                 <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
                   <v-list-item>
                       <v-list-item-content>
-                          <v-list-item-title>SNS commets</v-list-item-title>
+                          <v-list-item-title>SNS commets(by facebook)</v-list-item-title>
                               <div if="post.message" class="subtitle-2">{{post.message}}</div>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
                   <v-list-item>
                       <v-list-item-content>
+                          <v-list-item-title class="pb-3">Google infomation</v-list-item-title>
+                          <v-divider></v-divider>
                           <div class="rating-content">
                               <div class="rating-item">
                                   <v-list-item-title>rating</v-list-item-title>
