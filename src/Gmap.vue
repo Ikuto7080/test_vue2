@@ -26,20 +26,11 @@
                           </v-chip>
                         </template>
                       </v-autocomplete>
-
-                      <!-- <v-chip-group
-                      multiple
-                      active-class="red"
-                      v-model="selectedCityIndexes"
+                      <v-chip
+                      @click="isOpen"
                       >
-                          <v-chip
-                          v-for='cityStateItem in cityStateItems'
-                          :key="cityStateItem"
-                          :items='cityStateItems'
-                          >
-                            {{cityStateItem}}
-                          </v-chip>
-                      </v-chip-group> -->
+                        isOpen
+                      </v-chip>
                   </v-sheet>
               </v-col>
           </v-row>
@@ -139,39 +130,7 @@ export default {
         if(this.posts.length == 0) {
           return []
         }
-
-        return this.posts.filter(post => {
-          if (!post.google_place.info.opening_hours){
-            return []
-          }
-          let openTime = post.google_place.info.opening_hours.periods.map(
-            start => start.open
-          )
-          let closeTime = post.google_place.info.opening_hours.periods.map(
-            close => close.close
-          )
-
-          var now = new Date()
-          var hours = now.getHours()
-          var minutes = now.getMinutes()
-          var moment = require('moment')
-          var thisWeekday = now.getDay()
-          if(thisWeekday >= 1){
-            thisWeekday = now.getDay() -1
-          } else {
-            thisWeekday = 6
-          }
-          let openHours = openTime[thisWeekday].time.split('').slice(0,2).join('')
-          let openMinutes = openTime[thisWeekday].time.split('').slice(2).join('')
-          let closeHours = closeTime[thisWeekday].time.split('').slice(0,2).join('')
-          let closeMinutes = closeTime[thisWeekday].time.split('').slice(2).join('')
-          let currentTime = hours + ':' + minutes
-          let businessOpenTime = openHours + ':' + openMinutes
-          let businessCloseTime = closeHours + ':' + closeMinutes
-          let today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' '
-          let isopen = moment(today + currentTime).isBetween(today + businessOpenTime, today + businessCloseTime, 'minute')
-          return isopen
-        })
+        return this.posts
       },
     },
     watch:{
@@ -340,8 +299,51 @@ export default {
             this.activeCities.push(item)
           }
         },
-        isopen(){
-          
+        isOpen(){
+        return this.posts.filter(post => {
+          if (!post.google_place.info.opening_hours){
+            return []
+          }
+          let openTime = post.google_place.info.opening_hours.periods.map(
+            start => start.open
+          )
+          let closeTime = post.google_place.info.opening_hours.periods.map(
+            close => close.close
+          )
+
+          var now = new Date()
+          var hours = now.getHours()
+          var minutes = now.getMinutes()
+          var moment = require('moment')
+          moment.suppressDeprecationWarnings = true
+          var thisWeekday = now.getDay()
+          if(thisWeekday >= 1){
+            thisWeekday = now.getDay() -1
+          } else {
+            thisWeekday = 6
+          }
+          let openHours = openTime[thisWeekday].time.split('').slice(0,2).join('')
+          let openMinutes = openTime[thisWeekday].time.split('').slice(2).join('')
+          let closeHours = closeTime[thisWeekday].time.split('').slice(0,2).join('')
+          let closeMinutes = closeTime[thisWeekday].time.split('').slice(2).join('')
+          let currentTime = hours + ':' + minutes
+          let businessOpenTime = openHours + ':' + openMinutes
+          let businessCloseTime = closeHours + ':' + closeMinutes
+          let today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' '
+          // let year = moment(new Date).format('YYYY-MM-DD HH:mm')
+          // console.log(today + currentTime)
+          // console.log(today + businessOpenTime)
+          // console.log(today + businessCloseTime)
+          let isopen = moment(today + currentTime).isBetween(today + businessOpenTime, today + businessCloseTime, 'minute')
+          if(isopen){
+            console.log(post)
+            this.shops = post
+            return this.shops
+          }else{
+            console.log('else')
+            return []
+          }
+        })
         }
     }
 
