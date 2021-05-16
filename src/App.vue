@@ -100,6 +100,8 @@
     <!-- start of v-main -->
     <v-main class="pt-0 pb-0">
       <v-container fill-height >
+        <About name="トートバッっぐ" />
+        <About name="バックパック" />
         <!-- dial Share -->
         <v-speed-dial
           v-model="dialShare"
@@ -131,6 +133,7 @@
 </template>
 
 <script>
+import About from './views/About'
 export default {
   name: 'Navbar',
   data(){
@@ -140,7 +143,11 @@ export default {
       sheet:false,
       shareUrl: "https://app.quouze.com/invite/"
     }
-  },computed: {
+  },
+  components: {
+    About,
+  },
+  computed: {
     account() {
       return this.$store.state.account
     },

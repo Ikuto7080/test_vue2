@@ -8,7 +8,7 @@
                 dark
                 color="#808080"
                 class=""
-                @click="isActive=false">
+                @click="close">
                     <v-icon>mdi-close</v-icon>
                     <div>
                         close
@@ -23,7 +23,10 @@
                   <v-list-item>
                       <v-list-item-content>
                           <v-list-item-title>SNS commets(by facebook)</v-list-item-title>
-                              <div if="post.message" class="subtitle-2">{{post.message}}</div>
+                              <div if="post.message" class="subtitle-2">
+                                   <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
+                                  
+                              </div>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
@@ -39,8 +42,9 @@
                                   </v-list-item-subtitle>
                               </div>
                               <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
-                                  <v-img class="img" :src="review.profile_photo_url"></v-img>
-                                  <p>{{review.text}}</p>
+                                  <read-more more-str="read more" :text="review.text" less-str="read less" :max-chars="50"></read-more>
+                                  <!-- <v-img class="img" :src="review.profile_photo_url"></v-img>
+                                  <p>{{review.text}}</p> -->
                               </div>
                           </div>
                       </v-list-item-content>
@@ -96,7 +100,7 @@
 
 <script>
 export default {
-    props:['post'],
+    props:['post', 'active'],
     data(){
       return {dialog:false}
     },
@@ -121,6 +125,9 @@ export default {
     methods:{
         goUrl(){
             document.location.href=this.post['permalink']
+        },
+        close(){
+            this.active = !this.active
         }
     }
 
