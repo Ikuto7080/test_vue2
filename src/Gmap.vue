@@ -9,7 +9,7 @@
                         <template v-slot:selection="user">
                               <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="remove(user.item)" close="close">
                                 <v-avatar left>
-                                  <!-- <v-img :src="account.profile_picture"></v-img> -->
+                                  <v-img :src="account.profile_picture"></v-img>
                                 </v-avatar>
                                 {{ user.item.text }}
                               </v-chip>
@@ -118,56 +118,57 @@ export default {
         return restaurants
       },
       cityStateItems(){
-        if(!this.posts){
+        console.log('cityStateItems')
+        if(!this.cityStates){
           return []
         }
-        let cityType = this.citystates.map(cityName => {
+        let cityType = this.cityStates.map(cityName => {
           return cityName['city_state']
         })
         return cityType
       },
       selectedCityStates(){
+        console.log('selectedCityStates(computed)')
         let states = []
         this.selectedCityIndexes.forEach(index => {
           states.push(this.cityStateItems[index])
         })
         return states
       },
-      // shops(){
-      //   var now = new Date()
-      //   var hours = now.getHours()
-      //   var minutes = now.getMinutes()
-      //   if(this.posts.length == 0) {
-      //     return []
-      //   }
-        
-      //   console.log(openingTimes)
-      //   console.log(openingTime)
-
-      //   console.log(hours)
-      //   console.log(minutes)
-      //   console.log(this.posts[0].google_place)
-      //   var moment = require('moment')
-      //   this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-      //   if(!this.openOnly){
-      //     return this.posts
-      //   }
-      //   return this.posts.filter(post => {
-      //     var openingTimes = post.google_place.info.opening_hours.periods
-      //     for(openingTime in  openingTimes) {
-      //       let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-      //       return isopen
-      //     }
-      //     for(openingTime in  openingTimes) {
-      //       let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-      //       return isopen
-      //     }
-      //     closedもやる
-
-          
-          
-      //   })
-      // },
+      shops(){
+        // var now = new Date()
+        // var hours = now.getHours()
+        // var minutes = now.getMinutes()
+        if(this.posts.length == 0) {
+          return []
+        }
+        // console.log(hours)
+        // console.log(minutes)
+        // var moment = require('moment')
+        // this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+        if(!this.openOnly){
+          // return this.posts
+        }
+        return this.posts.filter(() => {
+          return true
+          // if (!post.google_place.info.opening_hours){
+          //   return []
+          // }
+          // var openingTimes = post.google_place.info.opening_hours.periods
+          // for(openingTime in  openingTimes) {
+          //   console.log(openingTime)
+          //   console.log(moment)
+            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            // return isopen
+          // }
+          // for(var openingTime in  openingTimes) {
+          //   console.log(openingTime)
+            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
+            // return isopen
+          // }
+          // closedもやる
+        })
+      },
     },
     watch:{
       activeUsers(val){
@@ -192,6 +193,7 @@ export default {
         this.$store.commit('setCategories', value)
       },
       selectedCityStates(val){
+        console.log('selectedCityStates(watcher)')
         let states = val.join(',')
         this.$router.push({
           query:{ city_state: states}
@@ -228,7 +230,7 @@ export default {
         axios
         .get('/citystates/')
         .then((resp) => {
-          this.citystates = resp.data
+          this.cityStates = resp.data
         })
     },methods:{
         userSelected(userId){
