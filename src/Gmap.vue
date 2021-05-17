@@ -28,6 +28,7 @@
                       </v-autocomplete>
                       <v-chip
                       @click="isOpen"
+                      :class="red"
                       >
                         isOpen
                       </v-chip>
@@ -79,6 +80,7 @@ export default {
             pickedUsers: [],
             activeUsers: [],
             activeCities:[],
+            openShops: [],
             openOnly:true,
         }
     },
@@ -330,19 +332,13 @@ export default {
           let businessOpenTime = openHours + ':' + openMinutes
           let businessCloseTime = closeHours + ':' + closeMinutes
           let today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' '
-          // let year = moment(new Date).format('YYYY-MM-DD HH:mm')
-          // console.log(today + currentTime)
-          // console.log(today + businessOpenTime)
-          // console.log(today + businessCloseTime)
           let isopen = moment(today + currentTime).isBetween(today + businessOpenTime, today + businessCloseTime, 'minute')
           if(isopen){
-            console.log(post)
-            this.shops = post
-            return this.shops
-          }else{
-            console.log('else')
-            return []
+            this.openShops.push(post)
+            this.posts = this.openShops
           }
+          console.log(this.posts)
+          return this.posts
         })
         }
     }

@@ -22,7 +22,22 @@
                 <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
                   <v-list-item>
                       <v-list-item-content>
-                          <v-list-item-title>SNS commets(by facebook)</v-list-item-title>
+                          <v-list-item-title>
+                              <v-avatar
+                              size="36px"
+                              >
+                                <img :src="account.profile_picture">
+                              </v-avatar>
+                            <v-icon
+                            v-if="post.type=facebook"
+                            >mdi-facebook</v-icon>
+                            <v-icon
+                            large
+                            v-else
+                            >mdi-instagram
+                            </v-icon>
+                              SNS commets
+                          </v-list-item-title>
                               <div if="post.message" class="subtitle-2">
                                    <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
                                   
@@ -102,7 +117,10 @@
 export default {
     props:['post', 'active'],
     data(){
-      return {dialog:false}
+      return {
+          dialog:false,
+          account:null,
+          }
     },
     computed:{
       reviews(){
@@ -121,6 +139,8 @@ export default {
               return []
             }
       }
+    },mounted(){
+        this.account = this.$store.state.account
     },
     methods:{
         goUrl(){
