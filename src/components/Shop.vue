@@ -57,7 +57,9 @@
                               <template v-slot:item="props">
                                   <v-list-item-subtitle>
                                 <v-icon
-                                :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">{{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}</v-icon>
+                                :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">
+                                {{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}
+                                </v-icon>
                               </v-list-item-subtitle>
                               </template>
                           </v-rating>
