@@ -68,7 +68,14 @@
                   <v-list-item>
                       <v-list-item-content>
                           <v-list-item-title>price</v-list-item-title>
-                          <v-list-item-subtitle></v-list-item-subtitle>
+                          <v-rating :value="post.google_place.info.price_level" readonly>
+                              <template v-slot:item="props">
+                                  <v-list-item-subtitle>
+                                <v-icon
+                                :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">{{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}</v-icon>
+                              </v-list-item-subtitle>
+                              </template>
+                          </v-rating>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>

@@ -5,31 +5,73 @@
           <v-row align="center">
               <v-col cols="12">
                   <v-sheet elevation="10">
-                      <v-autocomplete :items="followingsItems" item-text="text" v-model="pickedUsers" chips label="Filter by friends" dense outlined multiple hide-details>
-                        <template v-slot:selection="user">
-                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="removeSelectedUser(user.item)" close>
-                                <v-avatar left>
-                                  <!-- <v-img :src="account.profile_picture"></v-img> -->
-                                </v-avatar>
-                                {{ user.item.text }}
-                              </v-chip>
-                          </template>
-                      </v-autocomplete>
+                    <v-autocomplete
+                    v-model="pickedUsers"
+                    :items="followings"
+                    item-text="user.first_name"
+                    item-value="user.id"
+                    multiple
+                    chips
+                    >
+                      <template v-slot:selection="data">
+                        <v-chip
+                          v-bind="data.attrs"
+                          :input-value="data.selected"
+                          close
+                          @click="data.select"
+                          @click:close="remove(data.item)"
+                        >
+                          <v-avatar left>
+                            <v-img :src="data.item.profile_picture"></v-img>
+                          </v-avatar>
+                          {{ data.item.user.first_name }} {{ data.item.user.last_name }}
+                        </v-chip>
+                      </template>
+                      <template v-slot:item="data">
+                        <template v-if="typeof data.item !== 'object'">
+                          <v-list-item-content v-text="data.item"></v-list-item-content>
+                        </template>
+                        <template v-else>
+                          <v-list-item-avatar>
+                            <img :src="data.item.profile_picture">
+                          </v-list-item-avatar>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              {{data.item.user.first_name}} {{ data.item.user.last_name }}
+                            </v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+                    </v-autocomplete>
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
 
-                      <v-autocomplete  :items="cityStateItems" item-text="text" v-model="pickedCities" chips label="Filter by location"  dense outlined multiple hide-details>
+                      <v-autocomplete  :items="cityStates" item-value="city" item-text="city" v-model="pickedCities" chips label="Filter by location"  dense outlined multiple hide-details>
                         <template v-slot:selection="city">
-                          <v-chip :class="{red: isActiveCity(city.item)}" @click="toggleActiveCity(city.item)">
-                            {{city.item}}
+                          <v-chip>
+                            <!-- :class="{red: isActiveCity(city.item)}" -->
+                            {{city.item.city }}
                           </v-chip>
                         </template>
+                      <template v-slot:item="data">
+                        <template v-if="typeof data.item !== 'object'">
+                          <v-list-item-content v-text="data.item"></v-list-item-content>
+                        </template>
+                        <template v-else>
+                          <v-list-item-content>
+                            <v-list-item-title>
+                              {{data.item.city }}, {{ data.item.state }}
+                            </v-list-item-title>
+                          </v-list-item-content>
+                        </template>
+                      </template>
+
                       </v-autocomplete>
                       <v-chip
                       @click="isOpen"
-                      :class="red"
                       >
+                      <!-- :class="red" -->
                         isOpen
                       </v-chip>
                   </v-sheet>
@@ -59,16 +101,13 @@ export default {
         return {
             account:null,
             isActive: false,
+            pickedUsers: [],
+            followings: [],
             posts:[],
             activePost:null,
             place_id:null,
-            openings:null,
-            reviews:null,
             ig_presence:'instagram',
             fb_presene:'facebook',
-            followings:[],
-            selectedUserId:null,
-            selectedUserIndexes:[],
             selectedChips:[],
             selectedActive:[],
             selectedRestaurantIndexes:[],
@@ -76,32 +115,12 @@ export default {
             categories:[],
             cityStates:[],
             pickedCities:[],
-            userItems: [],
-            pickedUsers: [],
-            activeUsers: [],
             activeCities:[],
             openShops: [],
             openOnly:true,
         }
     },
     computed:{
-      followingsItems(){
-        if(!this.account){
-          return []
-        }
-        let ownItem = {text : this.account.user.first_name, value: this.account.user.id}
-        let followings = this.followings.map(profile=>{
-          return {text: profile.user.first_name, value: profile.user.id}
-        })
-        return [ownItem, ...followings]
-      },
-      selectedUsers(){
-        let userIds = []
-        this.selectedUserIndexes.forEach(index => {
-          userIds.push(this.followingsItems[index])
-        })
-        return userIds
-      },
       // from categories api
       categoryItems(){
         if(!this.categories){
@@ -124,7 +143,7 @@ export default {
           return []
         }
         let cityType = this.cityStates.map(cityName => {
-          return cityName['city_state']
+          return cityName['city']
         })
         return cityType
       },
@@ -136,16 +155,13 @@ export default {
       },
     },
     watch:{
-      activeUsers(val){
-          let userIds = val.map(
-            user=>user.value
-          )
-          userIds = userIds.join(',')
-          this.$router.push({
-            path: this.$route.path,
-            query: { user_ids: userIds}
-          })
-          this.getFeed(userIds)
+      pickedUsers(val){
+        console.log(val)
+        let userId = val.join(',')
+        this.$router.push({
+          query: { user_ids: userId}
+        })
+        this.getFeed(userId)
       },
       activeCities(val){
         let states = val.join(',')
@@ -159,8 +175,7 @@ export default {
         this.$router.push({
           query:{ city_state: states}
         })
-        console.log(this.isActiveCity(val))
-        // this.getCityState(states)
+        this.getCityState(states)
       },
       selectedRestaurants(val){
         let restaurants = val.join(',')
@@ -269,26 +284,6 @@ export default {
         goUrl(){
             document.location.href=this.activePost['permalink']
         },
-        removeSelectedUser(item) {
-          const index = this.pickedUsers.indexOf(item.value)
-          if (index >= 0)this.pickedUsers.splice(index, 1)
-        },
-        isActiveUser(item){
-          // もし結果が１つ以上あればisActiveに想定する
-          //  条件に合う要素だけを取り出す(filter)
-          return this.activeUsers.filter(user => user.value === item.value).length >= 1
-        },
-        toggleActiveUser(item){
-          let isActive = this.isActiveUser(item)
-          console.log(isActive)
-          if(isActive){
-            // 指定した文字が存在するかを検索(indexOf)
-            const index = this.activeUsers.indexOf(item)
-            if (index >= 0)this.activeUsers.splice(index, 1)
-          }else{
-            this.activeUsers.push(item)
-          }
-        },
         isActiveCity(item){
           return this.activeCities.filter(city => city === item).length >= 1
         },
@@ -340,7 +335,11 @@ export default {
           console.log(this.posts)
           return this.posts
         })
-        }
+        },
+      remove (item) {
+        const index = this.pickedUsers.indexOf(item.user.id)
+        if (index >= 0) this.pickedUsers.splice(index, 1)
+      }
     }
 
 }
