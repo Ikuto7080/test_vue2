@@ -8,7 +8,7 @@
                 dark
                 color="#808080"
                 class=""
-                @click="isActive=false">
+                @click="close">
                     <v-icon>mdi-close</v-icon>
                     <div>
                         close
@@ -22,13 +22,18 @@
                 <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
                   <v-list-item>
                       <v-list-item-content>
-                          <v-list-item-title>SNS commets</v-list-item-title>
-                              <div if="post.message" class="subtitle-2">{{post.message}}</div>
+                          <v-list-item-title>SNS commets(by facebook)</v-list-item-title>
+                              <div if="post.message" class="subtitle-2">
+                                   <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
+                                  
+                              </div>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
                   <v-list-item>
                       <v-list-item-content>
+                          <v-list-item-title class="pb-3">Google infomation</v-list-item-title>
+                          <v-divider></v-divider>
                           <div class="rating-content">
                               <div class="rating-item">
                                   <v-list-item-title>rating</v-list-item-title>
@@ -37,8 +42,9 @@
                                   </v-list-item-subtitle>
                               </div>
                               <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
-                                  <v-img class="img" :src="review.profile_photo_url"></v-img>
-                                  <p>{{review.text}}</p>
+                                  <read-more more-str="read more" :text="review.text" less-str="read less" :max-chars="50"></read-more>
+                                  <!-- <v-img class="img" :src="review.profile_photo_url"></v-img>
+                                  <p>{{review.text}}</p> -->
                               </div>
                           </div>
                       </v-list-item-content>
@@ -47,7 +53,14 @@
                   <v-list-item>
                       <v-list-item-content>
                           <v-list-item-title>price</v-list-item-title>
-                          <v-list-item-subtitle></v-list-item-subtitle>
+                          <v-rating :value="post.google_place.info.price_level" readonly>
+                              <template v-slot:item="props">
+                                  <v-list-item-subtitle>
+                                <v-icon
+                                :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">{{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}</v-icon>
+                              </v-list-item-subtitle>
+                              </template>
+                          </v-rating>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
@@ -94,7 +107,7 @@
 
 <script>
 export default {
-    props:['post'],
+    props:['post', 'active'],
     data(){
       return {dialog:false}
     },
@@ -119,6 +132,9 @@ export default {
     methods:{
         goUrl(){
             document.location.href=this.post['permalink']
+        },
+        close(){
+            this.active = !this.active
         }
     }
 

@@ -7,30 +7,30 @@
                   <v-sheet elevation="10">
                       <v-autocomplete :items="followingsItems" item-text="text" v-model="pickedUsers" chips label="Filter by friends" dense outlined multiple hide-details>
                         <template v-slot:selection="user">
-                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="remove(user.item)" close="close">
+                              <v-chip :class="{red: isActiveUser(user.item)}" @click="toggleActiveUser(user.item)" @click:close="removeSelectedUser(user.item)" close>
                                 <v-avatar left>
                                   <v-img :src="account.profile_picture"></v-img>
                                 </v-avatar>
                                 {{ user.item.text }}
                               </v-chip>
-                          </template></v-autocomplete>
+                          </template>
+                      </v-autocomplete>
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
-                      <v-chip-group
-                      multiple
-                      active-class="red"
-                      v-model="selectedCityIndexes"
-                      >
-                          <v-chip
-                          v-for='cityStateItem in cityStateItems'
-                          :key="cityStateItem"
-                          :items='cityStateItems'
-                          >
-                          <!-- @click="isOpen" -->
-                            {{cityStateItem}}
+
+                      <v-autocomplete  :items="cityStateItems" item-text="text" v-model="pickedCities" chips label="Filter by location"  dense outlined multiple hide-details>
+                        <template v-slot:selection="city">
+                          <v-chip :class="{red: isActiveCity(city.item)}" @click="toggleActiveCity(city.item)">
+                            {{city.item}}
                           </v-chip>
-                      </v-chip-group>
+                        </template>
+                      </v-autocomplete>
+                      <v-chip
+                      @click="isOpen"
+                      >
+                        isOpen
+                      </v-chip>
                   </v-sheet>
               </v-col>
           </v-row>
@@ -43,7 +43,7 @@
         </div>
       </GmapMap>
         <v-dialog v-if="activePost" v-model="isActive" scrollable="scrollable" @click:outside="display(null)" width="500px">
-          <Shop :post="activePost"/>
+          <Shop :post="activePost" :active="isActive"/>
         </v-dialog>
   </div>
 </template>
@@ -74,10 +74,11 @@ export default {
             loading:false,
             categories:[],
             cityStates:[],
-            selectedCityIndexes:[],
+            pickedCities:[],
             userItems: [],
             pickedUsers: [],
             activeUsers: [],
+            activeCities:[],
             openOnly:true,
         }
     },
@@ -104,7 +105,6 @@ export default {
         if(!this.categories){
           return []
         }
-        console.log(this.categories)
         let categoryType = this.categories.map(restaurant => {
           return restaurant['categories']
         })
@@ -118,7 +118,6 @@ export default {
         return restaurants
       },
       cityStateItems(){
-        console.log('cityStateItems')
         if(!this.cityStates){
           return []
         }
@@ -127,47 +126,11 @@ export default {
         })
         return cityType
       },
-      selectedCityStates(){
-        console.log('selectedCityStates(computed)')
-        let states = []
-        this.selectedCityIndexes.forEach(index => {
-          states.push(this.cityStateItems[index])
-        })
-        return states
-      },
       shops(){
-        // var now = new Date()
-        // var hours = now.getHours()
-        // var minutes = now.getMinutes()
         if(this.posts.length == 0) {
           return []
         }
-        // console.log(hours)
-        // console.log(minutes)
-        // var moment = require('moment')
-        // this.openOnly = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-        if(!this.openOnly){
-          // return this.posts
-        }
-        return this.posts.filter(() => {
-          return true
-          // if (!post.google_place.info.opening_hours){
-          //   return []
-          // }
-          // var openingTimes = post.google_place.info.opening_hours.periods
-          // for(openingTime in  openingTimes) {
-          //   console.log(openingTime)
-          //   console.log(moment)
-            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-            // return isopen
-          // }
-          // for(var openingTime in  openingTimes) {
-          //   console.log(openingTime)
-            // let isopen = moment({hours:hours, minutes:minutes}).isBetween({hours:this.posts})
-            // return isopen
-          // }
-          // closedもやる
-        })
+        return this.posts
       },
     },
     watch:{
@@ -182,6 +145,21 @@ export default {
           })
           this.getFeed(userIds)
       },
+      activeCities(val){
+        let states = val.join(',')
+        this.$router.push({
+          query:{ city_state: states}
+        })
+        this.getCityState(states)
+      },
+      pickedCities(val){
+        let states = val.join(',')
+        this.$router.push({
+          query:{ city_state: states}
+        })
+        console.log(this.isActiveCity(val))
+        // this.getCityState(states)
+      },
       selectedRestaurants(val){
         let restaurants = val.join(',')
         this.$router.push({
@@ -191,14 +169,6 @@ export default {
       },
       selectedRestaurantIndexes(value){
         this.$store.commit('setCategories', value)
-      },
-      selectedCityStates(val){
-        console.log('selectedCityStates(watcher)')
-        let states = val.join(',')
-        this.$router.push({
-          query:{ city_state: states}
-        })
-        this.getCityState(states)
       }
     },
     components: {
@@ -292,18 +262,12 @@ export default {
         },
           display(post){
           this.activePost = post
-          // if(this.activePost.google_place.info.opening_hours){
-          //   this.openings = this.activePost.google_place.info.opening_hours.weekday_text
-          // }
-          // if(this.activePost.google_place.info.reviews){
-          //   this.reviews = this.activePost.google_place.info.reviews
-          // }
           this.isActive = !this.isActive
         },
         goUrl(){
             document.location.href=this.activePost['permalink']
         },
-        remove(item) {
+        removeSelectedUser(item) {
           const index = this.pickedUsers.indexOf(item.value)
           if (index >= 0)this.pickedUsers.splice(index, 1)
         },
@@ -314,6 +278,7 @@ export default {
         },
         toggleActiveUser(item){
           let isActive = this.isActiveUser(item)
+          console.log(isActive)
           if(isActive){
             // 指定した文字が存在するかを検索(indexOf)
             const index = this.activeUsers.indexOf(item)
@@ -321,8 +286,64 @@ export default {
           }else{
             this.activeUsers.push(item)
           }
-        },isopen(){
-          
+        },
+        isActiveCity(item){
+          return this.activeCities.filter(city => city === item).length >= 1
+        },
+        toggleActiveCity(item){
+          let isActive = this.isActiveCity(item)
+          if(isActive){
+            const index = this.activeCities.indexOf(item)
+            if (index >= 0)this.activeCities.splice(index, 1)
+          }else{
+            this.activeCities.push(item)
+          }
+        },
+        isOpen(){
+        return this.posts.filter(post => {
+          if (!post.google_place.info.opening_hours){
+            return []
+          }
+          let openTime = post.google_place.info.opening_hours.periods.map(
+            start => start.open
+          )
+          let closeTime = post.google_place.info.opening_hours.periods.map(
+            close => close.close
+          )
+
+          var now = new Date()
+          var hours = now.getHours()
+          var minutes = now.getMinutes()
+          var moment = require('moment')
+          moment.suppressDeprecationWarnings = true
+          var thisWeekday = now.getDay()
+          if(thisWeekday >= 1){
+            thisWeekday = now.getDay() -1
+          } else {
+            thisWeekday = 6
+          }
+          let openHours = openTime[thisWeekday].time.split('').slice(0,2).join('')
+          let openMinutes = openTime[thisWeekday].time.split('').slice(2).join('')
+          let closeHours = closeTime[thisWeekday].time.split('').slice(0,2).join('')
+          let closeMinutes = closeTime[thisWeekday].time.split('').slice(2).join('')
+          let currentTime = hours + ':' + minutes
+          let businessOpenTime = openHours + ':' + openMinutes
+          let businessCloseTime = closeHours + ':' + closeMinutes
+          let today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' '
+          // let year = moment(new Date).format('YYYY-MM-DD HH:mm')
+          // console.log(today + currentTime)
+          // console.log(today + businessOpenTime)
+          // console.log(today + businessCloseTime)
+          let isopen = moment(today + currentTime).isBetween(today + businessOpenTime, today + businessCloseTime, 'minute')
+          if(isopen){
+            console.log(post)
+            this.shops = post
+            return this.shops
+          }else{
+            console.log('else')
+            return []
+          }
+        })
         }
     }
 

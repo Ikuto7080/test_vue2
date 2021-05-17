@@ -1,17 +1,11 @@
 <template>
-  <div></div>
+  <h3h>{{ name }}</h3h>
 </template>
 
 <script>
 export default {
-  data(){
-    return {
-
-    }
-  },
-  mounted(){
-    
-  }
+    name: 'Product',
+    props: ["name"],
 }
 </script>
 

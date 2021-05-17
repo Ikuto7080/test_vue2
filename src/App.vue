@@ -140,7 +140,8 @@ export default {
       sheet:false,
       shareUrl: "https://app.quouze.com/invite/"
     }
-  },computed: {
+  },
+  computed: {
     account() {
       return this.$store.state.account
     },
