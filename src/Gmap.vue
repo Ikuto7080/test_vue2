@@ -10,8 +10,10 @@
                     :items="followings"
                     item-text="user.first_name"
                     item-value="user.id"
-                    multiple
-                    chips
+                    dense 
+                    outlined 
+                    multiple 
+                    hide-details
                     >
                       <template v-slot:selection="data">
                         <v-chip
