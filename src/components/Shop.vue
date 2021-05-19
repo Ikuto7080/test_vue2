@@ -20,32 +20,34 @@
           <v-list class="v-list px-2">
               <v-list-item-group>
                 <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
-                          <v-list-item-title>
+                          <v-list-item-title if="post.message">
                               <v-avatar
                               size="36px"
                               >
-                                <img :src="account.profile_picture">
+                                <img :src="post.user.profile_picture">
                               </v-avatar>
                             <v-icon
                             v-if="post.type=facebook"
                             >mdi-facebook</v-icon>
                             <v-icon
                             large
+                            color="#4167B2"
                             v-else
                             >mdi-instagram
                             </v-icon>
                               SNS commets
                           </v-list-item-title>
-                              <div if="post.message" class="subtitle-2">
+                              <div class="subtitle-2">
+                                  <div></div>
                                    <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
                                   
                               </div>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title class="pb-3">Google infomation</v-list-item-title>
                           <v-divider></v-divider>
@@ -65,21 +67,23 @@
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
-                  <v-list-item>
+                  <v-list-item :ripple="false" v-if="post.google_place.info.price_level">
                       <v-list-item-content>
                           <v-list-item-title>price</v-list-item-title>
-                          <v-rating :value="post.google_place.info.price_level" readonly>
-                              <template v-slot:item="props">
-                                  <v-list-item-subtitle>
-                                <v-icon
-                                :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">{{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}</v-icon>
-                              </v-list-item-subtitle>
-                              </template>
-                          </v-rating>
+                          <v-list-item-subtitle>
+                            <v-rating :value="post.google_place.info.price_level" readonly>
+                                <template v-slot:item="props">
+                                    <v-icon
+                                    :color="props.isFilled? 'yellow darken-3': 'grey darken-1'">
+                                    {{props.isFilled ? 'mdi-currency-usd' : 'mdi-currency-usd'}}
+                                    </v-icon>
+                                </template>
+                            </v-rating>
+                          </v-list-item-subtitle>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
-                  <v-list-item v-if="openings.length > 0">
+                  <v-list-item v-if="openings.length > 0" :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title>Opening Hours</v-list-item-title>
                           <v-list-item-subtitle>
@@ -89,26 +93,26 @@
                           </v-list-item-subtitle>
                       </v-list-item-content>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title>Regular holiday</v-list-item-title>
                           <v-list-item-subtitle>None</v-list-item-subtitle>
                       </v-list-item-content>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title>Phone</v-list-item-title>
-                          <v-list-item-subtitle>+ {{ post.google_place.info['formatted_phone_number'] }}</v-list-item-subtitle>
+                          <v-list-item-subtitle><a :href="`tel:${post.google_place.info['formatted_phone_number']}`">+ {{ post.google_place.info['formatted_phone_number'] }}</a></v-list-item-subtitle>
                       </v-list-item-content>
                   </v-list-item>
                   <v-divider></v-divider>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title>HP URL</v-list-item-title>
                           <v-list-item-subtitle><a :href="post.google_place.info['website']">{{ post.google_place.info['website'] }}</a></v-list-item-subtitle>
                       </v-list-item-content>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title>Instagram URL</v-list-item-title>
                           <v-list-item-subtitle><a :href="post.permalink">{{ post.permalink }}</a></v-list-item-subtitle>
