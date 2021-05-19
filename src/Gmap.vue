@@ -20,6 +20,7 @@
                           v-bind="data.attrs"
                           :input-value="data.selected"
                           close
+                          class="red"
                           @click="data.select"
                           @click:close="remove(data.item)"
                         >
