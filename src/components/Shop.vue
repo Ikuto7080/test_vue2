@@ -7,7 +7,6 @@
                 icon
                 dark
                 color="#808080"
-                class=""
                 @click="close">
                     <v-icon>mdi-close</v-icon>
                     <div>
@@ -29,7 +28,7 @@
                                 <img :src="post.user.profile_picture">
                               </v-avatar>
                             <v-icon
-                            v-if="post.type=facebook"
+                            v-if="post.type==='facebook'"
                             >mdi-facebook</v-icon>
                             <v-icon
                             large
@@ -158,7 +157,7 @@ export default {
             document.location.href=this.post['permalink']
         },
         close(){
-            this.active = !this.active
+            this.$emit('close')
         }
     }
 

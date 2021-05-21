@@ -89,7 +89,7 @@
         </div>
       </GmapMap>
         <v-dialog v-if="activePost" v-model="isActive" scrollable="scrollable" @click:outside="display(null)" width="500px">
-          <Shop :post="activePost" :active="isActive"/>
+          <Shop :post="activePost" :active="isActive" @close="isActive=false"/>
         </v-dialog>
   </div>
 </template>
