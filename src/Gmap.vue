@@ -1,4 +1,3 @@
-
 <template>
   <div>
       <div class="filter-box" style="text-align">
@@ -7,46 +6,49 @@
                   <v-sheet elevation="10">
                     <!-- following filter -->
                     <v-autocomplete
-                    v-model="pickedUsers"
-                    :items="followingItems"
-                    item-text="text"
-                    item-value="value"
-                    dense 
-                    outlined 
-                    multiple 
-                    hide-details
+                      v-model="pickedUsers"
+                      :items="followingItems"
+                      item-text="text"
+                      item-value="value"
+                      dense
+                      outlined
+                      multiple
+                      hide-details
                     >
-                      <!-- <template v-slot:selection="data">
+                      <template v-slot:selection="data">
                         <v-chip
                           v-bind="data.attrs"
                           :input-value="data.selected"
                           close
                           class="red"
                           @click="data.select"
-                          @click:close="userRemove(data.item)"
+                          @click:close="userRemove(data.item.value)"
                         >
                           <v-avatar left>
-                            <v-img :src="data.item.profile_picture"></v-img>
+                            <v-img :src="data.item.text.profile_picture"></v-img>
                           </v-avatar>
-                          {{ data.item.user.first_name }} {{ data.item.user.last_name }}
+                          {{ data.item.text.first_name }} {{ data.item.text.last_name }}
                         </v-chip>
                       </template>
                       <template v-slot:item="data">
                         <template v-if="typeof data.item !== 'object'">
-                          <v-list-item-content v-text="data.item"></v-list-item-content>
+                          <v-list-item-content v-text="data.item.text"></v-list-item-content>
                         </template>
                         <template v-else>
                           <v-list-item-avatar>
-                            <img :src="data.item.profile_picture">
+                            <img :src="data.item.text.profile_picture" />
                           </v-list-item-avatar>
                           <v-list-item-content>
                             <v-list-item-title>
-                              {{data.item.user.first_name}} {{ data.item.user.last_name }}
+                              {{ data.item.text.first_name }}
+                              {{ data.item.text.last_name }}
                             </v-list-item-title>
                           </v-list-item-content>
                         </template>
-                      </template> -->
+                      </template>
                     </v-autocomplete>
+
+                      <!-- category filter -->
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
@@ -96,7 +98,7 @@
               </v-col>
           </v-row>
       </div>
-      <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;">
+      <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;" gestureHandling='greedy'>
         <div v-for="post in shops" :key="post.id" >
           <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
             <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
@@ -113,7 +115,6 @@
 import axios from 'axios'
 import GmapCustomMarker from 'vue2-gmap-custom-marker';
 import Shop from "./components/Shop";
-
 export default {
     data(){
         return {
@@ -144,15 +145,12 @@ export default {
         if(!this.account){
           return []
         }
-        let userFullName = this.account.user.last_name + ' ' + this.account.user.first_name
-        let ownItem = {text: userFullName, value: this.account.user.id}
+        let ownItem = {text: this.account.user, value: this.account.user.id}
         let followings = this.followings.map(profile => {
-        let followingFullName = profile.user.last_name + ' ' + profile.user.first_name 
-          return {text: followingFullName, value: profile.user.id}
+          return {text: profile.user, value: profile.user.id}
         })
         return [ownItem, ...followings]
-      },
-      // from categories api
+      },      // from categories api
       categoryItems(){
         if(!this.categories){
           return []
@@ -193,7 +191,6 @@ export default {
           let closeTime = post.google_place.info.opening_hours.periods.map(
             close => close.close
           )
-
           var now = new Date()
           var hours = now.getHours()
           var minutes = now.getMinutes()
@@ -380,16 +377,14 @@ export default {
           }
         },
       userRemove (item) {
-        const index = this.pickedUsers.indexOf(item.user.id)
-        if (index >= 0) this.pickedUsers.splice(index, 1)
+        const index = this.pickedUsers.indexOf(item);
+        if (index >= 0) this.pickedUsers.splice(index, 1);
       },
       Cityremove(item) {
         const index = this.pickedCities.indexOf(item.city)
         if ( index >= 0) this.pickedCities.splice(index, 1)
-
       }
     }
-
 }
 </script>
 
@@ -408,19 +403,14 @@ export default {
     border-radius: 50%;
     display: fixed;
 }
-
 .card{
     align-items: center;
     display: flex;
     justify-content: center;
 }
-
 v-card-title{
   font-size: 100px;
 }
-
-
-
 .close{
     text-align: center;
     outline:none
@@ -436,24 +426,20 @@ a:hover{
   height: 300px;
   overflow-y: auto;
 }
-
 /* reviews */
 .review {
   display: flex;
 }
-
 .review .img{
   height: 40px;
   width: 40px;
 }
-
 .review p {
   font-family: arial, sans-serif;
   font-weight: 400;
   font-size: 14px;
   padding-left: 10px;
 }
-
 .filter-box {
   z-index: 1;
   padding: 8px;
@@ -464,6 +450,18 @@ a:hover{
   position: absolute;
   /* max-width: 300px; */
 }
-
 </style>
 
+© 2021 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Loading complete
