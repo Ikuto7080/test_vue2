@@ -5,24 +5,25 @@
           <v-row align="center">
               <v-col cols="12">
                   <v-sheet elevation="10">
+                    <!-- following filter -->
                     <v-autocomplete
                     v-model="pickedUsers"
-                    :items="followings"
-                    item-text="user.first_name"
-                    item-value="user.id"
+                    :items="followingItems"
+                    item-text="text"
+                    item-value="value"
                     dense 
                     outlined 
                     multiple 
                     hide-details
                     >
-                      <template v-slot:selection="data">
+                      <!-- <template v-slot:selection="data">
                         <v-chip
                           v-bind="data.attrs"
                           :input-value="data.selected"
                           close
                           class="red"
                           @click="data.select"
-                          @click:close="remove(data.item)"
+                          @click:close="userRemove(data.item)"
                         >
                           <v-avatar left>
                             <v-img :src="data.item.profile_picture"></v-img>
@@ -44,35 +45,49 @@
                             </v-list-item-title>
                           </v-list-item-content>
                         </template>
-                      </template>
+                      </template> -->
                     </v-autocomplete>
                       <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
                           <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
                       </v-chip-group>
-
-                      <v-autocomplete  :items="cityStates" item-value="city" item-text="city" v-model="pickedCities" chips label="Filter by location"  dense outlined multiple hide-details>
-                        <template v-slot:selection="city">
-                          <v-chip>
-                            <!-- :class="{red: isActiveCity(city.item)}" -->
-                            {{city.item.city }}
+                      <!-- city filter -->
+                      <v-autocomplete
+                      v-model="pickedCities"
+                      :items="cityStates"
+                      item-text="city"
+                      item-value="city"
+                      chips
+                      dense 
+                      outlined 
+                      multiple 
+                      hide-details
+                      >
+                        <template v-slot:selection="data">
+                          <v-chip
+                            v-bind="data.attrs"
+                            :input-value="data.selected"
+                            class="red"
+                            close
+                            @click="data.select"
+                            @click:close="Cityremove(data.item)"
+                          >
+                            {{ data.item.city }}
                           </v-chip>
                         </template>
-                      <template v-slot:item="data">
-                        <template v-if="typeof data.item !== 'object'">
-                          <v-list-item-content v-text="data.item"></v-list-item-content>
+                        <template v-slot:item="data">
+                          <template v-if="typeof data.item !== 'object'">
+                            <v-list-item-content v-text="data.item"></v-list-item-content>
+                          </template>
+                          <template v-else>
+                            <v-list-item-content>
+                              <v-list-item-title v-html="data.item.city"></v-list-item-title>
+                            </v-list-item-content>
+                          </template>
                         </template>
-                        <template v-else>
-                          <v-list-item-content>
-                            <v-list-item-title>
-                              {{data.item.city }}, {{ data.item.state }}
-                            </v-list-item-title>
-                          </v-list-item-content>
-                        </template>
-                      </template>
-
                       </v-autocomplete>
                       <v-chip
                       @click="isOpenOnly=!isOpenOnly"
+                      :class="{red:isOpenOnly}"
                       >
                       <!-- :class="red" -->
                         isOpen
@@ -125,6 +140,18 @@ export default {
         }
     },
     computed:{
+      followingItems(){
+        if(!this.account){
+          return []
+        }
+        let userFullName = this.account.user.last_name + ' ' + this.account.user.first_name
+        let ownItem = {text: userFullName, value: this.account.user.id}
+        let followings = this.followings.map(profile => {
+        let followingFullName = profile.user.last_name + ' ' + profile.user.first_name 
+          return {text: followingFullName, value: profile.user.id}
+        })
+        return [ownItem, ...followings]
+      },
       // from categories api
       categoryItems(){
         if(!this.categories){
@@ -177,6 +204,9 @@ export default {
             thisWeekday = now.getDay() -1
           } else {
             thisWeekday = 6
+          }
+          if(!openTime[thisWeekday].time){
+            return false
           }
           let openHours = openTime[thisWeekday].time.split('').slice(0,2).join('')
           let openMinutes = openTime[thisWeekday].time.split('').slice(2).join('')
@@ -349,9 +379,14 @@ export default {
             this.activeCities.push(item)
           }
         },
-      remove (item) {
+      userRemove (item) {
         const index = this.pickedUsers.indexOf(item.user.id)
         if (index >= 0) this.pickedUsers.splice(index, 1)
+      },
+      Cityremove(item) {
+        const index = this.pickedCities.indexOf(item.city)
+        if ( index >= 0) this.pickedCities.splice(index, 1)
+
       }
     }
 
