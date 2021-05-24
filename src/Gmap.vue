@@ -111,6 +111,7 @@
       :center="{ lat: 36, lng: 138 }"
       :zoom="6"
       map-type-id="roadmap"
+      gestureHandling='greedy'
       style="top: 0; left: 0; right: 0; bottom: 0; position: absolute"
     >
       <div v-for="post in shops" :key="post.id">
