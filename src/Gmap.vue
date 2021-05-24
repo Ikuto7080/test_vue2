@@ -448,7 +448,6 @@ a:hover{
   left: 0;
   right: 0;
   position: absolute;
-  /* max-width: 300px; */
 }
 </style>
 
