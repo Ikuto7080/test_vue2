@@ -8,6 +8,7 @@
                     <v-autocomplete
                       v-model="pickedUsers"
                       :items="followingItems"
+                      :menu-props="{closeOnContentClick:true}"
                       item-text="text"
                       item-value="value"
                       dense
@@ -59,9 +60,9 @@
                       item-text="city"
                       item-value="city"
                       chips
-                      dense 
-                      outlined 
-                      multiple 
+                      dense
+                      outlined
+                      multiple
                       hide-details
                       >
                         <template v-slot:selection="data">
@@ -160,13 +161,6 @@ export default {
         })
         return categoryType
       },
-      selectedRestaurants(){
-        let restaurants = []
-        this.selectedRestaurantIndexes.forEach(index => {
-          restaurants.push(this.categoryItems[index])
-        })
-        return restaurants
-      },
       cityStateItems(){
         if(!this.cityStates){
           return []
@@ -202,8 +196,10 @@ export default {
           } else {
             thisWeekday = 6
           }
-          if(!openTime[thisWeekday].time){
-            return false
+
+          // this shop is open 24hours
+          if(!closeTime[thisWeekday]){
+            return true
           }
           let openHours = openTime[thisWeekday].time.split('').slice(0,2).join('')
           let openMinutes = openTime[thisWeekday].time.split('').slice(2).join('')
@@ -226,46 +222,50 @@ export default {
             tommorrow + businessCloseTime,
             'minute')
           }
-          console.log(post.google_place.info.name, isopen)
           return isopen
         })
         }else{
           return this.posts
         }
       },
+
+      gmapFilter(){
+      return  this.$store.state.gmapFilter
+    },
     },
     watch:{
       pickedUsers(val){
-        console.log(val)
         let userId = val.join(',')
-        this.$router.push({
-          query: { user_ids: userId}
+        let gmapFilter = {...this.gmapFilter}
+        gmapFilter.user_ids= userId
+        this.$store.commit('setGmapFilter', gmapFilter) 
+        axios
+        .get('/categories/?user_ids=' + userId)
+        .then(resp => {
+          console.log(resp.data)
+          this.categories = resp.data
         })
-        this.getFeed(userId)
+        this.getFeed()
       },
       activeCities(val){
         let states = val.join(',')
-        this.$router.push({
-          query:{ city_state: states}
-        })
-        this.getCityState(states)
+        let gmapFilter = {...this.gmapFilter}
+        gmapFilter.city_state= states
+        this.$store.commit('setGmapFilter', gmapFilter)
+        this.getFeed()
       },
       pickedCities(val){
         let states = val.join(',')
-        this.$router.push({
-          query:{ city_state: states}
-        })
-        this.getCityState(states)
-      },
-      selectedRestaurants(val){
-        let restaurants = val.join(',')
-        this.$router.push({
-          query:{ categories: restaurants}
-        })
-        this.getCategory(restaurants)
+        let gmapFilter = {...this.gmapFilter}
+        gmapFilter.city_state= states
+        this.$store.commit('setGmapFilter', gmapFilter) 
+        this.getFeed()
       },
       selectedRestaurantIndexes(value){
-        this.$store.commit('setCategories', value)
+        let gmapFilter = {...this.gmapFilter}
+        gmapFilter.categories= value.map(i => this.categoryItems[i]).join(',')
+        this.$store.commit('setGmapFilter', gmapFilter) 
+        this.getFeed()
       }
     },
     components: {
@@ -275,14 +275,12 @@ export default {
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
       })
-      // this.selectedRestaurantIndexes = this.$store.state.categories
       axios
       .get('/accounts/')
       .then((resp)=> {
         this.account = resp.data[0]
         this.$store.commit('setAccount', this.account)
-        let user_ids=this.$route.query.user_ids
-        this.getFeed(user_ids)
+        this.getFeed()
       })
         axios
         .get('/followings/')
@@ -299,31 +297,16 @@ export default {
         .then((resp) => {
           this.cityStates = resp.data
         })
-    },methods:{
-        userSelected(userId){
-          let userIds = userId.join(',')
-          this.$router.push({
-            path: this.$route.path,
-            query: { user_ids: userIds}
-          })
-          this.getFeed(userId)
-        },
-        getFeed(userId=null){
-          if(userId){
+    },
+    methods:{
+        getFeed(){
             this.loading = true
             axios
-            .get('/feeds/?user_ids=' + userId)
+            .get('/feeds/', {params:this.gmapFilter})
             .then((resp) => {
-              this.posts = resp.data
               this.loading = false
-            })
-          }else{
-            axios
-            .get('/feeds/')
-            .then((resp) => {
               this.posts=resp.data
             })
-          }
         },
         getCategory(categoriesName=null){
           if(categoriesName){

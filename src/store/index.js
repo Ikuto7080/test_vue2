@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     account: null,
-    categories:[]
+    categories: [],
+    gmapFilter: {}
   },
   mutations: {
     setAccount(state, account) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setCategories(state, categories) {
       state.categories = categories
+    },
+    setGmapFilter(state, gmapFilter) {
+      state.gmapFilter = gmapFilter
     }
   },
   actions: {
