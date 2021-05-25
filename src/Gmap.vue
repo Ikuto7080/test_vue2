@@ -8,6 +8,8 @@
                     <v-autocomplete
                       v-model="pickedUsers"
                       :items="followingItems"
+                      placeholder="Select Following"
+                      label="following"
                       :menu-props="{closeOnContentClick:true}"
                       item-text="text"
                       item-value="value"
@@ -59,6 +61,8 @@
                       :items="cityStates"
                       item-text="city"
                       item-value="city"
+                      label="place"
+                      placeholder="Select Place"
                       chips
                       dense
                       outlined
