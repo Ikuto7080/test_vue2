@@ -64,6 +64,7 @@
                       outlined
                       multiple
                       hide-details
+                      :menu-props="{closeOnContentClick:true}"
                       >
                         <template v-slot:selection="data">
                           <v-chip
