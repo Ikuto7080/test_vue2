@@ -217,7 +217,7 @@ export default {
           let tommorrow = moment().add(1,'days').format('YYYY-MM-DD ')
           let isopen = Boolean
           if (openTime[thisWeekday].day === closeTime[thisWeekday].day){
-           isopen = moment(today + currentTime).isBetween(
+            isopen = moment(today + currentTime).isBetween(
             today + businessOpenTime,
             today + businessCloseTime,
             'minute')
@@ -243,7 +243,7 @@ export default {
         let userId = val.join(',')
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.user_ids= userId
-        this.$store.commit('setGmapFilter', gmapFilter) 
+        this.$store.commit('setGmapFilter', gmapFilter)
         axios
         .get('/categories/?user_ids=' + userId)
         .then(resp => {
@@ -263,13 +263,13 @@ export default {
         let states = val.join(',')
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.city_state= states
-        this.$store.commit('setGmapFilter', gmapFilter) 
+        this.$store.commit('setGmapFilter', gmapFilter)
         this.getFeed()
       },
       selectedRestaurantIndexes(value){
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.categories= value.map(i => this.categoryItems[i]).join(',')
-        this.$store.commit('setGmapFilter', gmapFilter) 
+        this.$store.commit('setGmapFilter', gmapFilter)
         this.getFeed()
       }
     },

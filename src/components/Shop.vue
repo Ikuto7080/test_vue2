@@ -15,7 +15,7 @@
                 </v-btn>
               </div>
           </v-card-title>
-          <v-card-title class="mx-2 mt-2">{{ post.google_place.info.name }}</v-card-title>
+          <v-card-title class="mx-2 pt-0">{{ post.google_place.info.name }}</v-card-title>
           <v-list class="v-list px-2">
               <v-list-item-group>
                 <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
@@ -59,8 +59,6 @@
                               </div>
                               <div class="review" v-for="review in reviews" :key="review.profile_photo_url">
                                   <read-more more-str="read more" :text="review.text" less-str="read less" :max-chars="50"></read-more>
-                                  <!-- <v-img class="img" :src="review.profile_photo_url"></v-img>
-                                  <p>{{review.text}}</p> -->
                               </div>
                           </div>
                       </v-list-item-content>
