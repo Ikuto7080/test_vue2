@@ -1,7 +1,7 @@
 <template>
   <v-row class="card" justify="center">
       <v-card class="mx-auto mb-3 px-3" style="z-index:100; " v-if="post">
-          <v-card-title>
+          <v-card-title class="mb-0 pb-0">
               <div class="ml-3">
                 <v-btn
                 icon
@@ -15,10 +15,9 @@
                 </v-btn>
               </div>
           </v-card-title>
-          <v-card-title class="mx-2 pt-0">{{ post.google_place.info.name }}</v-card-title>
+          <v-card-title class="mx-2 py-1">{{ post.google_place.info.name }}</v-card-title>
           <v-list class="v-list px-2">
               <v-list-item-group>
-                <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
                   <v-list-item :ripple="false">
                       <v-list-item-content>
                           <v-list-item-title if="post.message">
@@ -45,6 +44,9 @@
                               </div>
                       </v-list-item-content>
                   </v-list-item>
+                  <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
+                  <v-list-item-title v-if="post.type==='facebook'" class="pb-3" style="text-align: right;">Push image, go to facebook posts</v-list-item-title>
+                  <v-list-item-title v-else class="pb-3" style="text-align: right;">Push image, go to facebook posts</v-list-item-title>
                   <v-divider></v-divider>
                   <v-list-item :ripple="false">
                       <v-list-item-content>
@@ -110,7 +112,11 @@
                       </v-list-item-content>
                   </v-list-item>
                   <v-list-item :ripple="false">
-                      <v-list-item-content>
+                      <v-list-item-content v-if="post.type==='facebook'">
+                          <v-list-item-title>Facebook URL</v-list-item-title>
+                          <v-list-item-subtitle><a :href="post.permalink">{{ post.permalink }}</a></v-list-item-subtitle>
+                      </v-list-item-content>
+                      <v-list-item-content v-else>
                           <v-list-item-title>Instagram URL</v-list-item-title>
                           <v-list-item-subtitle><a :href="post.permalink">{{ post.permalink }}</a></v-list-item-subtitle>
                       </v-list-item-content>
