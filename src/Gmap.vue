@@ -200,7 +200,6 @@ export default {
           } else {
             thisWeekday = 6
           }
-
           // this shop is open 24hours
           if(!closeTime[thisWeekday]){
             return true
@@ -221,7 +220,7 @@ export default {
             today + businessCloseTime,
             'minute')
           } else{
-           isopen = moment(today + currentTime).isBetween(
+            isopen = moment(today + currentTime).isBetween(
             today + businessOpenTime,
             tommorrow + businessCloseTime,
             'minute')
@@ -244,6 +243,11 @@ export default {
         let userId = val.join(',')
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.user_ids= userId
+        if(!gmapFilter.user_ids){
+          this.posts = {}
+          return false
+        }
+        console.log(gmapFilter.user_ids)
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
         .get('/categories/?user_ids=' + userId)
@@ -269,11 +273,6 @@ export default {
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.city_state= states
         this.$store.commit('setGmapFilter', gmapFilter)
-        // axios
-        // .get('/followings/?city_states=' + states)
-        // .then(resp => {
-        //   this.followings = resp.data.results
-        // })
         axios
         .get('/categories/?city_states=' + states)
         .then(resp => {
@@ -307,7 +306,6 @@ export default {
       .then((resp)=> {
         this.account = resp.data[0]
         this.$store.commit('setAccount', this.account)
-        this.getFeed()
       })
         axios
         .get('/followings/')
@@ -332,7 +330,6 @@ export default {
               }
             })
           }
-          
         })
         axios
         .get('/citystates/')
@@ -346,9 +343,6 @@ export default {
             })
           }
         })
-
-
-
     },
     methods:{
         getFeed(){
