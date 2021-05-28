@@ -1,13 +1,15 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     account: null,
     categories: [],
-    gmapFilter: {}
+    gmapFilter: {},
+    isOpenFilter: false
   },
   mutations: {
     setAccount(state, account) {
@@ -18,6 +20,9 @@ export default new Vuex.Store({
     },
     setGmapFilter(state, gmapFilter) {
       state.gmapFilter = gmapFilter
+    },
+    setOpenFilter(state, isopen) {
+      state.isOpenFilter = isopen
     }
   },
   actions: {

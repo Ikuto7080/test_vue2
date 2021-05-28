@@ -94,7 +94,7 @@
                         </template>
                       </v-autocomplete>
                       <v-chip
-                      @click="isOpenOnly=!isOpenOnly"
+                      @click="isOpenClicked"
                       :class="{red:isOpenOnly}"
                       >
                       <!-- :class="red" -->
@@ -142,7 +142,6 @@ export default {
             pickedCities:[],
             activeCities:[],
             openShops: [],
-            openOnly:true,
             isOpenOnly:false
         }
     },
@@ -227,6 +226,8 @@ export default {
             tommorrow + businessCloseTime,
             'minute')
           }
+          this.$store.state.isOpenFilter
+
           return isopen
         })
         }else{
@@ -247,8 +248,12 @@ export default {
         axios
         .get('/categories/?user_ids=' + userId)
         .then(resp => {
-          console.log(resp.data)
           this.categories = resp.data
+        })
+        axios
+        .get('/citystates/?user_ids=' + userId)
+        .then(resp => {
+          this.cityStates = resp.data
         })
         this.getFeed()
       },
@@ -264,12 +269,27 @@ export default {
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.city_state= states
         this.$store.commit('setGmapFilter', gmapFilter)
+        // axios
+        // .get('/followings/?city_states=' + states)
+        // .then(resp => {
+        //   this.followings = resp.data.results
+        // })
+        axios
+        .get('/categories/?city_states=' + states)
+        .then(resp => {
+          this.categories = resp.data
+        })
         this.getFeed()
       },
       selectedRestaurantIndexes(value){
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.categories= value.map(i => this.categoryItems[i]).join(',')
         this.$store.commit('setGmapFilter', gmapFilter)
+        axios
+        .get('/citystates/?categories=' + gmapFilter.categories)
+        .then(resp => {
+          this.cityStates = resp.data
+        })
         this.getFeed()
       }
     },
@@ -277,6 +297,8 @@ export default {
         'gmap-custom-marker':GmapCustomMarker,
         Shop
     },mounted(){
+      this.isOpenOnly = this.$store.state.isOpenFilter
+
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
       })
@@ -291,17 +313,42 @@ export default {
         .get('/followings/')
         .then((resp) => {
           this.followings = resp.data.results
+          if(this.gmapFilter.user_ids) {
+            this.gmapFilter.user_ids.split(',').forEach(userId => {
+                this.pickedUsers.push(parseInt(userId))
+            })
+          }
         })
         axios
         .get('/categories/')
         .then((resp) => {
           this.categories = resp.data
+          if(this.gmapFilter.categories) {
+            this.gmapFilter.categories.split(',').forEach(category => {
+              const index = this.categories.findIndex(item => item.categories === category)
+              console.log('categoryIndex: ', index)
+              if (index >= 0) {
+                this.selectedRestaurantIndexes.push(index)
+              }
+            })
+          }
+          
         })
         axios
         .get('/citystates/')
         .then((resp) => {
           this.cityStates = resp.data
+          // this.pickedCities.push(3)
+          console.log('Filter city: ', this.gmapFilter.city_state)
+          if(this.gmapFilter.city_state) {
+            this.gmapFilter.city_state.split(',').forEach(cityState => {
+                this.pickedCities.push(cityState)
+            })
+          }
         })
+
+
+
     },
     methods:{
         getFeed(){
@@ -371,6 +418,11 @@ export default {
       Cityremove(item) {
         const index = this.pickedCities.indexOf(item.city)
         if ( index >= 0) this.pickedCities.splice(index, 1)
+      },
+      isOpenClicked() {
+        this.isOpenOnly=!this.isOpenOnly
+        this.$store.commit('setOpenFilter', this.isOpenOnly)
+        
       }
     }
 }
