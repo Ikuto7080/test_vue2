@@ -244,16 +244,19 @@ export default {
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.user_ids= userId
         if(!gmapFilter.user_ids){
-          this.posts = {}
+          this.posts = []
+          this.categories = []
           return false
         }
 
         this.$store.commit('setGmapFilter', gmapFilter)
-        axios
+          axios
         .get('/categories/?user_ids=' + userId)
         .then(resp => {
           this.categories = resp.data
         })
+        
+        
         axios
         .get('/citystates/?user_ids=' + userId)
         .then(resp => {
@@ -272,6 +275,7 @@ export default {
         let states = val.join(',')
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.city_state= states
+        
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
         .get('/categories/?city_states=' + states)
@@ -289,6 +293,7 @@ export default {
         .then(resp => {
           this.cityStates = resp.data
         })
+        
         this.getFeed()
       }
     },
