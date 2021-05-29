@@ -244,7 +244,9 @@ export default {
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.user_ids= userId
         if(!gmapFilter.user_ids){
-          this.posts = {}
+          this.categories = []
+          this.cityStates = []
+          this.posts = []
           return false
         }
 
@@ -273,6 +275,7 @@ export default {
         let gmapFilter = {...this.gmapFilter}
         gmapFilter.city_state= states
         this.$store.commit('setGmapFilter', gmapFilter)
+
         axios
         .get('/categories/?city_states=' + states)
         .then(resp => {
@@ -331,19 +334,20 @@ export default {
               })
           })
         }
-
-        axios
-        .get('/citystates/')
-        .then((resp) => {
-          this.cityStates = resp.data
-          // this.pickedCities.push(3)
-          console.log('Filter city: ', this.gmapFilter.city_state)
-          if(this.gmapFilter.city_state) {
-            this.gmapFilter.city_state.split(',').forEach(cityState => {
-                this.pickedCities.push(cityState)
-            })
-          }
-        })
+        if (this.gmapFilter.city_state) {
+          axios
+          .get('/citystates/')
+          .then((resp) => {
+            this.cityStates = resp.data
+            // this.pickedCities.push(3)
+            console.log('Filter city: ', this.gmapFilter.city_state)
+            if(this.gmapFilter.city_state) {
+              this.gmapFilter.city_state.split(',').forEach(cityState => {
+                  this.pickedCities.push(cityState)
+              })
+            }
+          })
+        }
     },
     methods:{
         getFeed(){
