@@ -247,7 +247,7 @@ export default {
           this.posts = {}
           return false
         }
-        console.log(gmapFilter.user_ids)
+
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
         .get('/categories/?user_ids=' + userId)
@@ -317,20 +317,21 @@ export default {
             })
           }
         })
-        axios
-        .get('/categories/')
-        .then((resp) => {
-          this.categories = resp.data
-          if(this.gmapFilter.categories) {
-            this.gmapFilter.categories.split(',').forEach(category => {
-              const index = this.categories.findIndex(item => item.categories === category)
-              console.log('categoryIndex: ', index)
-              if (index >= 0) {
-                this.selectedRestaurantIndexes.push(index)
-              }
-            })
-          }
-        })
+        if(this.gmapFilter.categories) {
+          axios
+          .get('/categories/')
+          .then((resp) => {
+            this.categories = resp.data
+              this.gmapFilter.categories.split(',').forEach(category => {
+                const index = this.categories.findIndex(item => item.categories === category)
+                console.log('categoryIndex: ', index)
+                if (index >= 0) {
+                  this.selectedRestaurantIndexes.push(index)
+                }
+              })
+          })
+        }
+
         axios
         .get('/citystates/')
         .then((resp) => {
@@ -354,39 +355,7 @@ export default {
               this.posts=resp.data
             })
         },
-        getCategory(categoriesName=null){
-          if(categoriesName){
-            axios
-            .get('/feeds/?categories=' + categoriesName)
-            .then((resp) => {
-              this.posts = resp.data
-            })
-          }
-          else{
-            axios
-            .get('/feeds/')
-            .then((resp) => {
-              this.posts = resp.data
-            })
-          }
-        },
-        getCityState(cityStatesName=null){
-          if(cityStatesName){
-            axios
-            .get('/feeds/?city_state=' + cityStatesName)
-            .then((resp) => {
-              this.posts = resp.data
-            })
-          }
-          else{
-            axios
-            .get('/feeds/')
-            .then((resp) => {
-              this.posts = resp.data
-            })
-          }
-        },
-          display(post){
+        display(post){
           this.activePost = post
           this.isActive = !this.isActive
         },
