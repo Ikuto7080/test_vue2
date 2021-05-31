@@ -51,10 +51,6 @@
                       </template>
                     </v-autocomplete>
 
-                      <!-- category filter -->
-                      <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
-                          <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
-                      </v-chip-group>
                       <!-- city filter -->
                       <v-autocomplete
                       v-model="pickedCities"
@@ -93,6 +89,12 @@
                           </template>
                         </template>
                       </v-autocomplete>
+
+                      <!-- category filter -->
+                      <v-chip-group multiple="multiple" show-arrows="show-arrows" active-class="primary--text" v-model="selectedRestaurantIndexes">
+                          <v-chip v-for="categoryItem in categoryItems" :key="categoryItem.id" :items="categoryItems">{{ categoryItem }}</v-chip>
+                      </v-chip-group>
+
                       <v-chip
                       @click="isOpenClicked"
                       :class="{red:isOpenOnly}"
@@ -104,7 +106,80 @@
               </v-col>
           </v-row>
       </div>
-      <GmapMap class="gmap" :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false,  gestureHandling: 'greedy'}" :center="{lat:36, lng:138}" :zoom="6" map-type-id="roadmap" style="top:0; left:0; right:0; bottom:0; position:absolute;">
+      <GmapMap
+      class="gmap"
+      :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false,  gestureHandling: 'greedy', 
+      styles: 
+  //全てのラベルを非表示
+[
+  {
+    'featureType': 'administrative',
+    'elementType': 'geometry',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'administrative.land_parcel',
+    'elementType': 'labels',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'poi',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'poi',
+    'elementType': 'labels.text',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'road',
+    'elementType': 'labels.icon',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'road.local',
+    'elementType': 'labels',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  },
+  {
+    'featureType': 'transit',
+    'stylers': [
+      {
+        'visibility': 'off'
+      }
+    ]
+  }
+]
+      }" 
+      :center="{lat:36, lng:138}"
+      :zoom="6"
+      map-type-id="roadmap"
+      style="top:0; left:0; right:0; bottom:0; position:absolute;"
+      >
         <div v-for="post in shops" :key="post.id" >
           <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
             <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
@@ -252,35 +327,26 @@ export default {
 
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
-        .get('/categories/?user_ids=' + userId)
-        .then(resp => {
-          this.categories = resp.data
-        })
-        axios
-        .get('/citystates/?user_ids=' + userId)
+        .get('/citystates/', {params: gmapFilter})
         .then(resp => {
           this.cityStates = resp.data
         })
+        this.getCategories()
         this.getFeed()
       },
       activeCities(val){
         let states = val.join(',')
         let gmapFilter = {...this.gmapFilter}
-        gmapFilter.city_state= states
+        gmapFilter.city_states= states
         this.$store.commit('setGmapFilter', gmapFilter)
         this.getFeed()
       },
       pickedCities(val){
         let states = val.join(',')
         let gmapFilter = {...this.gmapFilter}
-        gmapFilter.city_state= states
+        gmapFilter.city_states= states
         this.$store.commit('setGmapFilter', gmapFilter)
-
-        axios
-        .get('/categories/?city_states=' + states)
-        .then(resp => {
-          this.categories = resp.data
-        })
+        this.getCategories()
         this.getFeed()
       },
       selectedRestaurantIndexes(value){
@@ -288,7 +354,7 @@ export default {
         gmapFilter.categories= value.map(i => this.categoryItems[i]).join(',')
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
-        .get('/citystates/?categories=' + gmapFilter.categories)
+        .get('/citystates/', {params: gmapFilter})
         .then(resp => {
           this.cityStates = resp.data
         })
@@ -334,15 +400,15 @@ export default {
               })
           })
         }
-        if (this.gmapFilter.city_state) {
+        if (this.gmapFilter.city_states) {
           axios
           .get('/citystates/')
           .then((resp) => {
             this.cityStates = resp.data
             // this.pickedCities.push(3)
-            console.log('Filter city: ', this.gmapFilter.city_state)
-            if(this.gmapFilter.city_state) {
-              this.gmapFilter.city_state.split(',').forEach(cityState => {
+            console.log('Filter city: ', this.gmapFilter.city_states)
+            if(this.gmapFilter.city_states) {
+              this.gmapFilter.city_states.split(',').forEach(cityState => {
                   this.pickedCities.push(cityState)
               })
             }
@@ -358,6 +424,15 @@ export default {
               this.loading = false
               this.posts=resp.data
             })
+        },
+        getCategories(){
+          this.loading = true
+          axios
+          .get('/categories/', {params:this.gmapFilter})
+          .then(resp => {
+            this.loading = false
+            this.categories = resp.data
+          })
         },
         display(post){
           this.activePost = post
