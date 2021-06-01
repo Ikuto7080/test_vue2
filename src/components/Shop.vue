@@ -35,7 +35,8 @@
                             v-else
                             >mdi-instagram
                             </v-icon>
-                              SNS commets
+                              SNS commets 
+                               ({{post.createdtime}})
                           </v-list-item-title>
                               <div class="subtitle-2">
                                   <div></div>
