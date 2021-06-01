@@ -36,7 +36,7 @@
                             >mdi-instagram
                             </v-icon>
                               SNS commets
-                          </v-list-item-title>
+                          <v-list-item-title>{{post.createdtime}}</v-list-item-title>
                               <div class="subtitle-2">
                                   <div></div>
                                    <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
