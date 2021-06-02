@@ -324,7 +324,6 @@ export default {
           this.posts = []
           return false
         }
-
         this.$store.commit('setGmapFilter', gmapFilter)
         axios
         .get('/citystates/', {params: gmapFilter})
@@ -366,7 +365,6 @@ export default {
         Shop
     },mounted(){
       this.isOpenOnly = this.$store.state.isOpenFilter
-
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
       })
@@ -385,6 +383,7 @@ export default {
                 this.pickedUsers.push(parseInt(userId))
             })
           }
+          
         })
         if(this.gmapFilter.categories) {
           axios
