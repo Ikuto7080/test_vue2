@@ -58,7 +58,8 @@ export default {
      },
     methods:{
         LineUrl(){
-            document.location.href= 'https://line.me/R/oaMessage/@552lklqg/?hi%2C%20i%20want%20to%20join%20Quouze.%20friend_id%3D'
+            const friendId = this.account.line_user_id
+            document.location.href= `https://line.me/R/oaMessage/@552lklqg/?hi%2C%20i%20want%20to%20join%20Quouze.%20friend_id%3D${friendId}`
         }
     }
 
