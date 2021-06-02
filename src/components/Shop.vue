@@ -42,6 +42,7 @@
                                    <read-more more-str="read more" :text="post.message" link="#" less-str="read less" :max-chars="50"></read-more>
                                   
                               </div>
+                        </v-list-item-title>
                       </v-list-item-content>
                   </v-list-item>
                   <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
