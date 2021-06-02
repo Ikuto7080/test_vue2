@@ -357,6 +357,7 @@ export default {
         .then(resp => {
           this.cityStates = resp.data
         })
+        
         this.getFeed()
       }
     },
