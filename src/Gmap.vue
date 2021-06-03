@@ -308,10 +308,9 @@ export default {
           return this.posts
         }
       },
-
       gmapFilter(){
       return  this.$store.state.gmapFilter
-    },
+      },
     },
     watch:{
       pickedUsers(val){
@@ -364,7 +363,8 @@ export default {
     components: {
         'gmap-custom-marker':GmapCustomMarker,
         Shop
-    },mounted(){
+    },
+    mounted(){
       this.isOpenOnly = this.$store.state.isOpenFilter
       this.$store.state.categories.forEach(category => {
         this.selectedRestaurantIndexes.push(category)
@@ -374,6 +374,7 @@ export default {
       .then((resp)=> {
         this.account = resp.data[0]
         this.$store.commit('setAccount', this.account)
+        this.pickedUsers.push(parseInt(this.account.user.id))
       })
         axios
         .get('/followings/')
@@ -384,7 +385,6 @@ export default {
                 this.pickedUsers.push(parseInt(userId))
             })
           }
-          
         })
         if(this.gmapFilter.categories) {
           axios
