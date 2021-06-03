@@ -58,14 +58,14 @@ const routes = [
     component: Edit
   },
   {
-    path: '/invite/:line_user_id',
+    path: '/invite/',
     name: Invite,
     component: Invite
   }
 
 
 ]
-
+// :line_user_id
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
