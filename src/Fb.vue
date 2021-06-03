@@ -13,10 +13,20 @@ export default {
 }, mounted (){
     let code = this.$route.query.code
     let userId = this.$route.query.state
+    let inviterId = null
+    let stateArray = userId.split(',')
+    if (stateArray.length == 2) {
+        userId = stateArray[0]
+        inviterId = stateArray[1]
+    }
     let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
     console.log(code)
     if(code){
         let data = {fb_code: code, redirect_uri: redirect_uri, line_user_id:userId}
+        if(inviterId) {
+              data.follow_line_id =  inviterId
+        }
+
         axios
         .post('/accounts/', data)
         .then(resp => {
