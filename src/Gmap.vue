@@ -374,7 +374,9 @@ export default {
       .then((resp)=> {
         this.account = resp.data[0]
         this.$store.commit('setAccount', this.account)
-        this.pickedUsers.push(parseInt(this.account.user.id))
+        // if(!this.pickedUsers.includes(this.account.user.id)) {
+        //   this.pickedUsers.push(parseInt(this.account.user.id))
+        // }
       })
         axios
         .get('/followings/')
@@ -382,7 +384,9 @@ export default {
           this.followings = resp.data.results
           if(this.gmapFilter.user_ids) {
             this.gmapFilter.user_ids.split(',').forEach(userId => {
-                this.pickedUsers.push(parseInt(userId))
+                if (!this.pickedUsers.includes(parseInt(userId))) {
+                  this.pickedUsers.push(parseInt(userId))
+                }
             })
           }
         })
