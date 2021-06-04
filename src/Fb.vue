@@ -15,9 +15,11 @@ export default {
     let userId = this.$route.query.state
     let inviterId = null
     let stateArray = userId.split(',')
+    console.log(stateArray)
     if (stateArray.length == 2) {
         userId = stateArray[0]
         inviterId = stateArray[1]
+        console.log(inviterId)
     }
     let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
     console.log(code)
