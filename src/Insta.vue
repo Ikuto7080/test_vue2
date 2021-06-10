@@ -15,7 +15,7 @@
       let userId = this.$route.query.state
       let redirect_uri = process.env.VUE_APP_IG_REDIRECT_URL
       if(code){
-        let data = {ig_code: code, redirect_uri: redirect_uri, line_user_id: userId}
+        let data = {ig_code: code, redirect_uri: redirect_uri, fb_id: userId}
         axios
         .post('/accounts/',data)
         .then(resp => {
