@@ -166,10 +166,10 @@ export default {
       this.$router.push('/login/')
     },
     shareFb(){
-      document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/?friend_id=" + String(this.account.line_user_id)
+      document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/"
     },
     shareLine(){
-      document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/?friend_id=" + String(this.account.line_user_id)
+      document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/"
     }
   }
 }
