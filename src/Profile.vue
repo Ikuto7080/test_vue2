@@ -159,19 +159,17 @@ export default {
      },
      methods: {
          openFb(){
-           const lineUserId = this.$store.state.account.line_user_id  
-             document.location.href = `https://www.facebook.com/v9.0/dialog/oauth?client_id=420945845838455&redirect_uri=${process.env.VUE_APP_FB_REDIRECT_URL}&state=${lineUserId}`
+             document.location.href = `https://www.facebook.com/v9.0/dialog/oauth?client_id=420945845838455&redirect_uri=${process.env.VUE_APP_FB_REDIRECT_URL}`
         },
         openIg(){
-            const lineUserId = this.$store.state.account.line_user_id
-            document.location.href = `https://api.instagram.com/oauth/authorize?client_id=909807339845904&redirect_uri=${process.env.VUE_APP_IG_REDIRECT_URL}&scope=user_profile%2Cuser_media&response_type=code&state=${lineUserId}`
+            document.location.href = `https://api.instagram.com/oauth/authorize?client_id=909807339845904&redirect_uri=${process.env.VUE_APP_IG_REDIRECT_URL}&scope=user_profile%2Cuser_media&response_type=code`
 
         },
         display(){
           this.isActive =!this.isActive
         },
         shareFb(){
-          document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + String(this.account.line_user_id) + '?user_ids=' 
+          document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/"
         },
          updateProfile(){
              axios

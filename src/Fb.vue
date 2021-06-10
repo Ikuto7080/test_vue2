@@ -24,10 +24,10 @@ export default {
     let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
     console.log(code)
     if(code){
-        let data = {fb_code: code, redirect_uri: redirect_uri, line_user_id:userId}
-        if(inviterId) {
-              data.follow_line_id =  inviterId
-        }
+        let data = {fb_code: code, redirect_uri: redirect_uri}
+        // if(inviterId) {
+        //       data.follow_line_id =  inviterId
+        // }
 
         axios
         .post('/accounts/', data)
