@@ -10,11 +10,24 @@
         info: null
       }
     },
+    computed:{
+      options(){
+        let options = [];
+        const account = this.$store.state.account
+        console.log(account["id"])
+        for (var value in account) {
+          options.push(value)
+        }
+        // console.log(options)
+        return options
+      }
+    },
     mounted () {
       // let code = this.$route.query.code
       // let redirect_uri = process.env.VUE_APP_IG_REDIRECT_URL
-      let account = localStorage.getItem("account");
-      console.log(account)
+      // let account = this.$store.state.account
+      // localStorage.getItem("account")
+      // console.log(account)
       // if(code){
       //   let data = {ig_code: code, redirect_uri: redirect_uri, account_id: account_id}
       //   axios
