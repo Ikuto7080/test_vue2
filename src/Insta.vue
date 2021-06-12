@@ -16,7 +16,7 @@
       let account = this.$store.state.account
       let account_id = account.id
       // localStorage.getItem("account")
-      console.log(account)
+      console.log(account_id)
       if(code){
         let data = {ig_code: code, redirect_uri: redirect_uri, account_id: account_id}
         axios
