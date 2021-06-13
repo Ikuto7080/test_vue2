@@ -40,6 +40,9 @@ export default {
             if(!this.account){
                 return ''
             }
+            if(!this.account['user']['first_name']){
+                return ''
+            }
             return this.account['user']['first_name'] + this.account['user']['last_name']
         }
     },
