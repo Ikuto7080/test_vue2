@@ -9,7 +9,7 @@
     </GmapMap>
     <h1 style="text-align:center; color:pink;">Who can view my posts?</h1>
     <p> Posts in Quouze follow the same permission as posts in Facebook. Generally, only your Facebook friends can your posts in Quouze.</p>
-    <v-btn @click="LineUrl" style="margin-bottom:20px;">Share my posts with {{fullName}}</v-btn>
+    <v-btn @click="LoginUrl" style="margin-bottom:20px;">Share my posts with {{fullName}}</v-btn>
     <div class="main-content">
         <div class="name"> {{fullName}}
             <div>
@@ -61,9 +61,9 @@ export default {
          })
      },
     methods:{
-        LineUrl(){
-            const friendId = this.$route.query.friend_id
-            document.location.href= `https://line.me/R/oaMessage/@552lklqg/?hi%2C%20i%20want%20to%20join%20Quouze.%20friend_id%3D${friendId}`
+        LoginUrl(){
+            const friendId = this.$route.params.id
+            document.location.href= '/login/?inviter_id=' + friendId
         }
     }
 
