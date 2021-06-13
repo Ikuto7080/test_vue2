@@ -44,10 +44,12 @@ export default {
         }
     },
      mounted (){
+         let account_id = this.$route.params.id
          axios
-         .get('/accounts/')
+         .get('/accounts/' + account_id + '/')
          .then (resp => {
-             this.account = resp.data[0]
+             this.account = resp.data
+             console.log(this.account)
          })
          axios
         //  .get('/feeds/?user_id=' + String(this.account['user']['id']))

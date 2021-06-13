@@ -12,7 +12,7 @@ import ReadMore from 'vue-read-more';
 Vue.use(ReadMore)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyCh-n6Zenl66RuVS6c9N4xEKKG9-boLa7I',
+    key: 'AIzaSyBskgPF7N6t6bhxT1SoY2hP5OMe8knbdR0',
     libraries: 'places', // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'
@@ -34,7 +34,7 @@ axios.defaults.baseURL = process.env.VUE_APP_BASE_URL
 
 
 let account = localStorage.getItem("account")
-store.commit('setAccount', account)
+store.commit('setAccount', JSON.parse(account))
 
 if (account) {
   account = JSON.parse(account)

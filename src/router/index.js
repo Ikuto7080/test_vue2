@@ -58,7 +58,7 @@ const routes = [
     component: Edit
   },
   {
-    path: '/invite/',
+    path: '/invite/:id',
     name: Invite,
     component: Invite
   }
