@@ -52,7 +52,6 @@ export default {
              console.log(this.account)
          })
          axios
-        //  .get('/feeds/?user_id=' + String(this.account['user']['id']))
          .get('/feeds/')
          .then(resp => {
              this.posts = resp.data
