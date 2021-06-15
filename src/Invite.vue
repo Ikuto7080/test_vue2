@@ -15,7 +15,7 @@
             <div>
                 <v-row>
                   <v-col cols="5">
-                    <v-img class="picture" :src="posts[0]['images'][0]['url']"></v-img>
+                    <v-img v-if="posts.length > 0" class="picture" :src="posts[0]['images'][0]['url']"></v-img>
                   </v-col>
                 </v-row>
             </div>
@@ -37,7 +37,11 @@ export default {
         'gmap-custom-marker':GmapCustomMarker
     },computed:{
         fullName(){
+            console.log(this.account)
             if(!this.account){
+                return ''
+            }
+            if(!this.account['user']){
                 return ''
             }
             if(!this.account['user']['first_name']){
@@ -51,6 +55,7 @@ export default {
          axios
          .get('/accounts/' + account_id + '/')
          .then (resp => {
+             console.log(resp.data)
              this.account = resp.data
              console.log(this.account)
          })

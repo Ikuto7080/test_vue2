@@ -370,12 +370,16 @@ export default {
         this.selectedRestaurantIndexes.push(category)
       })
       axios
-      .get('/accounts/')
+      .get('/accounts/' + this.$store.state.account.id + '/')
       .then((resp)=> {
-        this.account = resp.data[0]
+        this.account = resp.data
         this.$store.commit('setAccount', this.account)
-        // if(!this.pickedUsers.includes(this.account.user.id)) {
-        //   this.pickedUsers.push(parseInt(this.account.user.id))
+        if(!this.pickedUsers.includes(this.account.user.id)) {
+          this.pickedUsers.push(parseInt(this.account.user.id))
+        }
+        console.log(this.account.inviter)
+        // if(!this.pickedUsers.includes(this.account.inviter)){
+        //   this.pickedUsers.push(parseInt(this.account.inviter))
         // }
       })
         axios

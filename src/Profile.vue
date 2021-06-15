@@ -124,9 +124,9 @@ export default {
     },
      mounted (){
         axios
-        .get('/accounts/')
+        .get('/accounts/' + this.$store.state.account.id + '/')
         .then(resp => {
-          this.account = resp.data[0]
+          this.account = resp.data
           console.log(this.account)
             this.$store.commit('setAccount', this.account)
             this.loading = false

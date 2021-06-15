@@ -24,10 +24,10 @@ export default {
     },
      mounted (){
         axios
-        .get('/accounts/')
+        .get('/accounts/' + this.$store.state.account.id + '/')
         .then(resp => {
-            this.$store.commit('setAccount', resp.data[0])
-            this.account = resp.data[0]
+            this.$store.commit('setAccount', resp.data)
+            this.account = resp.data
             let igposts = this.account['ig_id']
             let fbposts = this.account['fb_id']
             if(igposts){
