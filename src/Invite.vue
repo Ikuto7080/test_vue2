@@ -97,3 +97,9 @@ export default {
 }
 
 </style>
+
+
+
+// <a href="fb-messenger://share/?link=http://url-you-want-to-share.com&app_id=your-app-id-here">
+// ... 
+// </a>

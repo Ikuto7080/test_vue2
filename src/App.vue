@@ -166,10 +166,15 @@ export default {
       this.$router.push('/login/')
     },
     shareFb(){
-      document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + this.account.id + "/"
+      const Accountid = this.account.id
+      const Link = `https://app.quouze.com/invite/${Accountid}`
+      // const app_id = 420945845838455
+      // document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + this.account.id + "/"
+      document.location.href='fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455'
+      // window.open('fb-messenger://share?link=' + encodeURIComponent(link) + '&app_id=' + encodeURIComponent(app_id));
     },
     shareLine(){
-      document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/"
+      // document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/"
     }
   }
 }

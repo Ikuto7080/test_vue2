@@ -378,9 +378,9 @@ export default {
           this.pickedUsers.push(parseInt(this.account.user.id))
         }
         console.log(this.account.inviter)
-        // if(!this.pickedUsers.includes(this.account.inviter)){
-        //   this.pickedUsers.push(parseInt(this.account.inviter))
-        // }
+         //if(!this.pickedUsers.includes(this.account.inviter)){
+           //this.pickedUsers.push(parseInt(this.account.inviter))
+        //}
       })
         axios
         .get('/followings/')
