@@ -373,14 +373,14 @@ export default {
       .get('/accounts/' + this.$store.state.account.id + '/')
       .then((resp)=> {
         this.account = resp.data
+        console.log(this.account)
         this.$store.commit('setAccount', this.account)
         if(!this.pickedUsers.includes(this.account.user.id)) {
           this.pickedUsers.push(parseInt(this.account.user.id))
         }
-        console.log(this.account.inviter)
-        // if(!this.pickedUsers.includes(this.account.inviter)){
-        //   this.pickedUsers.push(parseInt(this.account.inviter))
-        // }
+        if(!this.pickedUsers.includes(this.account.inviter.inviter)){
+          this.pickedUsers.push(parseInt(this.account.inviter.inviter))
+        }
       })
         axios
         .get('/followings/')
