@@ -107,6 +107,7 @@
           </v-row>
       </div>
       <GmapMap
+      ref="map"
       class="gmap"
       :options="{zoomControl: false, mapTypeControl: false, scaleControl: false, streetViewControl: false, rotateControl: false, fullscreenControl: false, disableDefaultUi: false,  gestureHandling: 'greedy', 
       styles: 
@@ -175,13 +176,13 @@
   }
 ]
       }" 
-      :center="{lat:36, lng:138}"
-      :zoom="6"
+      :center="{lat:0, lng:180}"
+      :zoom="5"
       map-type-id="roadmap"
       style="top:0; left:0; right:0; bottom:0; position:absolute;"
       >
         <div v-for="post in shops" :key="post.id" >
-          <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}">
+          <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}" @added="markerAdded">
             <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
           </gmap-custom-marker>
         </div>
@@ -193,9 +194,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import GmapCustomMarker from 'vue2-gmap-custom-marker';
+import axios from 'axios';
 import Shop from "./components/Shop";
+import MyGmapCustomMarker from "./components/MyGmapCustomMarker";
 export default {
     data(){
         return {
@@ -356,12 +357,11 @@ export default {
         .then(resp => {
           this.cityStates = resp.data
         })
-        
         this.getFeed()
       }
     },
     components: {
-        'gmap-custom-marker':GmapCustomMarker,
+        'gmap-custom-marker':MyGmapCustomMarker,
         Shop
     },
     mounted(){
@@ -379,7 +379,7 @@ export default {
           this.pickedUsers.push(parseInt(this.account.user.id))
         }
         if(!this.pickedUsers.includes(this.account.inviter.inviter)){
-          this.pickedUsers.push(parseInt(this.account.inviter.inviter))
+          this.pickedUsers.push(parseInt(this.account.inviter.id))
         }
       })
         axios
@@ -472,7 +472,23 @@ export default {
       isOpenClicked() {
         this.isOpenOnly=!this.isOpenOnly
         this.$store.commit('setOpenFilter', this.isOpenOnly)
-        
+      },
+      calculateCenterPoint(){
+        var bounds = new window.google.maps.LatLngBounds()
+        this.shops.forEach(shop => {
+          var latLng = new window.google.maps.LatLng( shop.google_place.latitude,shop.google_place.longitude ) ;
+          bounds.extend(latLng)
+        })
+        this.$refs.map.$mapObject.fitBounds(bounds)
+      },
+      markerAdded(marker) {
+        var lastShoplat = this.shops[this.shops.length -1].google_place.latitude
+        var lastShoplng = this.shops[this.shops.length -1].google_place.longitude
+        var markerlat = marker.lat 
+        var markerlng = marker.lng
+        if (lastShoplat == markerlat && lastShoplng == markerlng){
+          this.calculateCenterPoint()
+        }
       }
     }
 }
