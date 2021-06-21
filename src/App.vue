@@ -78,11 +78,7 @@
                     You can enjoy to see your friends posts
                     <v-row class="sosyal">
                       <v-col>
-                        <!-- <v-btn small depressed="depressed" class="facebook white--text">Share with Facebook</v-btn> -->
-                        <v-btn class="white--text facebook mt-4" depressed="depressed" color="#495ead" small @click="shareFb"><i class="fab fa-facebook-square mr-2 fa-2x" style="size:100x;"></i>Share button</v-btn>
-                      </v-col>
-                      <v-col>
-                        <v-btn class="white--text line mt-4" depressed="depressed" color="#00C814" small @click="shareLine"><i class="fab fa-line mr-2 fa-2x"></i>Share button</v-btn>
+                        <v-btn class="white--text facebook mt-4" depressed="depressed" color="#495ead" small @click="shareFb"><i class="fab fa-facebook-messenger mr-2 fa-2x" style="size:100x;"></i>Share button</v-btn>
                       </v-col>
                     </v-row>
                   </div>
@@ -118,7 +114,6 @@
           </template>
           <div class="sharebtn">
             <ul class="sharebtn_list">
-              <li class="sharebtn_item line pr-3"><a href="http://line.me/R/msg/text/?{Title}-{URLEncodedPermalink}" title="LINEに送る" target="_blank" rel="nofollow noopener noreferrer" class="btn_li bd"><i class="fab fa-line"></i></a></li>
               <li class="sharebtn_item facebook"><a href="http://www.facebook.com/sharer.php?u={URLEncodedPermalink}" title="Facebookでシェア" target="_blank" rel="nofollow noopener noreferrer" class="btn_fb bd"><i class="fab fa-facebook"></i></a></li>
             </ul>
           </div>
@@ -168,13 +163,7 @@ export default {
     shareFb(){
       const Accountid = this.account.id
       const Link = `https://app.quouze.com/invite/${Accountid}`
-      // const app_id = 420945845838455
-      // document.location.href="https://www.facebook.com/sharer/sharer.php?u=https://app.quouze.com/invite/" + this.account.id + "/"
       document.location.href='fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455'
-      // window.open('fb-messenger://share?link=' + encodeURIComponent(link) + '&app_id=' + encodeURIComponent(app_id));
-    },
-    shareLine(){
-      // document.location.href="https://social-plugins.line.me/lineit/share?url=https://app.quouze.com/invite/"
     }
   }
 }
