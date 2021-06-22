@@ -484,7 +484,7 @@ export default {
       markerAdded(marker) {
         var lastShoplat = this.shops[this.shops.length -1].google_place.latitude
         var lastShoplng = this.shops[this.shops.length -1].google_place.longitude
-        var markerlat = marker.lat 
+        var markerlat = marker.lat
         var markerlng = marker.lng
         if (lastShoplat == markerlat && lastShoplng == markerlng){
           this.calculateCenterPoint()
