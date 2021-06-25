@@ -126,6 +126,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'Navbar',
   data(){
@@ -149,6 +150,15 @@ export default {
         {title: 'profile', icon:'fas fa-user', url:'/profile/'},
         ]
       }
+  },
+  mounted () {
+    let apnsToken = this.$route.query.apns_token
+    if(apnsToken) {
+      let data = {apns_token: apnsToken}
+      axios
+      .post('device', data)
+    }
+    
   },
   methods:{
     logout(){
