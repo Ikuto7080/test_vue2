@@ -154,13 +154,9 @@ export default {
   },
   mounted () {
     let apnsToken = this.$route.query.apns_token
-    console.log(apnsToken)
-    if(apnsToken) {
-      let data = {apns_token: apnsToken}
-      axios
-      .post('/device/', data)
+    if (apnsToken) {
+      sessionStorage.setItem('apns_token', apnsToken)
     }
-    
   },
   methods:{
     logout(){

@@ -12,10 +12,6 @@ export default {
         open() {
             // let userId = this.$route.query.user_id
             const inviterId = this.$route.query.inviter_id
-            // if (inviterId){
-            //   userId = userId + "," + inviterId
-            //   console.log(userId)
-            // }
             document.location.href = `https://www.facebook.com/v9.0/dialog/oauth?client_id=420945845838455&redirect_uri=${process.env.VUE_APP_FB_REDIRECT_URL}&state=${inviterId}&scope=user_posts`
         }
    }
