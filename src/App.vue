@@ -158,7 +158,7 @@ export default {
     if(apnsToken) {
       let data = {apns_token: apnsToken}
       axios
-      .post('device', data)
+      .post('/device/', data)
     }
     
   },
