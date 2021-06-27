@@ -38,6 +38,7 @@
             <v-list-item v-if="!account">
               <v-list-item-title>
                 <a href="/login/">Sign In</a>
+                {{this.$route.query.apns_token}}
               </v-list-item-title>
             </v-list-item>
 
@@ -153,6 +154,7 @@ export default {
   },
   mounted () {
     let apnsToken = this.$route.query.apns_token
+    console.log(apnsToken)
     if(apnsToken) {
       let data = {apns_token: apnsToken}
       axios
