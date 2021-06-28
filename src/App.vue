@@ -152,18 +152,28 @@ export default {
         ]
       }
   },
-  mounted () {
-    let apnsToken = this.$route.query.apns_token
-    if (apnsToken) {
-      sessionStorage.setItem('apns_token', apnsToken)
-      if (this.account) {
+  watch:{
+    account(val){
+      let apnsToken = this.$route.query.apns_token
+      if(val && apnsToken){
         let data = {fcm_token: apnsToken}
         axios
         .post('/device/', data)
-        // .then()
       }
     }
   },
+  // mounted () {
+  //   let apnsToken = this.$route.query.apns_token
+  //   if (apnsToken) {
+  //     sessionStorage.setItem('apns_token', apnsToken)
+  //     if (this.account) {
+  //       let data = {fcm_token: apnsToken}
+  //       axios
+  //       .post('/device/', data)
+  //       // .then()
+  //     }
+  //   }
+  // },
   methods:{
     logout(){
       alert("are you sure?")

@@ -14,9 +14,9 @@ export default {
     if(this.$store.state.account){
       this.$router.push('/gmap/')
     }
-    // else{
-    //   this.$router.push('/login/')
-    // }
+    else{
+      this.$router.push('/login/')
+    }
   }
 }
 </script>
