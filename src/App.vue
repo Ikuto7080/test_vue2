@@ -156,6 +156,12 @@ export default {
     let apnsToken = this.$route.query.apns_token
     if (apnsToken) {
       sessionStorage.setItem('apns_token', apnsToken)
+      if (this.account) {
+        let data = {fcm_token: apnsToken}
+        axios
+        .post('/device/', data)
+        // .then()
+      }
     }
   },
   methods:{
