@@ -14,6 +14,7 @@ export default {
     let code = this.$route.query.code
     let inviterId = this.$route.query.state
     let apnsToken = sessionStorage.getItem('apns_token')
+    let fbAccessToken = this.$route.query.fb_access_token
     // let stateArray = userId.split(',')
     // console.log(stateArray)
     // if (stateArray.length == 2) {
@@ -39,6 +40,18 @@ export default {
             localStorage.setItem("account", JSON.stringify(resp.data))
             this.$router.push('/gmap/')
         })
+        }
+        else if(fbAccessToken){
+            let data = {fb_access_token: fbAccessToken}
+            axios
+            .post('/accounts/', data)
+            .then(resp => {
+                this.info = resp.data
+                axios.defaults.headers.common['Authorization'] = 'Token ' + resp.data.token
+                this.$store.commit('setAccount', resp.data)
+                localStorage.setItem("account", JSON.stringify(resp.data))
+                this.$router.push('/gmap/')
+            })
         }
     },
 
