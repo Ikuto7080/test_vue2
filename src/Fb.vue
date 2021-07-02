@@ -1,19 +1,19 @@
 <template>
-    <div></div>
+  <div></div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios"
 
 export default {
-    data(){
-        return {
-        info:null
+  data() {
+    return {
+      info: null
     }
-}, mounted (){
+  },mounted() {
     let code = this.$route.query.code
     let inviterId = this.$route.query.state
-    let apnsToken = sessionStorage.getItem('apns_token')
+    let apnsToken = sessionStorage.getItem("apns_token")
     let fbAccessToken = this.$route.query.fb_access_token
     // let stateArray = userId.split(',')
     // console.log(stateArray)
@@ -22,38 +22,38 @@ export default {
     //     inviterId = stateArray[1]
     //     console.log(inviterId)
     let redirect_uri = process.env.VUE_APP_FB_REDIRECT_URL
-    if(code){
-        let data = {fb_code: code, redirect_uri: redirect_uri}
-        if(inviterId) {
-              data.follow_account_id =  inviterId
-        }
-        if (apnsToken) {
-            data.apns_token = apnsToken
-        }
+    if (code) {
+      let data = { fb_code: code, redirect_uri: redirect_uri }
+      if (inviterId) {
+        data.follow_account_id = inviterId
+      }
+      if (apnsToken) {
+        data.apns_token = apnsToken
+      }
 
-        axios
-        .post('/accounts/', data)
-        .then(resp => {
-            this.info = resp.data
-            axios.defaults.headers.common['Authorization'] = 'Token ' + resp.data.token
-            this.$store.commit('setAccount', resp.data)
-            localStorage.setItem("account", JSON.stringify(resp.data))
-            this.$router.push('/gmap/')
-        })
-        }
-        else if(fbAccessToken){
-            let data = {fb_access_token: fbAccessToken}
-            axios
-            .post('/accounts/', data)
-            .then(resp => {
-                this.info = resp.data
-                axios.defaults.headers.common['Authorization'] = 'Token ' + resp.data.token
-                this.$store.commit('setAccount', resp.data)
-                localStorage.setItem("account", JSON.stringify(resp.data))
-                this.$router.push('/gmap/')
-            })
-        }
-    },
+      axios
+      .post("/accounts/", data)
+      .then((resp) => {
+        this.info = resp.data
+        axios.defaults.headers.common["Authorization"] = "Token " + resp.data.token
+        this.$store.commit("setAccount", resp.data)
+        localStorage.setItem("account", JSON.stringify(resp.data))
+        this.$router.push("/gmap/")
+      })
+    } 
+    else if (fbAccessToken) {
+      let data = { fb_access_token: fbAccessToken }
+      axios
+      .post("/accounts/", data)
+      .then((resp) => {
+        this.info = resp.data
+        axios.defaults.headers.common["Authorization"] = "Token " + resp.data.token
+        this.$store.commit("setAccount", resp.data)
+        localStorage.setItem("account", JSON.stringify(resp.data))
+        this.$router.push("/gmap/")
+      })
+    }
+  },
 
 }
 
