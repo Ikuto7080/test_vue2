@@ -13,7 +13,7 @@ export default {
   },mounted() {
     let code = this.$route.query.code
     let inviterId = this.$route.query.state
-    let apnsToken = sessionStorage.getItem("apns_token")
+    let apnsToken = this.$route.query.apns_token
     let fbAccessToken = this.$route.query.fb_access_token
     // let stateArray = userId.split(',')
     // console.log(stateArray)
@@ -48,6 +48,11 @@ export default {
       .then((resp) => {
         this.info = resp.data
         axios.defaults.headers.common["Authorization"] = "Token " + resp.data.token
+        if (apnsToken) {
+          let data = { fcm_token:  apnsToken}
+          axios
+          .post("/device/", data)
+        }
         this.$store.commit("setAccount", resp.data)
         localStorage.setItem("account", JSON.stringify(resp.data))
         this.$router.push("/gmap/")
