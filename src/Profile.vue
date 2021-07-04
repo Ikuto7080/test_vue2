@@ -98,7 +98,7 @@
               </v-row>
           </v-dialog>
           <v-row>
-              <v-col class="pa-0" cols="4" sm="4" md="2" lg="2" v-for="post in posts" v-bind:key="post.id"><img class="image" :src="post['images'][0]['url']" height="123px" width="123px" /></v-col>
+              <v-col class="pa-0" cols="4" sm="4" md="2" lg="2" v-for="post in posts" v-bind:key="post.id"><img class="image" :src="post['images'][0]['image']" height="123px" width="123px" /></v-col>
           </v-row>
       </div>
   </v-row>

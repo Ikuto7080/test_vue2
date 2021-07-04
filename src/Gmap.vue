@@ -183,7 +183,7 @@
       >
         <div v-for="post in shops" :key="post.id" >
           <gmap-custom-marker :marker="{ lat:post.google_place.latitude, lng: post.google_place.longitude}" @added="markerAdded">
-            <v-img class="img" @click="display(post)" :src="post['images'][0]['url']"></v-img>
+            <v-img class="img" @click="display(post)" :src="post['images'][0]['image']"></v-img>
           </gmap-custom-marker>
         </div>
       </GmapMap>

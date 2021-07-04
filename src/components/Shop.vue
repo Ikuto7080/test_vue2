@@ -44,7 +44,7 @@
                         </v-list-item-title>
                       </v-list-item-content>
                   </v-list-item>
-                  <v-img height="500" :src="post.images[0].url" @click="goUrl"></v-img>
+                  <v-img height="500" :src="post.images[0].image" @click="goUrl"></v-img>
                   <v-list-item-title v-if="post.type==='facebook'" class="pb-3" style="text-align: right;">Push image, go to facebook posts</v-list-item-title>
                   <v-list-item-title v-else class="pb-3" style="text-align: right;">Push image, go to facebook posts</v-list-item-title>
                   <v-divider></v-divider>
