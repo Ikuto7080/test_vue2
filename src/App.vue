@@ -180,6 +180,11 @@ export default {
       localStorage.removeItem("account")
       this.$store.commit('setAccount', null) 
       this.$router.push('/')
+      try {
+        window.webkit.messageHandlers.logout.postMessage('')
+      } catch (error) {
+        console.log("cerror")
+      }
     },
     login(){
       this.$router.push('/login/')
