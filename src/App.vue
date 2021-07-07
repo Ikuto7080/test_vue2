@@ -192,7 +192,7 @@ export default {
     shareFb(){
       const Accountid = this.account.id
       const Link = `https://app.quouze.com/invite/${Accountid}`
-      document.location.href='fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455'
+      window.open('fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455', '_blank')
     }
   }
 }
