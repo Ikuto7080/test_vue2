@@ -183,7 +183,7 @@ export default {
       try {
         window.webkit.messageHandlers.logout.postMessage('')
       } catch (error) {
-        console.log("cerror")
+        console.log("error")
       }
     },
     login(){
@@ -192,7 +192,12 @@ export default {
     shareFb(){
       const Accountid = this.account.id
       const Link = `https://app.quouze.com/invite/${Accountid}`
-      window.open('fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455', '_blank')
+      window.open('fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455')
+      try {
+        window.webkit.messageHandlers.sharemessanger.postMessage('fb-messenger://share?link=' + encodeURIComponent(Link) + '&app_id=420945845838455')
+      } catch (error) {
+        console.log("error")
+      }
     }
   }
 }
